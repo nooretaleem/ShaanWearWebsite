@@ -713,20 +713,40 @@
             const fullDeliveryAddress = addressParts.join(', ');
 
             // Construct payload according to backend createStorefrontOrder contract
+            // const orderPayload = {
+            //     customer: {
+            //         firstName,
+            //         lastName,
+            //         email,
+            //         phone
+            //     },
+            //     shippingAddress: {
+            //         street,
+            //         apartment,
+            //         city,
+            //         postalCode: postal,
+            //         country: 'Pakistan'
+            //     },
+            //     paymentMethod: state.selectedPaymentMethod,
+            //     couponCode: state.appliedCoupon ? state.appliedCoupon.code : null,
+            //     items: state.items.map(item => ({
+            //         id: item.id,
+            //         productId: item.productId || item.id,
+            //         name: item.name,
+            //         price: Number(item.price) || 0,
+            //         qty: Number(item.qty) || 1,
+            //         color: item.color || null,
+            //         size: item.size || null,
+            //         image: item.image || null
+            //     })),
+            //     notes: ''
+            // };
+            // Construct payload according to backend createStorefrontOrder contract
             const orderPayload = {
-                customer: {
-                    firstName,
-                    lastName,
-                    email,
-                    phone
-                },
-                shippingAddress: {
-                    street,
-                    apartment,
-                    city,
-                    postalCode: postal,
-                    country: 'Pakistan'
-                },
+                shippingName: fullName,                  // <--- THIS IS THE FIX
+                shippingPhone: phone,                    // Assuming backend expects this
+                shippingAddress: fullDeliveryAddress,    // Assuming backend expects a flat string
+                email: email,                            // Assuming backend expects email at root
                 paymentMethod: state.selectedPaymentMethod,
                 couponCode: state.appliedCoupon ? state.appliedCoupon.code : null,
                 items: state.items.map(item => ({
