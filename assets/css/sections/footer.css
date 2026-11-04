@@ -1,0 +1,498 @@
+/* =====================================================
+   SHAANWEAR — Modern Minimalist E-Commerce Footer
+   ===================================================== */
+
+.site-footer {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-top: 20px;
+    border-top: 1px solid #2A2A2A;
+    position: relative;
+    z-index: 10;
+}
+
+.site-footer a {
+    color: #A3A3A3;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.site-footer a:hover {
+    color: #FFFFFF;
+}
+
+/* Container */
+.footer__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* =====================================================
+   1. TOP NEWSLETTER BAR
+   ===================================================== */
+.footer__newsletter {
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.footer__newsletter-info {
+    max-width: 520px;
+}
+
+.footer__newsletter-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+}
+
+.footer__newsletter-text {
+    font-size: 13.5px;
+    color: #A3A3A3;
+    line-height: 1.5;
+}
+
+.footer__newsletter-form {
+    flex: 1;
+    max-width: 480px;
+    min-width: 280px;
+}
+
+.footer__input-group {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 2px;
+    padding: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.footer__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: #1A1A1A;
+}
+
+.footer__input::placeholder {
+    color: #8E8E8E;
+}
+
+.footer__submit-btn {
+    background-color: #000000;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 28px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.footer__submit-btn:hover {
+    background-color: #2A2A2A;
+}
+
+/* =====================================================
+   2. MAIN 4-COLUMN GRID
+   ===================================================== */
+.footer__main {
+    padding: 60px 0;
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1fr 1fr;
+    gap: 48px;
+}
+
+/* Column 1: Brand Info */
+.footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.footer__logo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: #FFFFFF !important;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.footer__brand-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #A3A3A3;
+    max-width: 440px;
+}
+
+/* Social Media Icons */
+.footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.footer__social-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF !important;
+    transition: all 0.25s ease;
+}
+
+.footer__social-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.footer__social-icon:hover {
+    background: #FFFFFF;
+    color: #1A1A1A !important;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.footer__support {
+    font-size: 13px;
+    color: #A3A3A3;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.footer__support a {
+    color: #FFFFFF;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer__support a:hover {
+    color: #B79A68;
+}
+
+/* Columns 2, 3, 4: Link Groups */
+.footer__heading {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 22px;
+    position: relative;
+}
+
+.footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer__links a {
+    font-size: 13.5px;
+    color: #A3A3A3;
+    display: inline-block;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer__links a:hover {
+    color: #FFFFFF;
+    transform: translateX(4px);
+}
+
+/* =====================================================
+   3. BOTTOM BAR (Copyright & Payments)
+   ===================================================== */
+.footer__divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.footer__bottom {
+    padding: 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer__copyright {
+    font-size: 12.5px;
+    color: #8E8E8E;
+    letter-spacing: 0.02em;
+}
+
+.footer__payments {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.footer__payment-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer__payment-badge {
+    height: 26px;
+    padding: 4px 10px;
+    background: #FFFFFF;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.footer__payment-badge svg {
+    height: 16px;
+    width: auto;
+}
+
+/* WhatsApp Widget Button (Inline & Floating) */
+.footer__whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #25D366;
+    color: #FFFFFF !important;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+}
+
+.footer__whatsapp-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.footer__whatsapp-link:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+/* Floating WhatsApp Widget Icon (Fixed Bottom Right) */
+.whatsapp-widget {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 990;
+    width: 54px;
+    height: 54px;
+    background: #25D366;
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-widget svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+}
+
+.whatsapp-widget:hover {
+    transform: scale(1.1) translateY(-3px);
+    background: #20ba5a;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
+}
+
+/* =====================================================
+   4. RESPONSIVE BREAKPOINTS
+   ===================================================== */
+@media (max-width: 1024px) {
+    .footer__main {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer__newsletter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer__newsletter-form {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .footer__input {
+        width: 0;
+        min-width: 0;
+        padding: 12px;
+    }
+
+    .footer__submit-btn {
+        flex-shrink: 0;
+        padding: 12px 16px;
+    }
+
+    .footer__main {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 40px 0;
+    }
+
+    .footer__logo {
+        font-size: 22px;
+        letter-spacing: 0.16em;
+    }
+
+    .footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .footer__payments,
+    .footer__payment-icons {
+        flex-wrap: wrap;
+    }
+
+    .whatsapp-widget {
+        bottom: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+    }
+
+    .whatsapp-widget svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* =====================================================
+   5. SOURCING DISCLAIMER MODAL
+   ===================================================== */
+.disclaimer-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.disclaimer-modal.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.disclaimer-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+}
+
+.disclaimer-modal__content {
+    position: relative;
+    background: #1A1A1A;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    max-width: 560px;
+    width: 100%;
+    padding: 32px 28px;
+    color: #FFFFFF;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.disclaimer-modal.is-active .disclaimer-modal__content {
+    transform: translateY(0);
+}
+
+.disclaimer-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: #A3A3A3;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.disclaimer-modal__close:hover {
+    color: #FFFFFF;
+}
+
+.disclaimer-modal__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #b79a68;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.disclaimer-modal__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.disclaimer-modal__body p {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #D1D1D1;
+    margin-bottom: 14px;
+}
+
+.disclaimer-modal__body p strong {
+    color: #FFFFFF;
+}

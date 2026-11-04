@@ -1,0 +1,139 @@
+/* =====================================================
+   SHAANWEAR — Global Button Styles & Hover Inversion
+   Checkout Sitewide Button Rules
+   ===================================================== */
+
+/* Base 0.25s transition for checkout buttons */
+.complete-order-btn,
+.checkout-discount-btn,
+.order-success-btn,
+.mobile-summary-toggle,
+.checkout-btn-invert-dark,
+.checkout-btn-invert-light {
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* -----------------------------------------------------
+   1. BLACK BUTTONS WITH WHITE TEXT -> HOVER INVERSION
+   Flips to White background with Black text on hover.
+   Border color matches the new background (#FFFFFF).
+   Applied to: Complete Order, Apply discount, Continue Shopping
+   ----------------------------------------------------- */
+.complete-order-btn,
+.checkout-discount-btn,
+.order-success-btn,
+.checkout-btn-invert-dark {
+    background: #111111;
+    color: #FFFFFF;
+    border: 1.5px solid #111111;
+}
+
+.complete-order-btn svg,
+.checkout-discount-btn svg,
+.order-success-btn svg {
+    stroke: currentColor;
+    transition: stroke 0.25s ease, transform 0.25s ease;
+}
+
+.complete-order-btn:hover:not(:disabled),
+.checkout-discount-btn:hover:not(:disabled),
+.order-success-btn:hover:not(:disabled),
+.checkout-btn-invert-dark:hover:not(:disabled) {
+    background: #FFFFFF !important;
+    color: #111111 !important;
+    border-color: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.complete-order-btn:hover:not(:disabled) svg {
+    stroke: #111111 !important;
+    transform: translateX(4px);
+}
+
+/* -----------------------------------------------------
+   2. WHITE / LIGHT BUTTONS WITH BLACK TEXT -> HOVER INVERSION
+   Flips to Black background with White text on hover.
+   Border color matches the new background (#111111).
+   Applied to: Show Order Summary toggle
+   ----------------------------------------------------- */
+.mobile-summary-toggle,
+.checkout-btn-invert-light {
+    background: #FAF9F7;
+    color: #111111;
+    border: 1.5px solid #E5E3DE;
+}
+
+.mobile-summary-toggle .mobile-summary-toggle__text,
+.mobile-summary-toggle .mobile-summary-toggle__price {
+    transition: color 0.25s ease;
+}
+
+.mobile-summary-toggle svg.icon-cart,
+.mobile-summary-toggle svg.icon-chevron {
+    transition: stroke 0.25s ease, transform 0.25s ease;
+}
+
+.mobile-summary-toggle:hover:not(:disabled),
+.checkout-btn-invert-light:hover:not(:disabled) {
+    background: #111111 !important;
+    color: #FFFFFF !important;
+    border-color: #111111 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-summary-toggle:hover:not(:disabled) .mobile-summary-toggle__left,
+.mobile-summary-toggle:hover:not(:disabled) .mobile-summary-toggle__text,
+.mobile-summary-toggle:hover:not(:disabled) .mobile-summary-toggle__price {
+    color: #FFFFFF !important;
+}
+
+.mobile-summary-toggle:hover:not(:disabled) svg.icon-cart,
+.mobile-summary-toggle:hover:not(:disabled) svg.icon-chevron {
+    stroke: #FFFFFF !important;
+}
+
+/* -----------------------------------------------------
+   3. DISABLED BUTTON STATE
+   Greyed out with not-allowed cursor and NO hover inversion.
+   ----------------------------------------------------- */
+button:disabled,
+button[disabled],
+.complete-order-btn:disabled,
+.checkout-discount-btn:disabled,
+.order-success-btn:disabled,
+.mobile-summary-toggle:disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    background: #D5D3CE !important;
+    color: #888888 !important;
+    border-color: #D5D3CE !important;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: none !important;
+}
+
+button:disabled:hover,
+button[disabled]:hover,
+.complete-order-btn:disabled:hover,
+.checkout-discount-btn:disabled:hover,
+.order-success-btn:disabled:hover,
+.mobile-summary-toggle:disabled:hover {
+    background: #D5D3CE !important;
+    color: #888888 !important;
+    border-color: #D5D3CE !important;
+    box-shadow: none !important;
+}
+
+/* -----------------------------------------------------
+   4. KEYBOARD ACCESSIBILITY FOCUS OUTLINE
+   Preserves a visible focus outline for all buttons.
+   ----------------------------------------------------- */
+button:focus-visible,
+a.order-success-btn:focus-visible,
+.complete-order-btn:focus-visible,
+.checkout-discount-btn:focus-visible,
+.mobile-summary-toggle:focus-visible,
+.checkout-back-link:focus-visible {
+    outline: 2px solid #111111 !important;
+    outline-offset: 3px !important;
+}

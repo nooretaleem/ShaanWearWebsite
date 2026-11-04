@@ -1,0 +1,528 @@
+/* =====================================================
+   VELQOR — SHOP BY CATEGORY (Editorial Luxury Carousel)
+   ===================================================== */
+
+/* ---------- SECTION SHELL (FULL WIDTH EDGE-TO-EDGE) ---------- */
+.shop-category {
+    background: var(--white);
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 56px 0 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* ---------- SECTION HEADER ---------- */
+.category-header {
+    width: 100%;
+    padding: 0 var(--gutter, 40px);
+    margin: 0 0 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.category-header .category-header__title {
+    font-family: var(--font);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    line-height: 1.25;
+    color: var(--black);
+    text-transform: uppercase;
+    margin: 0;
+    padding-left: 0.26em; /* Balance trailing tracking for true optical centering */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
+}
+
+/* Symmetrical left and right editorial accent lines */
+.category-header .category-header__title::before,
+.category-header .category-header__title::after {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1.5px;
+    background: var(--accent);
+    opacity: 0.85;
+}
+
+/* ---------- CAROUSEL WRAPPER ---------- */
+.category-carousel {
+    position: relative;
+    width: 100%;
+}
+
+/* ---------- TRACK — full width scrollable track with gutter padding ---------- */
+.category-carousel__track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    padding: 6px var(--gutter, 40px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.category-carousel__track::-webkit-scrollbar {
+    display: none;
+}
+
+/* ---------- TILE — landscape editorial ---------- */
+.category-tile {
+    flex: 0 0 auto;
+    width: clamp(300px, 26vw, 400px);
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.category-tile__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Portrait aspect ratio */
+    overflow: hidden;
+    background: #EDEBE6;
+    border-radius: 0;
+}
+
+/* Bottom 3rd dark gradient overlay protection for legible white typography */
+.category-tile__media::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 600ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Subtle inset border effect on hover */
+.category-tile__media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms cubic-bezier(0.25, 1, 0.5, 1), border-color 500ms ease;
+}
+
+.category-tile:hover .category-tile__media::before,
+.category-tile:focus-visible .category-tile__media::before {
+    opacity: 1;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Slow, cinematic image scale transition */
+.category-tile__media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 1200ms cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+
+.category-tile:hover .category-tile__media img,
+.category-tile:focus-visible .category-tile__media img {
+    transform: scale(1.06);
+}
+
+/* Integrated Title Overlay — Lower Third inside media container */
+.category-tile__name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    margin: 0;
+    padding: 22px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: left;
+    pointer-events: none;
+    transition: transform 400ms cubic-bezier(0.25, 1, 0.5, 1), color 300ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.category-tile:hover .category-tile__name,
+.category-tile:focus-visible .category-tile__name {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.category-tile:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+/* ---------- CAROUSEL NAV CONTROLS — Elevated Backdrop Blur ---------- */
+.category-carousel__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    color: var(--black);
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: opacity 300ms ease, transform 300ms cubic-bezier(0.25, 1, 0.5, 1), background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+.category-carousel__nav svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.8px;
+    transition: transform 200ms ease;
+}
+
+.category-carousel:hover .category-carousel__nav,
+.category-carousel:focus-within .category-carousel__nav {
+    opacity: 1;
+}
+
+.category-carousel__nav:hover {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.category-carousel__nav--prev {
+    left: 20px;
+}
+
+.category-carousel__nav--next {
+    right: 20px;
+}
+
+/* ---------- SEPARATOR RULE ---------- */
+.shop-category__rule {
+    height: 1px;
+    background: rgba(229, 227, 222, 0.5);
+    width: 100%;
+    margin: 36px 0 0;
+}
+
+/* ---------- DOTS — Minimalist Dash Indicator ---------- */
+.category-carousel__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 0 32px;
+}
+
+.category-carousel__dots span {
+    display: inline-block;
+    width: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background: #D9D5CC;
+    transition: width 350ms cubic-bezier(0.25, 1, 0.5, 1), background-color 350ms ease;
+    cursor: pointer;
+}
+
+.category-carousel__dots span.is-active {
+    width: 34px;
+    background: var(--black);
+}
+
+.category-carousel__dots span:hover:not(.is-active) {
+    background: var(--text-gray);
+}
+
+/* ---------- REVEAL ANIMATIONS ---------- */
+.category-header.reveal,
+.category-tile.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 600ms cubic-bezier(.2, .7, .2, 1),
+        transform 600ms cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.category-header.reveal.is-visible,
+.category-tile.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.category-carousel__track .category-tile:nth-child(1) {
+    --reveal-delay: 40ms;
+}
+
+.category-carousel__track .category-tile:nth-child(2) {
+    --reveal-delay: 100ms;
+}
+
+.category-carousel__track .category-tile:nth-child(3) {
+    --reveal-delay: 160ms;
+}
+
+.category-carousel__track .category-tile:nth-child(4) {
+    --reveal-delay: 220ms;
+}
+
+.category-carousel__track .category-tile:nth-child(5) {
+    --reveal-delay: 280ms;
+}
+
+.category-carousel__track .category-tile:nth-child(6) {
+    --reveal-delay: 340ms;
+}
+
+/* =====================================================
+   RESPONSIVE MEDIA QUERIES
+   ===================================================== */
+
+@media (max-width: 1280px) {
+    .shop-category {
+        padding: 44px 0 0;
+    }
+
+    .category-header {
+        padding: 0 32px;
+        margin-bottom: 22px;
+    }
+
+    .category-carousel__track {
+        gap: 16px;
+        padding: 6px 32px;
+    }
+
+    .category-tile {
+        width: clamp(280px, 28vw, 360px);
+    }
+
+    .category-tile__name {
+        padding: 18px 20px;
+        font-size: 12.5px;
+    }
+
+    .shop-category__rule {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .shop-category {
+        padding: 38px 0 0;
+    }
+
+    .category-header {
+        padding: 0 24px;
+        margin-bottom: 24px;
+    }
+
+    .category-header .category-header__title {
+        font-size: 16px;
+        gap: 18px;
+    }
+
+    .category-carousel__track {
+        gap: 14px;
+        padding: 6px 24px;
+    }
+
+    .category-tile {
+        width: 300px;
+    }
+
+    .category-tile__name {
+        font-size: 12px;
+        padding: 16px 18px;
+    }
+
+    .category-carousel__nav {
+        opacity: 1;
+        width: 40px;
+        height: 40px;
+    }
+
+    .category-carousel__nav svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .category-carousel__nav--prev {
+        left: 12px;
+    }
+
+    .category-carousel__nav--next {
+        right: 12px;
+    }
+
+    .shop-category__rule {
+        margin-top: 26px;
+    }
+}
+
+@media (max-width: 768px) {
+    .shop-category {
+        padding: 32px 0 0;
+    }
+
+    .category-header {
+        padding: 0 20px;
+        margin-bottom: 20px;
+    }
+
+    .category-header .category-header__title {
+        font-size: 15px;
+        gap: 14px;
+    }
+
+    .category-carousel__track {
+        gap: 12px;
+        padding: 6px 20px;
+    }
+
+    .category-tile {
+        width: 78vw;
+    }
+
+    .category-tile__name {
+        font-size: 11.5px;
+        padding: 14px 16px;
+    }
+
+    .category-carousel__nav {
+        opacity: 1;
+        width: 36px;
+        height: 36px;
+    }
+
+    .category-carousel__nav svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .category-carousel__nav--prev {
+        left: 8px;
+    }
+
+    .category-carousel__nav--next {
+        right: 8px;
+    }
+
+    .shop-category__rule {
+        margin-top: 24px;
+    }
+
+    .category-carousel__dots {
+        padding: 18px 0 24px;
+        gap: 6px;
+    }
+
+    .category-carousel__dots span {
+        width: 14px;
+    }
+
+    .category-carousel__dots span.is-active {
+        width: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-category {
+        padding: 24px 0 0;
+    }
+
+    .category-header {
+        padding: 0 16px;
+        margin-bottom: 18px;
+    }
+
+    .category-header .category-header__title {
+        font-size: clamp(12px, 3.8vw, 14px);
+        gap: 10px;
+        letter-spacing: 0.16em;
+        padding-left: 0.16em;
+        flex-wrap: wrap;
+    }
+
+    .category-header .category-header__title::before,
+    .category-header .category-header__title::after {
+        width: 18px;
+    }
+
+    .category-carousel__track {
+        gap: 10px;
+        padding: 6px 16px;
+    }
+
+    .category-tile {
+        width: 82vw;
+    }
+
+    .category-tile__name {
+        font-size: 11px;
+        padding: 12px 14px;
+    }
+
+    .shop-category__rule {
+        margin-top: 20px;
+    }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+    .category-header.reveal,
+    .category-tile.reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .category-carousel__track {
+        scroll-behavior: auto;
+    }
+
+    .category-tile__media img {
+        transition: none !important;
+    }
+
+    .category-tile:hover .category-tile__media img {
+        transform: none;
+    }
+
+    .category-carousel__dots span {
+        transition: none !important;
+    }
+}

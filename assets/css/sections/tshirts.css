@@ -1,0 +1,647 @@
+/* =====================================================
+   VELQOR — T-SHIRTS (Product card grid)
+   Reuses tokens from base.css
+   ===================================================== */
+
+/* ---------- SECTION SHELL ---------- */
+.tshirts {
+    background: var(--white);
+    width: 100%;
+    padding: 56px 0 72px;
+    position: relative;
+    overflow-x: clip;
+}
+
+/* Reduce gap when sections follow each other (e.g. Jackets Tomy -> Sweats) */
+.tshirts+.tshirts {
+    padding-top: 16px;
+}
+
+#tshirts:has(+ .tshirts),
+#tshirts:has(+ #sweats) {
+    padding-bottom: 28px;
+}
+
+.tshirts__inner {
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ---------- HEADER ---------- */
+.tshirts-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 0 32px;
+}
+
+.tshirts-header__titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tshirts-header__eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+}
+
+.tshirts-header__title {
+    font-family: var(--font);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    line-height: 1.25;
+    color: var(--black);
+    text-transform: uppercase;
+    padding-left: 0.26em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.tshirts-header__title::before,
+.tshirts-header__title::after {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1.5px;
+    background: var(--accent);
+    opacity: 0.85;
+}
+
+.tshirts-header__link {
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--accent);
+    transition: color var(--t-med), border-color var(--t-med);
+}
+
+.tshirts-header__link:hover {
+    color: var(--text-gray);
+    border-color: var(--black);
+}
+
+/* ---------- GRID ---------- */
+.tshirts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 10px;
+    list-style: none;
+}
+
+/* ---------- CARD ---------- */
+.tshirt-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.tshirt-card__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #f3f3f3;
+    border-radius: 0;
+}
+
+.tshirt-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--t-slow), opacity 400ms cubic-bezier(.4, 0, .2, 1);
+}
+
+.tshirt-card__img--back {
+    opacity: 0;
+}
+
+/* Stretched link — whole card is clickable without nesting buttons in <a> */
+.tshirt-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.tshirt-card__link:focus-visible {
+    outline: 2px solid var(--black);
+    outline-offset: -2px;
+}
+
+/* Tag (NEW / -20%) */
+.tshirt-card__tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+    padding: 5px 8px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+    border-radius: 0;
+    pointer-events: none;
+}
+
+/* Wishlist */
+.tshirt-card__wish {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    color: var(--black);
+    transition: transform var(--t-fast);
+}
+
+.tshirt-card__wish svg {
+    width: 20px;
+    height: 20px;
+    fill: transparent;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: fill var(--t-fast);
+}
+
+.tshirt-card__wish:hover {
+    transform: scale(1.1);
+}
+
+.tshirt-card__wish.is-active svg {
+    fill: var(--black);
+}
+
+/* Quick add */
+.tshirt-card__quick {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 12px 10px;
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(100%);
+    transition: transform var(--t-med);
+}
+
+.tshirt-card__quick.is-open {
+    transform: translateY(0);
+}
+
+.tshirt-card__quick-label {
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color var(--t-fast);
+}
+
+.tshirt-card__quick-label:hover {
+    color: var(--accent);
+}
+
+.tshirt-card__size {
+    min-width: 34px;
+    height: 30px;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 0;
+    transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+
+.tshirt-card__size:hover,
+.tshirt-card__size:focus-visible {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+}
+
+.tshirt-card__size:focus-visible,
+.tshirt-card__quick-toggle:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+}
+
+/* Mobile "+" button */
+.tshirt-card__quick-toggle {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 4;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 0;
+    transition: background var(--t-fast), transform var(--t-fast);
+}
+
+.tshirt-card__quick-toggle svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    fill: none;
+    transition: transform var(--t-fast);
+}
+
+.tshirt-card__quick-toggle[aria-expanded="true"] svg {
+    transform: rotate(45deg);
+}
+
+.tshirt-card.is-added .tshirt-card__quick-label::after {
+    content: ' — Added';
+}
+
+/* ---------- INFO ---------- */
+.tshirt-card__info {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tshirt-card__name {
+    font-size: 11px; /* Slightly smaller */
+    font-weight: 700; /* Bold */
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    color: var(--black);
+}
+
+
+.tshirt-card__desc {
+    font-size: 12px;
+    color: var(--text-gray);
+    letter-spacing: 0.02em;
+}
+
+.tshirt-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--black);
+}
+
+.tshirt-card__price-old {
+    color: var(--text-gray);
+    text-decoration: line-through;
+    font-size: 12px;
+}
+.tshirt-card__category {
+    font-size: 10px;
+    color: var(--text-gray);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.tshirt-card__swatches {
+    display: none; /* Swatches removed for cleaner aesthetic */
+}
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.tshirt-card__swatch[data-color="Black"] {
+    --swatch: #111111;
+}
+
+.tshirt-card__swatch[data-color="White"] {
+    --swatch: #ffffff;
+}
+
+.tshirt-card__swatch[data-color="Navy"] {
+    --swatch: #1f2a44;
+}
+
+.tshirt-card__swatch[data-color="Olive"] {
+    --swatch: #5c6143;
+}
+
+.tshirt-card__swatch {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--swatch);
+    border: 1px solid var(--border);
+    transition: transform var(--t-fast);
+}
+
+.tshirt-card__swatch::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: border-color var(--t-fast);
+}
+
+.tshirt-card__swatch:hover {
+    transform: scale(1.12);
+}
+
+.tshirt-card__swatch.is-active::after {
+    border-color: var(--black);
+}
+
+.tshirt-card__swatch:focus-visible,
+.tshirt-card__wish:focus-visible {
+    outline: 2px solid var(--black);
+    outline-offset: 3px;
+}
+
+/* ---------- MINI CART ITEMS ---------- */
+.minicart-item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.minicart-item__img {
+    width: 64px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: #f3f3f3;
+}
+
+.minicart-item__name {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.minicart-item__meta {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+.minicart-item__price {
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* ---------- REVEAL ---------- */
+.tshirts .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 600ms cubic-bezier(.2, .7, .2, 1),
+        transform 600ms cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.tshirts__grid>li:nth-child(4n + 2) .reveal {
+    --reveal-delay: 70ms;
+}
+
+.tshirts__grid>li:nth-child(4n + 3) .reveal {
+    --reveal-delay: 140ms;
+}
+
+.tshirts__grid>li:nth-child(4n + 4) .reveal {
+    --reveal-delay: 210ms;
+}
+
+.tshirts .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (min-width: 640px) {
+    .tshirts__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 36px 16px;
+    }
+
+    .tshirts__inner {
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 639px) {
+    .tshirts-header__title {
+        font-size: clamp(13px, 4vw, 16px);
+        letter-spacing: 0.16em;
+        padding-left: 0.16em;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .tshirts-header__title::before,
+    .tshirts-header__title::after {
+        width: 18px;
+    }
+
+    .tshirt-card__name {
+        letter-spacing: 0.08em;
+        overflow-wrap: anywhere;
+    }
+
+    .tshirt-card__price {
+        flex-wrap: wrap;
+        gap: 2px 8px;
+    }
+}
+
+@media (min-width: 768px) {
+    .tshirts-header {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .tshirts-header__link {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+    }
+
+    .tshirts-header__title {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .tshirts {
+        padding: 72px 0 96px;
+    }
+
+    .tshirts+.tshirts {
+        padding-top: 24px;
+    }
+
+    #tshirts:has(+ .tshirts),
+    #tshirts:has(+ #sweats) {
+        padding-bottom: 36px;
+    }
+
+    .tshirts__inner {
+        padding: 0 var(--gutter);
+    }
+
+    .tshirts__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 48px 20px;
+    }
+
+    .tshirt-card__name {
+        font-size: 13px;
+    }
+}
+
+/* Desktop hover interactions (pointer devices only) */
+@media (hover: hover) and (min-width: 1024px) {
+    .tshirt-card__quick-toggle {
+        display: none;
+    }
+
+    .tshirt-card:hover .tshirt-card__img--front,
+    .tshirt-card:focus-within .tshirt-card__img--front {
+        transform: scale(1.03);
+    }
+
+    .tshirt-card.has-back:hover .tshirt-card__img--back,
+    .tshirt-card.has-back:focus-within .tshirt-card__img--back {
+        opacity: 1;
+    }
+
+    .tshirt-card:hover .tshirt-card__quick,
+    .tshirt-card:focus-within .tshirt-card__quick {
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 1024px) and (hover: none) {
+    .tshirt-card__quick-toggle {
+        display: grid;
+    }
+}
+
+/* Empty state for category product grids */
+.tshirts__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 56px 16px;
+    color: var(--text-gray);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    list-style: none;
+}
+
+/* Skeleton Loading Card for responsive grids */
+.tshirt-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+}
+
+.tshirt-skeleton__media {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(90deg, #f0ede8 25%, #f8f6f2 50%, #f0ede8 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite;
+}
+
+.tshirt-skeleton__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 4px;
+}
+
+.tshirt-skeleton__line {
+    height: 12px;
+    background: #f0ede8;
+    border-radius: 2px;
+}
+
+.tshirt-skeleton__line--short {
+    width: 45%;
+}
+
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .tshirts .reveal,
+    .tshirt-card__img,
+    .tshirt-card__quick,
+    .tshirt-card__swatch,
+    .tshirt-card__wish {
+        transition: none;
+    }
+
+    .tshirts .reveal {
+        opacity: 1;
+        transform: none;
+    }
+
+    .tshirt-skeleton__media {
+        animation: none;
+    }
+}

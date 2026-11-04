@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure Checkout — SHAANWEAR. Complete your order of premium export surplus apparel with nationwide express delivery." />
+    <title>Checkout — SHAANWEAR</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="assets/css/sections/base.css">
+    <link rel="stylesheet" href="assets/css/sections/checkout.css">
+</head>
+
+<body class="checkout-body">
+
+    <!-- ============================================================
+     1. MINIMALIST DISTRACTION-FREE HEADER
+     (Centered Logo with no nav links to eliminate checkout drop-offs)
+     ============================================================ -->
+    <header class="checkout-header">
+        <div class="checkout-header__inner">
+            <a href="index.html" class="checkout-header__logo" aria-label="SHAANWEAR Home">
+                <span class="checkout-header__brand">SHAANWEAR</span>
+            </a>
+            <div class="checkout-header__secure">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span>256-Bit SSL Encrypted</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Collapsible Order Summary Accordion -->
+    <button type="button" class="mobile-summary-toggle" id="mobileSummaryToggle" aria-expanded="false"
+        aria-controls="checkoutSidebar">
+        <div class="mobile-summary-toggle__inner">
+            <span class="mobile-summary-toggle__left">
+                <svg class="icon-cart" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                    stroke-width="1.8">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <path d="M3 6h18" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span class="mobile-summary-toggle__text">Show order summary</span>
+                <svg class="icon-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </span>
+            <span class="mobile-summary-toggle__price" id="mobileSummaryPrice">Rs. 0.00</span>
+        </div>
+    </button>
+
+    <!-- ============================================================
+     2. MAIN TWO-COLUMN CHECKOUT LAYOUT
+     ============================================================ -->
+    <div class="checkout-wrapper">
+        <div class="checkout-grid" id="checkoutGrid">
+
+            <!-- LEFT COLUMN: FORMS (approx 60%) -->
+            <main class="checkout-main">
+                <!-- Breadcrumbs -->
+                <nav class="checkout-breadcrumbs" aria-label="Checkout Progress">
+                    <a href="cart.html">Cart</a>
+                    <span class="checkout-breadcrumbs__sep">&gt;</span>
+                    <span class="checkout-breadcrumbs__current">Information</span>
+                    <span class="checkout-breadcrumbs__sep">&gt;</span>
+                    <span>Shipping</span>
+                    <span class="checkout-breadcrumbs__sep">&gt;</span>
+                    <span>Payment</span>
+                </nav>
+
+                <form id="checkoutForm" novalidate>
+
+                    <!-- Contact Section -->
+                    <section class="checkout-section" aria-labelledby="contactTitle">
+                        <div class="checkout-section__head">
+                            <h2 class="checkout-section__title" id="contactTitle">Contact Information</h2>
+                            <span class="checkout-section__login-link">Already have an account? <a href="#">Log in</a></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkoutEmail" class="form-label">Email Address</label>
+                            <input type="email" id="checkoutEmail" class="form-input" placeholder="e.g. yourname@domain.com"
+                                required autocomplete="email" />
+                        </div>
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="checkoutMarketing" checked />
+                            <span>Email me with news and offers</span>
+                        </label>
+                    </section>
+
+                    <!-- Delivery Section -->
+                    <section class="checkout-section" aria-labelledby="deliveryTitle">
+                        <div class="checkout-section__head">
+                            <h2 class="checkout-section__title" id="deliveryTitle">Delivery Address</h2>
+                        </div>
+
+                        <!-- Country/Region (Pre-filled with Pakistan) -->
+                        <div class="form-group">
+                            <label for="checkoutCountry" class="form-label">Country / Region</label>
+                            <select id="checkoutCountry" class="form-select" disabled>
+                                <option value="PK" selected>Pakistan</option>
+                            </select>
+                        </div>
+
+                        <!-- First & Last Name -->
+                        <div class="form-row form-group">
+                            <div>
+                                <label for="checkoutFirstName" class="form-label">First Name</label>
+                                <input type="text" id="checkoutFirstName" class="form-input" placeholder="First name"
+                                    required autocomplete="given-name" />
+                            </div>
+                            <div>
+                                <label for="checkoutLastName" class="form-label">Last Name</label>
+                                <input type="text" id="checkoutLastName" class="form-input" placeholder="Last name"
+                                    required autocomplete="family-name" />
+                            </div>
+                        </div>
+
+                        <!-- Street Address -->
+                        <div class="form-group">
+                            <label for="checkoutAddress" class="form-label">Street Address</label>
+                            <input type="text" id="checkoutAddress" class="form-input"
+                                placeholder="House / Flat #, Street, Sector, Colony" required autocomplete="street-address" />
+                        </div>
+
+                        <!-- Apartment / Suite (optional) -->
+                        <div class="form-group">
+                            <label for="checkoutApartment" class="form-label">Apartment, suite, unit (optional)</label>
+                            <input type="text" id="checkoutApartment" class="form-input"
+                                placeholder="Apartment, suite, unit, building floor (optional)" />
+                        </div>
+
+                        <!-- City & Postal Code -->
+                        <div class="form-row form-group">
+                            <div>
+                                <label for="checkoutCity" class="form-label">City</label>
+                                <input type="text" id="checkoutCity" class="form-input"
+                                    placeholder="e.g. Lahore, Karachi, Islamabad" required autocomplete="address-level2" />
+                            </div>
+                            <div>
+                                <label for="checkoutPostal" class="form-label">Postal code (optional)</label>
+                                <input type="text" id="checkoutPostal" class="form-input" placeholder="e.g. 54000"
+                                    autocomplete="postal-code" />
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="checkoutPhone" class="form-label">Mobile Phone</label>
+                            <input type="tel" id="checkoutPhone" class="form-input" placeholder="e.g. 0300 1234567"
+                                required autocomplete="tel" />
+                            <p class="form-hint">In case we need to contact you regarding delivery coordination</p>
+                        </div>
+
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="checkoutSaveInfo" checked />
+                            <span>Save this information for next time</span>
+                        </label>
+                    </section>
+
+                    <!-- Shipping Method Section -->
+                    <section class="checkout-section" aria-labelledby="shippingTitle">
+                        <div class="checkout-section__head">
+                            <h2 class="checkout-section__title" id="shippingTitle">Shipping Method</h2>
+                        </div>
+                        <div class="shipping-method-box" id="shippingMethodBox">
+                            <div class="shipping-options-group" id="shippingOptionsGroup">
+                                <label class="shipping-option is-selected" id="shippingOptionStandard">
+                                    <div class="shipping-option__left">
+                                        <input type="radio" name="shippingMethodChoice" id="shippingMethodStandard" value="Standard Delivery" checked />
+                                        <div class="shipping-option__text">
+                                            <span class="shipping-option__title">Standard Delivery</span>
+                                            <span class="shipping-option__time">2 to 3 working days nationwide</span>
+                                        </div>
+                                    </div>
+                                    <span class="shipping-option__price" id="shippingMethodPrice">Rs. 250.00</span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Payment Section -->
+                    <section class="checkout-section" aria-labelledby="paymentTitle">
+                        <div class="checkout-section__head">
+                            <h2 class="checkout-section__title" id="paymentTitle">Payment Method</h2>
+                        </div>
+                        <p class="form-hint" style="margin-bottom: 12px;">All transactions are encrypted and secured.</p>
+
+                        <div class="payment-methods-box">
+                            <!-- Option 1: Cash on Delivery (COD) -->
+                            <div class="payment-option is-selected" id="optionCOD">
+                                <label class="payment-option__header">
+                                    <div class="payment-option__left">
+                                        <input type="radio" name="paymentMethod" id="paymentCOD" value="Cash on Delivery" checked />
+                                        <span class="payment-option__title">Cash on Delivery (COD)</span>
+                                    </div>
+                                    <div class="payment-option__icons">
+                                        <span style="font-size: 18px;" aria-hidden="true">💵</span>
+                                    </div>
+                                </label>
+                                <div class="payment-option__body">
+                                    Pay with physical cash upon receiving your parcel at your doorstep anywhere across Pakistan.
+                                </div>
+                            </div>
+
+                            <!-- Option 2: Credit / Debit Card -->
+                            <div class="payment-option" id="optionCard">
+                                <label class="payment-option__header">
+                                    <div class="payment-option__left">
+                                        <input type="radio" name="paymentMethod" id="paymentCard" value="Credit/Debit Card" />
+                                        <span class="payment-option__title">Credit / Debit Card</span>
+                                    </div>
+                                    <div class="payment-option__icons">
+                                        <!-- Visa / Mastercard Badges -->
+                                        <svg viewBox="0 0 36 24" width="32" height="20">
+                                            <rect width="36" height="24" rx="2" fill="#1434CB" />
+                                            <text x="5" y="16" fill="#FFFFFF" font-size="10" font-weight="bold" font-family="sans-serif">VISA</text>
+                                        </svg>
+                                        <svg viewBox="0 0 36 24" width="32" height="20">
+                                            <rect width="36" height="24" rx="2" fill="#222222" />
+                                            <circle cx="14" cy="12" r="6" fill="#EB001B" />
+                                            <circle cx="22" cy="12" r="6" fill="#F79E1B" fill-opacity="0.8" />
+                                        </svg>
+                                    </div>
+                                </label>
+                                <div class="payment-option__body" id="cardDetailsBlock" style="display: none;">
+                                    <div class="card-fields">
+                                        <input type="text" class="form-input" placeholder="Card number (16 digits)" maxlength="19" />
+                                        <div class="form-row">
+                                            <input type="text" class="form-input" placeholder="MM / YY" maxlength="5" />
+                                            <input type="password" class="form-input" placeholder="CVV / CVC" maxlength="4" />
+                                        </div>
+                                        <input type="text" class="form-input" placeholder="Name on card" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Order submission error notification -->
+                    <div id="checkoutOrderError" style="display: none; padding: 12px 16px; margin-bottom: 16px; background-color: #fde8e8; border: 1px solid #f8b4b4; border-radius: 6px; color: #9b1c1c; font-size: 14px;" role="alert"></div>
+
+                    <!-- Complete Order Button & Return Link -->
+                    <div class="checkout-actions-row">
+                        <a href="cart.html" class="checkout-back-link">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                            <span>Return to Cart</span>
+                        </a>
+
+                        <!-- Prominent Complete Order Button -->
+                        <button type="submit" class="complete-order-btn" id="completeOrderBtn">
+                            <span>Complete Order</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Footer Policy Links -->
+                    <div class="checkout-footer-links">
+                        <a href="#">Refund policy</a>
+                        <a href="#">Shipping policy</a>
+                        <a href="#">Privacy policy</a>
+                        <a href="#">Terms of service</a>
+                    </div>
+
+                </form>
+            </main>
+
+            <!-- RIGHT COLUMN: STICKY ORDER SUMMARY (approx 40%) -->
+            <aside class="checkout-sidebar" id="checkoutSidebar">
+                <div class="checkout-summary-sticky">
+                    <div class="checkout-summary__title">
+                        <span>Order Summary</span>
+                        <span class="checkout-summary__count" id="summaryCountBadge">0 items</span>
+                    </div>
+
+                    <!-- Container for Dynamically Injected Cart Items -->
+                    <div class="summary-items-list" id="summaryItemsList">
+                        <!-- Populated dynamically by assets/js/modules/checkout.js -->
+                    </div>
+
+                    <!-- Discount Code Input Box -->
+                    <div class="checkout-discount-wrap">
+                        <div class="checkout-discount-field">
+                            <input type="text" id="checkoutDiscountInput" placeholder="Discount code or voucher"
+                                autocomplete="off" />
+                            <button type="button" class="checkout-discount-btn" id="applyDiscountBtn">Apply</button>
+                        </div>
+                        <div id="checkoutCouponMsg" class="checkout-coupon-msg" aria-live="polite"></div>
+                    </div>
+
+                    <!-- Cost Summary Breakdown -->
+                    <div class="cost-summary">
+                        <div class="cost-line">
+                            <span>Subtotal</span>
+                            <span id="checkoutSubtotal">Rs. 0.00</span>
+                        </div>
+                        <div class="cost-line cost-line--discount" id="checkoutDiscountRow" style="display: none;">
+                            <span>Discount (<span id="checkoutDiscountCode"></span>)</span>
+                            <span id="checkoutDiscountVal">-Rs. 0.00</span>
+                        </div>
+                        <div class="cost-line">
+                            <span>Shipping</span>
+                            <span id="checkoutShipping">Rs. 250.00</span>
+                        </div>
+                        <div class="cost-line">
+                            <span>Taxes</span>
+                            <span id="checkoutTaxes">Rs. 0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Line -->
+                    <div class="cost-total-line">
+                        <div>
+                            <span class="cost-total-label">Total</span>
+                            <span class="cost-total-currency">PKR</span>
+                        </div>
+                        <span class="cost-total-amount" id="checkoutTotal">Rs. 0.00</span>
+                    </div>
+
+                    <!-- Guarantee Badge Reassurance -->
+                    <div class="checkout-guarantee">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p><strong>SHAANWEAR Authenticity Guarantee:</strong> 100% verified export leftover & surplus stock with door-to-door parcel inspection allowed.</p>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- ============================================================
+     3. ORDER CONFIRMATION MODAL
+     ============================================================ -->
+    <div class="order-success-modal" id="orderSuccessModal" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle">
+        <div class="order-success-card">
+            <div class="order-success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+            </div>
+            <h2 class="order-success-title" id="orderSuccessTitle">Thank You for Your Order!</h2>
+            <p class="order-success-ref">Your order reference is <strong id="orderSuccessRef">#SW-000000</strong></p>
+
+            <div class="order-success-details">
+                <p><strong>Recipient:</strong> <span id="orderSuccessCustomer">Customer</span></p>
+                <p><strong>Delivery Address:</strong> <span id="orderSuccessAddress">Address</span></p>
+                <p><strong>Order Total:</strong> <span id="orderSuccessTotal">Rs. 0.00</span></p>
+                <p><strong>Estimated Delivery:</strong> 2–3 working days nationwide</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #6E6E6E;">
+                    We have sent an order confirmation email and our dispatch team will coordinate delivery via SMS.
+                </p>
+            </div>
+
+            <a href="index.html" class="order-success-btn">Continue Shopping</a>
+        </div>
+    </div>
+
+    <!-- Script modules -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/modules/checkout.js"></script>
+</body>
+
+</html>
