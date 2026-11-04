@@ -746,11 +746,10 @@
                 shippingName: fullName,
                 email: email,
                 shippingPhone: phone,
-                shippingStreet: street,                 // <--- Added
-                shippingApartment: apartment,           // <--- Added
-                shippingCity: city,                     // <--- ADDED THIS (The current error)
-                shippingPostalCode: postal,             // <--- Added
-                shippingCountry: 'Pakistan',            // <--- Added
+                shippingAddress: fullDeliveryAddress, // <--- CHANGE THIS LINE
+                shippingCity: city,
+                shippingPostalCode: postal,
+                shippingCountry: 'Pakistan',
                 paymentMethod: state.selectedPaymentMethod,
                 couponCode: state.appliedCoupon ? state.appliedCoupon.code : null,
                 items: state.items.map(item => ({
@@ -765,7 +764,6 @@
                 })),
                 notes: ''
             };
-
             try {
                 const response = await fetch(`${API_BASE}/orders`, {
                     method: 'POST',
