@@ -14,7 +14,7 @@
 
     const FREE_SHIPPING_THRESHOLD = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.freeShippingThreshold) || 4999;
     const STANDARD_SHIPPING_FEE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.standardShippingFee) || 250;
-    const API_BASE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'http://localhost:5000/api';
+    const API_BASE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'https://shaan-wear-backend.vercel.app/api';
 
     // Helper shortcuts
     const qs = (sel, parent = document) => parent.querySelector(sel);
@@ -242,7 +242,7 @@
         if (state.appliedCoupon && subtotal > 0 && state.appliedCoupon.minOrderAmount && subtotal < state.appliedCoupon.minOrderAmount) {
             const minReq = state.appliedCoupon.minOrderAmount;
             state.appliedCoupon = null;
-            try { sessionStorage.removeItem(COUPON_KEY); } catch (e) {}
+            try { sessionStorage.removeItem(COUPON_KEY); } catch (e) { }
             const msg = qs('#checkoutCouponMsg');
             if (msg) {
                 msg.className = 'checkout-coupon-msg is-error';
@@ -341,7 +341,7 @@
                     minOrderAmount: disc.minOrderAmount,
                     label: disc.discountType === 'PERCENTAGE' ? `${disc.value}% OFF` : `PKR ${disc.value} OFF`
                 };
-                try { sessionStorage.setItem(COUPON_KEY, disc.code); } catch (e) {}
+                try { sessionStorage.setItem(COUPON_KEY, disc.code); } catch (e) { }
 
                 if (input) input.value = disc.code;
                 if (msg) {
@@ -379,7 +379,7 @@
 
     function removeCheckoutDiscount(showNotice = true) {
         state.appliedCoupon = null;
-        try { sessionStorage.removeItem(COUPON_KEY); } catch (e) {}
+        try { sessionStorage.removeItem(COUPON_KEY); } catch (e) { }
         const input = qs('#checkoutDiscountInput');
         const msg = qs('#checkoutCouponMsg');
         if (input) input.value = '';
@@ -791,7 +791,7 @@
                     clearStoredCart();
                     state.items = [];
                     state.appliedCoupon = null;
-                    try { sessionStorage.removeItem(COUPON_KEY); } catch (e) {}
+                    try { sessionStorage.removeItem(COUPON_KEY); } catch (e) { }
                     resetSummaryDisplay();
 
                 } else {

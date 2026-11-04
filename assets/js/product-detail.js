@@ -41,7 +41,7 @@
             if (!product) {
                 try {
                     const config = window.SHAANWEAR_CONFIG || {};
-                    const apiBase = config.apiUrl || 'http://localhost:5000/api';
+                    const apiBase = config.apiUrl || 'https://shaan-wear-backend.vercel.app/api';
                     const res = await fetch(`${apiBase}/catalog/products/${encodeURIComponent(rawId)}`, {
                         headers: { Accept: 'application/json' }
                     });

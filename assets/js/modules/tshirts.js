@@ -571,7 +571,7 @@
     /* ---------- API INTEGRATION & DATA HYDRATION ---------- */
     async function loadCatalogData() {
         const config = window.SHAANWEAR_CONFIG || {};
-        const apiBase = config.apiUrl || 'http://localhost:5000/api';
+        const apiBase = config.apiUrl || 'https://shaan-wear-backend.vercel.app/api';
 
         // Render skeleton loading state initially
         renderSkeletons();

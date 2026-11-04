@@ -13,7 +13,7 @@
     const COUPON_KEY = 'shaanwear_cart_coupon';
     const FREE_SHIPPING_THRESHOLD = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.freeShippingThreshold) || 4999;
     const STANDARD_SHIPPING_FEE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.standardShippingFee) || 250;
-    const API_BASE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'http://localhost:5000/api';
+    const API_BASE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'https://shaan-wear-backend.vercel.app/api';
 
 
     // DOM Utilities
@@ -73,7 +73,7 @@
         state.catalog = window.SHAANWEAR_PRODUCTS || [];
         state.items = getStoredCart();
         state.note = getStoredNote();
-        
+
         // Restore stored coupon if saved previously
         const savedCouponCode = getStoredCoupon();
         if (savedCouponCode) {
