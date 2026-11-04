@@ -743,10 +743,14 @@
             // };
             // Construct payload according to backend createStorefrontOrder contract
             const orderPayload = {
-                shippingName: fullName,                  // <--- THIS IS THE FIX
-                shippingPhone: phone,                    // Assuming backend expects this
-                shippingAddress: fullDeliveryAddress,    // Assuming backend expects a flat string
-                email: email,                            // Assuming backend expects email at root
+                shippingName: fullName,
+                email: email,
+                shippingPhone: phone,
+                shippingStreet: street,                 // <--- Added
+                shippingApartment: apartment,           // <--- Added
+                shippingCity: city,                     // <--- ADDED THIS (The current error)
+                shippingPostalCode: postal,             // <--- Added
+                shippingCountry: 'Pakistan',            // <--- Added
                 paymentMethod: state.selectedPaymentMethod,
                 couponCode: state.appliedCoupon ? state.appliedCoupon.code : null,
                 items: state.items.map(item => ({
