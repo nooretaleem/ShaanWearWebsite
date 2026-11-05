@@ -64,6 +64,16 @@
         box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Inner pages (no hero banner): solid dark two-tier header matching index.html */
+body:not(:has(> .hero)) .header:not(.is-scrolled),
+body[data-page] .header:not(.is-scrolled),
+.product-detail-page .header:not(.is-scrolled),
+.checkout-body .header:not(.is-scrolled) {
+    position: relative;
+    background: #0a0a0a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 /* Scrolled Header State */
 .header.is-scrolled {
     position: fixed;

@@ -67,7 +67,7 @@
                     </svg>
                     <span class="badge" id="wishCount" hidden>0</span>
                 </button>
-                <a href="cart.html" class="icon-btn" id="cartToggle" aria-label="Shopping bag" aria-expanded="false">
+                <button class="icon-btn" id="cartToggle" aria-label="Shopping bag" aria-expanded="false">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -75,27 +75,29 @@
                         <path d="M16 10a4 4 0 0 1-8 0" />
                     </svg>
                     <span class="badge" id="cartCount" hidden>0</span>
-                </a>
+                </button>
             </div>
         </div>
 
         <!-- LEVEL 3 — Secondary nav row (desktop only) -->
         <nav class="header__nav-secondary" aria-label="Categories">
-            <a href="product-detail.html?id=101">Sweatshirts</a>
-            <a href="product-detail.html?id=201">Trousers</a>
-            <a href="product-detail.html?id=1">Jackets</a>
-            <a href="product-detail.html?id=301">Casual Shirts</a>
-            <a href="product-detail.html?id=401">Belts</a>
-            <a href="index.html#tshirts">Shop</a>
+            <a href="sweatshirts.html">Sweatshirts</a>
+            <a href="trousers.html">Trousers</a>
+            <a href="jackets.html">Jackets</a>
+            <a href="casual-shirts.html">Casual Shirts</a>
+            <a href="belts.html">Belts</a>
+            <a href="shop.html">Shop</a>
         </nav>
 
-        <!-- Search Overlay Panel -->
+        <!-- ============================================================
+       SEARCH OVERLAY
+       ============================================================ -->
         <div class="search-panel" id="searchPanel" hidden>
             <div class="search-panel__inner">
                 <label class="search-panel__label" for="searchInput">Search our collection</label>
                 <div class="search-panel__field">
-                    <input type="search" id="searchInput" placeholder="Search jackets, sweats, trousers..." autocomplete="off" />
-                    <button type="button" aria-label="Search" id="searchSubmitBtn">
+                    <input type="search" id="searchInput" placeholder="Search products..." autocomplete="off" />
+                    <button type="button" aria-label="Search">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
                             stroke-linecap="round">
                             <circle cx="11" cy="11" r="7" />
@@ -106,17 +108,19 @@
                 <div class="search-panel__popular">
                     <span class="search-panel__eyebrow">Popular Searches</span>
                     <ul>
-                        <li><a href="product-detail.html?id=101">Sweatshirts</a></li>
-                        <li><a href="product-detail.html?id=201">Trousers</a></li>
-                        <li><a href="product-detail.html?id=1">Jackets</a></li>
-                        <li><a href="product-detail.html?id=301">Casual Shirts</a></li>
-                        <li><a href="product-detail.html?id=401">Belts</a></li>
+                        <li><a href="sweatshirts.html">Sweatshirts</a></li>
+                        <li><a href="trousers.html">Trousers</a></li>
+                        <li><a href="jackets.html">Jackets</a></li>
+                        <li><a href="casual-shirts.html">Casual Shirts</a></li>
+                        <li><a href="belts.html">Belts</a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Mini Cart Drawer -->
+        <!-- ============================================================
+       MINI CART PANEL
+       ============================================================ -->
         <aside class="minicart" id="minicart" hidden aria-label="Shopping bag">
             <div class="minicart__inner">
                 <div class="minicart__head">
@@ -143,11 +147,11 @@
                 </div>
             </div>
         </aside>
-
-        <!-- Backdrop Overlay -->
         <div class="backdrop" id="backdrop" hidden></div>
 
-        <!-- Mobile Nav Drawer -->
+        <!-- ============================================================
+       MOBILE NAV DRAWER
+       ============================================================ -->
         <div class="mobile-nav" id="mobileNav" hidden aria-label="Mobile navigation">
             <div class="mobile-nav__inner">
                 <div class="mobile-nav__head">
@@ -161,14 +165,19 @@
                 </div>
                 <nav class="mobile-nav__links">
                     <a href="index.html">Home</a>
-                    <a href="product-detail.html?id=101">Sweatshirts</a>
-                    <a href="product-detail.html?id=201">Trousers</a>
-                    <a href="product-detail.html?id=1">Jackets</a>
-                    <a href="product-detail.html?id=301">Casual Shirts</a>
-                    <a href="product-detail.html?id=401">Belts</a>
-                    <a href="index.html#tshirts">All Products</a>
+                    <a href="sweatshirts.html">Sweatshirts</a>
+                    <a href="trousers.html">Trousers</a>
+                    <a href="jackets.html">Jackets</a>
+                    <a href="casual-shirts.html">Casual Shirts</a>
+                    <a href="belts.html">Belts</a>
+                    <span class="mobile-nav__divider"></span>
+                    <a href="jackets.html">Export Surplus</a>
+                    <a href="sweatshirts.html">Sweats Drop</a>
                     <a href="cart.html" style="font-weight: 700; color: var(--accent, #B79A68);">Shopping Cart</a>
                 </nav>
+                <div class="mobile-nav__foot">
+                    <span>Pakistan / PKR</span>
+                </div>
             </div>
         </div>
     </header>
@@ -485,7 +494,7 @@
 
     <!-- Scripts -->
     <script src="assets/js/config.js"></script>
-    <script src="assets/js/data/products.js"></script>
+    <script src="assets/js/data/products.js?v=2"></script>
     <script src="assets/js/modules/cart.js"></script>
     <script src="assets/js/main.js"></script>
 </body>

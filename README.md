@@ -1,2 +1,0 @@
-# ShaanWearWebsite
-Ecommerce website

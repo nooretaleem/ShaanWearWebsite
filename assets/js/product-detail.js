@@ -115,9 +115,9 @@
             }
         }
 
-        // Default fallback to first product or product 101 if not found
         if (!product) {
-            product = catalog.find(p => p.id === 101) || catalog[0];
+            state.product = null;
+            return;
         }
 
         state.product = product;
@@ -740,22 +740,12 @@
             storedIds = [];
         }
 
-        // Filter out current product
-        const filteredIds = storedIds.filter(id => id !== state.product.id);
-        let itemsToRender = filteredIds.map(id => catalog.find(p => p.id === id)).filter(Boolean);
-
-        // If fewer than 4 items, augment with popular catalog items
-        if (itemsToRender.length < 4) {
-            const fallbackPicks = [101, 1, 102, 103, 7, 201];
-            fallbackPicks.forEach(id => {
-                if (id !== state.product.id && !itemsToRender.some(p => p.id === id)) {
-                    const fallbackItem = catalog.find(p => p.id === id);
-                    if (fallbackItem && itemsToRender.length < 4) {
-                        itemsToRender.push(fallbackItem);
-                    }
-                }
-            });
-        }
+        // Filter out current product (only real backend products in catalog)
+        const currentId = state.product ? state.product.id : null;
+        const filteredIds = storedIds.filter(id => String(id) !== String(currentId));
+        const itemsToRender = filteredIds
+            .map(id => catalog.find(p => String(p.id) === String(id)))
+            .filter(Boolean);
 
         grid.innerHTML = '';
         itemsToRender.slice(0, 4).forEach(item => {

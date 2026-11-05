@@ -16,7 +16,7 @@
         {
             key: 'sweatshirts',
             name: 'Sweatshirts',
-            slugs: ['sweatshirts', 'sweats', 'sweatshirt'],
+            slugs: ['sweatshirts', 'sweats', 'sweatshirt', 'sweat-shirts', 'sweat-shirt', 'hoodies'],
             sectionId: 'sweats',
             gridId: 'sweatsGrid',
             defaultPdpId: 101,
@@ -42,7 +42,7 @@
         {
             key: 'casual-shirts',
             name: 'Casual Shirts',
-            slugs: ['casual-shirts', 'casualshirts', 'shirts', 'casual-shirt', 'casual_shirts'],
+            slugs: ['casual-shirts', 'casualshirts', 'casual-shirt', 'casual_shirts'],
             sectionId: 'casualShirts',
             gridId: 'casualShirtsGrid',
             defaultPdpId: 301,
@@ -107,11 +107,14 @@
 
     /* ---------- SKELETON LOADING ---------- */
     function renderSkeletons() {
-        CATEGORIES.forEach((cat) => {
-            const grid = document.getElementById(cat.gridId);
+        const targets = CATEGORIES.map((cat) => ({ grid: document.getElementById(cat.gridId), count: 4 }));
+        const allGrid = document.getElementById('allProductsGrid');
+        if (allGrid) targets.push({ grid: allGrid, count: 6 });
+
+        targets.forEach(({ grid, count }) => {
             if (!grid) return;
             grid.innerHTML = '';
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < count; i++) {
                 const li = el('li', 'tshirt-skeleton');
                 const media = el('div', 'tshirt-skeleton__media');
                 const lines = el('div', 'tshirt-skeleton__lines');
@@ -125,6 +128,25 @@
     }
 
     /* ---------- BACKEND PRODUCT ADAPTER ---------- */
+    /**
+     * Exact category match. Normalises "Casual Shirts" / "casual_shirts" to "casual-shirts" and
+     * compares whole values, so "sweatshirts" can never match the "shirts" alias via substring.
+     */
+    function normalizeCat(v) {
+        return String(v || '')
+            .toLowerCase()
+            .trim()
+            .replace(/[\s_]+/g, '-')
+            .replace(/-\d{5,}$/, '');
+    }
+
+    function categoryMatches(cat, slug, name) {
+        const s = normalizeCat(slug);
+        const n = normalizeCat(name);
+        const candidates = cat.slugs.map(normalizeCat);
+        candidates.push(normalizeCat(cat.name));
+        return (s && candidates.includes(s)) || (n && candidates.includes(n));
+    }
     function adaptBackendProduct(bp, categoryName, categorySlug) {
         // Collect sorted Cloudinary / image URLs
         let imageUrls = [];
@@ -535,40 +557,53 @@
         });
     }
 
-    /* ---------- LOCAL CATALOG FALLBACK RENDERING ---------- */
-    function renderLocalCatalog() {
-        const catalog = window.SHAANWEAR_PRODUCTS || [];
+    /* ---------- ALL PRODUCTS GRID RENDERING (shop.html) ---------- */
+    let allShopProducts = [];
 
-        CATEGORIES.forEach((cat) => {
-            const grid = document.getElementById(cat.gridId);
-            const section = document.getElementById(cat.sectionId);
-            if (!grid) return;
-
-            grid.innerHTML = '';
-            const frag = document.createDocumentFragment();
-
-            const filtered = catalog.filter((p) => {
-                const pSlug = (p.categorySlug || '').toLowerCase();
-                const pCat = (p.category || '').toLowerCase();
-                return cat.slugs.includes(pSlug) || cat.slugs.some(s => pCat.includes(s)) || pCat === cat.name.toLowerCase();
-            });
-
-            if (filtered.length > 0) {
-                filtered.forEach((p, idx) => frag.appendChild(buildCard(p, idx)));
-            } else {
-                const empty = el('li', 'tshirts__empty');
-                empty.textContent = 'No products currently available in this collection.';
-                frag.appendChild(empty);
-            }
-
-            grid.appendChild(frag);
-            if (section) initReveal(section);
-        });
-
-        syncCategoryCarousel();
+    function getActiveShopCategory() {
+        const param = document.body.dataset.category || new URLSearchParams(window.location.search).get('category');
+        return param ? CATEGORIES.find((c) => categoryMatches(c, param, param)) : null;
     }
 
-    /* ---------- API INTEGRATION & DATA HYDRATION ---------- */
+    function renderFilteredShopGrid() {
+        const allGrid = document.getElementById('allProductsGrid');
+        if (!allGrid) return;
+
+        const wanted = getActiveShopCategory();
+        const filtered = wanted
+            ? allShopProducts.filter((p) => {
+                  const pSlug = (p.categorySlug || '').toLowerCase();
+                  const pCat = (p.category || '').toLowerCase();
+                  return categoryMatches(wanted, pSlug, pCat);
+              })
+            : allShopProducts;
+
+        allGrid.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        const countEl = document.getElementById('shopProductCount');
+        if (countEl) {
+            countEl.textContent = `Showing ${filtered.length} product${filtered.length === 1 ? '' : 's'}`;
+        }
+
+        if (filtered.length > 0) {
+            filtered.forEach((p, idx) => frag.appendChild(buildCard(p, idx)));
+        } else {
+            const empty = el('li', 'tshirts__empty');
+            empty.textContent = 'No products currently available in this collection.';
+            frag.appendChild(empty);
+        }
+
+        allGrid.appendChild(frag);
+        const section = document.getElementById('shopCatalog') || allGrid;
+        initReveal(section);
+    }
+
+    function renderAllProductsGrid(products) {
+        allShopProducts = Array.isArray(products) ? products : [];
+        renderFilteredShopGrid();
+    }
+
+    /* ---------- API INTEGRATION & DATA HYDRATION (BACKEND ONLY) ---------- */
     async function loadCatalogData() {
         const config = window.SHAANWEAR_CONFIG || {};
         const apiBase = config.apiUrl || 'https://shaan-wear-backend.vercel.app/api';
@@ -578,7 +613,6 @@
 
         let backendCategories = [];
         let backendProducts = [];
-        let apiConnected = false;
 
         // 1. Fetch Categories via dedicated Public Catalog endpoint
         try {
@@ -604,7 +638,7 @@
             const bName = (bCat.name || '').toLowerCase();
 
             const match = CATEGORIES.find((c) =>
-                c.slugs.some((s) => bSlug.includes(s) || bName.includes(s))
+                categoryMatches(c, bSlug, bName)
             );
 
             if (match) {
@@ -630,7 +664,6 @@
                 const prodData = await prodRes.json();
                 if (prodData && prodData.success && prodData.data && Array.isArray(prodData.data.products)) {
                     backendProducts = prodData.data.products;
-                    apiConnected = true;
                     console.log('[SHAANWEAR Public Catalog] Products API returned', backendProducts.length, 'published products');
                 }
             } else {
@@ -640,58 +673,129 @@
             console.warn('[SHAANWEAR Catalog] Products fetch error:', err.message || err);
         }
 
-        // 3. Render Results: Backend API vs Graceful Intentional Fallback
-        if (apiConnected && backendProducts.length > 0) {
-            // Group backend products by category
-            CATEGORIES.forEach((cat) => {
-                const grid = document.getElementById(cat.gridId);
-                const section = document.getElementById(cat.sectionId);
-                if (!grid) return;
+        // 3. Render Strictly Backend Products (No default/sample fallback)
+        const adaptedAll = backendProducts.map((bp) => {
+            const pCatSlug = (bp.category?.slug || '').toLowerCase();
+            const pCatName = (bp.category?.name || '').toLowerCase();
+            const matchedCat = CATEGORIES.find((c) =>
+                (c.backendId && bp.categoryId === c.backendId) || categoryMatches(c, pCatSlug, pCatName)
+            );
+            return adaptBackendProduct(
+                bp,
+                matchedCat?.name || bp.category?.name || 'Collection',
+                matchedCat?.key || bp.category?.slug || ''
+            );
+        });
 
-                grid.innerHTML = '';
-                const frag = document.createDocumentFragment();
+        // Expose backend products globally for cart / PDP / related items
+        window.SHAANWEAR_PRODUCTS = adaptedAll;
 
-                const matchedProducts = backendProducts.filter((bp) => {
-                    if (cat.backendId && bp.categoryId === cat.backendId) return true;
-                    const pCatSlug = (bp.category?.slug || '').toLowerCase();
-                    const pCatName = (bp.category?.name || '').toLowerCase();
-                    return cat.slugs.some((s) => pCatSlug.includes(s) || pCatName.includes(s));
-                });
+        // Populate unified All Products grid on shop.html if present
+        if (document.getElementById('allProductsGrid')) {
+            renderAllProductsGrid(adaptedAll);
+        }
 
-                if (matchedProducts.length > 0) {
-                    matchedProducts.forEach((bp) => {
-                        const adapted = adaptBackendProduct(bp, cat.name, cat.key);
-                        frag.appendChild(buildCard(adapted));
-                    });
+        // Group backend products by category
+        CATEGORIES.forEach((cat) => {
+            const grid = document.getElementById(cat.gridId);
+            const section = document.getElementById(cat.sectionId);
+            if (!grid) return;
 
-                    // If category has no backend image, borrow the first product's primary Cloudinary image
-                    if (!cat.backendImage && matchedProducts[0]?.images?.[0]?.secureUrl) {
-                        cat.backendImage = matchedProducts[0].images[0].secureUrl;
-                    }
-                } else {
-                    // Empty category state (strictly avoid mixing local hardcoded data with live backend data)
-                    const empty = el('li', 'tshirts__empty');
-                    empty.textContent = 'No products currently available in this collection.';
-                    frag.appendChild(empty);
-                }
+            grid.innerHTML = '';
+            const frag = document.createDocumentFragment();
 
-                grid.appendChild(frag);
-                if (section) initReveal(section);
+            const matchedProducts = backendProducts.filter((bp) => {
+                if (cat.backendId && bp.categoryId === cat.backendId) return true;
+                const pCatSlug = (bp.category?.slug || '').toLowerCase();
+                const pCatName = (bp.category?.name || '').toLowerCase();
+                return categoryMatches(cat, pCatSlug, pCatName);
             });
 
-            syncCategoryCarousel();
-        } else {
-            // Either API is unauthenticated / unreachable, or database has 0 products
-            console.log('[SHAANWEAR Catalog] Utilizing verified catalog data for storefront display.');
-            renderLocalCatalog();
-        }
+            if (matchedProducts.length > 0) {
+                matchedProducts.forEach((bp) => {
+                    const adapted = adaptBackendProduct(bp, cat.name, cat.key);
+                    frag.appendChild(buildCard(adapted));
+                });
+
+                // If category has no backend image, borrow the first product's primary Cloudinary image
+                if (!cat.backendImage && matchedProducts[0]?.images?.[0]?.secureUrl) {
+                    cat.backendImage = matchedProducts[0].images[0].secureUrl;
+                }
+            } else {
+                const empty = el('li', 'tshirts__empty');
+                empty.textContent = 'No products currently available in this collection.';
+                frag.appendChild(empty);
+            }
+
+            grid.appendChild(frag);
+            if (section) initReveal(section);
+        });
+
+        syncCategoryCarousel();
 
         // Sync stored cart
         renderCart();
     }
 
+    /* ---------- SHOP / CATEGORY PAGE FILTER ---------- */
+    function applyShopFilter() {
+        if (document.body.dataset.page !== 'shop') return;
+
+        const wanted = getActiveShopCategory();
+        const heading = document.getElementById('shopHeading');
+        const breadcrumbCurrent = document.querySelector('.shop-breadcrumbs__current');
+
+        CATEGORIES.forEach((cat) => {
+            const section = document.getElementById(cat.sectionId);
+            if (!section) return;
+            // No (or unknown) category => show every category section
+            section.style.display = (!wanted || wanted === cat) ? '' : 'none';
+        });
+
+        if (heading) {
+            heading.textContent = wanted ? wanted.name.toUpperCase() : 'SHOP ALL PRODUCTS';
+        }
+        if (breadcrumbCurrent) {
+            breadcrumbCurrent.textContent = wanted ? wanted.name : 'Shop';
+        }
+        document.title = (wanted ? wanted.name : 'Shop All Products') + ' - SHAANWEAR';
+
+        // Update sidebar active state (moves the gold dot to the active category)
+        const sidebarLinks = document.querySelectorAll('.filter-categories__link');
+        sidebarLinks.forEach((link) => {
+            const linkCat = (link.getAttribute('data-category') || '').trim();
+            const isMatch = wanted ? categoryMatches(wanted, linkCat, linkCat) : linkCat === '';
+            link.classList.toggle('is-active', isMatch);
+        });
+
+        // Re-filter the unified All Products grid if already populated
+        if (allShopProducts.length > 0) {
+            renderFilteredShopGrid();
+        }
+    }
+
+    function initShopCategoryLinks() {
+        if (document.body.dataset.page !== 'shop' || !document.getElementById('allProductsGrid')) return;
+
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="shop.html"]');
+            if (!link) return;
+
+            e.preventDefault();
+            const href = link.getAttribute('href');
+            window.history.pushState({}, '', href);
+            applyShopFilter();
+        });
+
+        window.addEventListener('popstate', () => {
+            applyShopFilter();
+        });
+    }
+
     /* ---------- BOOTSTRAP ---------- */
     function init() {
+        applyShopFilter();
+        initShopCategoryLinks();
         loadCatalogData();
     }
 

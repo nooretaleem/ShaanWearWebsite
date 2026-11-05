@@ -16,6 +16,7 @@
 
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="assets/css/sections/base.css">
+    <link rel="stylesheet" href="assets/css/sections/navbar.css">
     <link rel="stylesheet" href="assets/css/sections/checkout.css">
 </head>
 
@@ -25,17 +26,157 @@
      1. MINIMALIST DISTRACTION-FREE HEADER
      (Centered Logo with no nav links to eliminate checkout drop-offs)
      ============================================================ -->
-    <header class="checkout-header">
-        <div class="checkout-header__inner">
-            <a href="index.html" class="checkout-header__logo" aria-label="SHAANWEAR Home">
-                <span class="checkout-header__brand">SHAANWEAR</span>
+    <header class="header" id="header">
+
+        <!-- LEVEL 2 — Main row: nav trigger | logo | actions -->
+        <div class="header__top">
+            <div class="header__left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="index.html" class="header__logo-link" aria-label="SHAANWEAR Home">
+                    <img src="assets/images/logo/logo.png" alt="SHAANWEAR Logo" class="header__logo-img" />
+                </a>
+            </div>
+
+            <a href="index.html" class="logo" aria-label="SHAANWEAR — Home">
+                SHAANWEAR
             </a>
-            <div class="checkout-header__secure">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-                <span>256-Bit SSL Encrypted</span>
+
+            <div class="header__actions">
+                <button class="icon-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                        stroke-linecap="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                    </svg>
+                </button>
+                <a href="#" class="icon-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21a8 8 0 0 1 16 0" />
+                    </svg>
+                </a>
+                <button class="icon-btn" id="wishToggle" aria-label="Wishlist">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6l8.8 8.8 8.8-8.8a5.4 5.4 0 0 0 0-7.6z" />
+                    </svg>
+                    <span class="badge" id="wishCount" hidden>0</span>
+                </button>
+                <button class="icon-btn" id="cartToggle" aria-label="Shopping bag" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <path d="M3 6h18" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span class="badge" id="cartCount" hidden>0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- LEVEL 3 — Secondary nav row (desktop only) -->
+        <nav class="header__nav-secondary" aria-label="Categories">
+            <a href="sweatshirts.html">Sweatshirts</a>
+            <a href="trousers.html">Trousers</a>
+            <a href="jackets.html">Jackets</a>
+            <a href="casual-shirts.html">Casual Shirts</a>
+            <a href="belts.html">Belts</a>
+            <a href="shop.html">Shop</a>
+        </nav>
+
+        <!-- ============================================================
+       SEARCH OVERLAY
+       ============================================================ -->
+        <div class="search-panel" id="searchPanel" hidden>
+            <div class="search-panel__inner">
+                <label class="search-panel__label" for="searchInput">Search our collection</label>
+                <div class="search-panel__field">
+                    <input type="search" id="searchInput" placeholder="Search products..." autocomplete="off" />
+                    <button type="button" aria-label="Search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                            stroke-linecap="round">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="m20 20-3.5-3.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="search-panel__popular">
+                    <span class="search-panel__eyebrow">Popular Searches</span>
+                    <ul>
+                        <li><a href="sweatshirts.html">Sweatshirts</a></li>
+                        <li><a href="trousers.html">Trousers</a></li>
+                        <li><a href="jackets.html">Jackets</a></li>
+                        <li><a href="casual-shirts.html">Casual Shirts</a></li>
+                        <li><a href="belts.html">Belts</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+       MINI CART PANEL
+       ============================================================ -->
+        <aside class="minicart" id="minicart" hidden aria-label="Shopping bag">
+            <div class="minicart__inner">
+                <div class="minicart__head">
+                    <h3>Your Bag</h3>
+                    <button class="minicart__close" id="minicartClose" aria-label="Close bag">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="minicart__body">
+                    <p class="minicart__empty">Your bag is currently empty.</p>
+                </div>
+                <div class="minicart__foot" id="minicartFoot">
+                    <div class="minicart__subtotal" id="minicartSubtotalRow">
+                        <span>Subtotal:</span>
+                        <strong id="minicartSubtotal">PKR 0</strong>
+                    </div>
+                    <div class="minicart__actions">
+                        <a href="checkout.html" class="btn btn--dark btn--full" id="minicartCheckout">CHECKOUT</a>
+                        <a href="cart.html" class="btn btn--outline btn--full" id="minicartViewCart">VIEW CART</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="backdrop" id="backdrop" hidden></div>
+
+        <!-- ============================================================
+       MOBILE NAV DRAWER
+       ============================================================ -->
+        <div class="mobile-nav" id="mobileNav" hidden aria-label="Mobile navigation">
+            <div class="mobile-nav__inner">
+                <div class="mobile-nav__head">
+                    <span class="mobile-nav__brand">SHAANWEAR</span>
+                    <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav__links">
+                    <a href="index.html">Home</a>
+                    <a href="sweatshirts.html">Sweatshirts</a>
+                    <a href="trousers.html">Trousers</a>
+                    <a href="jackets.html">Jackets</a>
+                    <a href="casual-shirts.html">Casual Shirts</a>
+                    <a href="belts.html">Belts</a>
+                    <span class="mobile-nav__divider"></span>
+                    <a href="jackets.html">Export Surplus</a>
+                    <a href="sweatshirts.html">Sweats Drop</a>
+                    <a href="cart.html" style="font-weight: 700; color: var(--accent, #B79A68);">Shopping Cart</a>
+                </nav>
+                <div class="mobile-nav__foot">
+                    <span>Pakistan / PKR</span>
+                </div>
             </div>
         </div>
     </header>
@@ -377,6 +518,7 @@
     <!-- Script modules -->
     <script src="assets/js/config.js"></script>
     <script src="assets/js/modules/checkout.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
