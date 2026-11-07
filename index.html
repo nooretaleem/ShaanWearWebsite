@@ -246,54 +246,11 @@
                 </svg>
             </button>
 
-            <!-- Track -->
+            <!-- Track — tiles are injected by shopbycategory.js from CAROUSEL_CATEGORIES config.
+                 The backend image for each tile is then upgraded by tshirts.js after the API
+                 responds, and window.__carouselRebuild() re-clones with the final images. -->
             <div class="category-carousel__track" data-carousel-track id="categoryCarouselTrack">
-
-                <a href="sweatshirts.html" class="category-tile reveal" aria-label="Shop Sweatshirts"
-                    data-category="sweatshirts">
-                    <div class="category-tile__media">
-                        <img src="assets/images/products/sweatshirts/premium-sweatshirt=03.jpg"
-                            alt="Model wearing a premium contemporary sweatshirt" loading="lazy" />
-                    </div>
-                    <h3 class="category-tile__name">Sweatshirts</h3>
-                </a>
-
-                <a href="jackets.html" class="category-tile reveal" aria-label="Shop Jackets"
-                    data-category="jackets">
-                    <div class="category-tile__media">
-                        <img src="assets/images/products/jackets/jacketcategory-01.jpg"
-                            alt="Model wearing a premium jacket" loading="lazy" />
-                    </div>
-                    <h3 class="category-tile__name">Jackets</h3>
-                </a>
-
-                <a href="casual-shirts.html" class="category-tile reveal" aria-label="Shop Casual Shirts"
-                    data-category="casual-shirts">
-                    <div class="category-tile__media">
-                        <img src="assets/images/products/casual-shirts/classic-casual-shirt-01.jpg"
-                            alt="Model wearing a tailored casual shirt" loading="lazy" />
-                    </div>
-                    <h3 class="category-tile__name">Casual Shirts</h3>
-                </a>
-
-                <a href="trousers.html" class="category-tile reveal" aria-label="Shop Trousers"
-                    data-category="trousers">
-                    <div class="category-tile__media">
-                        <img src="assets/images/products/trousers/slim-fit-trousers-01.jpg"
-                            alt="Model wearing modern tailored trousers" loading="lazy" />
-                    </div>
-                    <h3 class="category-tile__name">Trousers</h3>
-                </a>
-
-                <a href="belts.html" class="category-tile reveal" aria-label="Shop Belts"
-                    data-category="belts">
-                    <div class="category-tile__media">
-                        <img src="assets/images/products/belts/belts.jpeg"
-                            alt="Close-up of a premium handcrafted leather belt" loading="lazy" />
-                    </div>
-                    <h3 class="category-tile__name">Belts</h3>
-                </a>
-
+                <!-- JS-rendered: populated by shopbycategory.js -->
             </div>
 
             <!-- Next -->
@@ -359,8 +316,8 @@
                     <span class="tshirts-header__eyebrow">Classic Sourcing / 2026</span>
                     <h2 class="tshirts-header__title" id="casualShirtsTitle">CASUAL SHIRTS</h2>
                 </div>
-                <a href="casual-shirts.html" class="tshirts-header__link"
-                    aria-label="View all Casual Shirts">View All</a>
+                <a href="casual-shirts.html" class="tshirts-header__link" aria-label="View all Casual Shirts">View
+                    All</a>
             </header>
             <ul class="tshirts__grid" id="casualShirtsGrid"></ul>
         </div>

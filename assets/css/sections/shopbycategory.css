@@ -65,11 +65,31 @@
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x proximity;
+    /*
+     * scroll-behavior:auto — REQUIRED for RAF pixel-scroll to work.
+     * scroll-behavior:smooth would queue a smooth animation for every
+     * tiny scrollLeft increment, stalling the continuous auto-scroll.
+     * Manual navigation uses scrollTo({ behavior:'smooth' }) via CSSOM
+     * which always respects the per-call override regardless of CSS.
+     */
+    scroll-behavior: auto;
+    /*
+     * scroll-snap-type disabled during auto-scroll via [data-autoscrolling].
+     * Snap is active only during manual navigation so tiles land cleanly.
+     */
+    scroll-snap-type: none;
     padding: 6px var(--gutter, 40px);
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
+
+/*
+ * Re-enable snap when NOT auto-scrolling (hover / paused / manual nav).
+ * JS removes data-autoscrolling when isPaused=true, so snap is active
+ * exactly when the user is in control.
+ */
+.category-carousel__track:not([data-autoscrolling]) {
+    scroll-snap-type: x proximity;
 }
 
 .category-carousel__track::-webkit-scrollbar {
@@ -86,6 +106,38 @@
     text-decoration: none;
     color: inherit;
     position: relative;
+}
+
+/* ---------- SKELETON LOADING STATE ---------- */
+.category-tile--skeleton {
+    pointer-events: none;
+    cursor: default;
+}
+
+.category-tile--skeleton .category-tile__media {
+    background: linear-gradient(90deg, #EDEBE6 25%, #F6F5F2 50%, #EDEBE6 75%);
+    background-size: 200% 100%;
+    animation: categorySkeletonShimmer 1.5s infinite;
+}
+
+.category-tile--skeleton .category-tile__media::before,
+.category-tile--skeleton .category-tile__media::after {
+    display: none !important;
+}
+
+.category-tile--skeleton .category-tile__name {
+    width: 55%;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 2px;
+    margin: 0 0 20px 24px;
+    padding: 0;
+    animation: categorySkeletonShimmer 1.5s infinite;
+}
+
+@keyframes categorySkeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .category-tile__media {

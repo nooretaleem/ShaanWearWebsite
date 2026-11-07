@@ -527,6 +527,11 @@
 
     /* ---------- CATEGORY CAROUSEL SYNCHRONIZATION ---------- */
     function syncCategoryCarousel() {
+        if (typeof window.__renderCategoryCarousel === 'function') {
+            window.__renderCategoryCarousel(CATEGORIES);
+            return;
+        }
+
         const track = document.getElementById('categoryCarouselTrack') || document.querySelector('[data-carousel-track]');
         if (!track) return;
 
@@ -732,6 +737,13 @@
         });
 
         syncCategoryCarousel();
+
+        /* Re-clone carousel tiles so clones reflect the backend images
+           that syncCategoryCarousel() just injected into the originals.
+           window.__carouselRebuild is set by shopbycategory.js. */
+        if (typeof window.__carouselRebuild === 'function') {
+            window.__carouselRebuild();
+        }
 
         // Sync stored cart
         renderCart();
