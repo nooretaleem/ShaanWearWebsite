@@ -476,12 +476,7 @@
 
             descTab.innerHTML = `
                 <p class="pdp-desc__text">${p.description}</p>
-                <div class="pdp-items-included">
-                    <h3 class="pdp-items-included__heading">Items Included & Fabric Specifications</h3>
-                    <div class="pdp-items-list">
-                        ${itemsHTML}
-                    </div>
-                </div>
+                
             `;
 
         }
