@@ -801,9 +801,16 @@ body[data-page] .header:not(.is-scrolled),
         gap: 2px;
     }
 
-    .header__actions .icon-btn[aria-label="Account"],
+    /* Wishlist icon is hidden on mobile header to preserve spacing */
     .header__actions .icon-btn[aria-label="Wishlist"] {
         display: none;
+    }
+
+    /* Person / Account icon: ALWAYS visible on mobile */
+    .header__actions #accountBtn,
+    .header__actions .icon-btn[aria-label="Account"],
+    .header__actions .icon-btn[aria-label^="Account"] {
+        display: inline-flex !important;
     }
 }
 
