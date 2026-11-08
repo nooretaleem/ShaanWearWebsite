@@ -98,22 +98,31 @@
         /* Two-column Dashboard Layout */
         .dashboard-layout {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 280px minmax(0, 1fr);
             gap: 36px;
             align-items: flex-start;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
-        @media (max-width: 900px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
+        .dashboard-sidebar,
+        .dashboard-main {
+            min-width: 0;
+            max-width: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-            .account-hero {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
+        .account-page,
+        .account-container,
+        .dashboard-layout,
+        .dash-card,
+        .address-card,
+        .order-card {
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
         }
 
         /* Sidebar Navigation */
@@ -180,29 +189,6 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-        }
-
-        @media (max-width: 900px) {
-            .dashboard-sidebar {
-                position: static;
-                padding: 16px;
-            }
-
-            .sidebar-profile {
-                margin-bottom: 12px;
-                padding-bottom: 12px;
-            }
-
-            .sidebar-nav {
-                flex-direction: row;
-                overflow-x: auto;
-                gap: 8px;
-            }
-
-            .sidebar-btn {
-                white-space: nowrap;
-                flex: 1;
-            }
         }
 
         .sidebar-btn {
@@ -690,12 +676,6 @@
             gap: 16px;
         }
 
-        @media (max-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .form-group {
             display: flex;
             flex-direction: column;
@@ -1024,6 +1004,640 @@
             max-width: 380px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        /* =====================================================
+           RESPONSIVE DESIGN SYSTEM (MOBILE & TABLET ADAPTATION)
+           ===================================================== */
+
+        /* Prevent Horizontal Scroll Overflow on Mobile */
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .account-page {
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* ----------------------------------------------------
+           1. Medium Screens / Tablets (<= 992px)
+           ---------------------------------------------------- */
+        @media (max-width: 992px) {
+            .account-page {
+                padding: 32px 16px 70px;
+            }
+
+            .account-container {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dashboard-layout {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dashboard-sidebar {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 16px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+            }
+
+            .dashboard-main {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dash-card {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .account-hero {
+                margin-bottom: 24px;
+                padding-bottom: 18px;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 16px;
+            }
+        }
+
+        /* ----------------------------------------------------
+           2. Tablets & Landscape Phones (<= 768px)
+           ---------------------------------------------------- */
+        @media (max-width: 768px) {
+            .account-page {
+                padding: 24px 14px 60px;
+            }
+
+            .dashboard-sidebar {
+                padding: 14px 12px;
+                margin-bottom: 16px;
+            }
+
+            .account-hero {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 20px;
+                padding-bottom: 16px;
+            }
+
+            .account-hero__title {
+                font-size: 22px;
+            }
+
+            .account-hero__eyebrow {
+                font-size: 10px;
+                letter-spacing: 0.16em;
+            }
+
+            .btn-logout {
+                padding: 8px 14px;
+                font-size: 11px;
+                letter-spacing: 0.08em;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Horizontal Touch-Scroll Navigation Pill Bar */
+            .sidebar-profile {
+                padding-bottom: 12px;
+                margin-bottom: 12px;
+                gap: 12px;
+            }
+
+            .sidebar-avatar {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+            }
+
+            .sidebar-userinfo {
+                min-width: 0;
+                flex: 1;
+            }
+
+            .sidebar-userinfo__name {
+                font-size: 14px;
+            }
+
+            .sidebar-userinfo__email {
+                font-size: 12px;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 8px;
+                padding: 4px 4px 10px 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                scroll-snap-type: x proximity;
+            }
+
+            .sidebar-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .sidebar-btn {
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+                width: auto;
+                padding: 9px 14px;
+                font-size: 11.5px;
+                letter-spacing: 0.04em;
+                border-radius: 24px;
+                background: #FAFAF8;
+                border: 1px solid #E2E8F0;
+                white-space: nowrap;
+                gap: 8px;
+            }
+
+            .sidebar-btn__left {
+                gap: 8px;
+            }
+
+            .sidebar-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .sidebar-btn.is-active {
+                background: #111111;
+                border-color: #111111;
+                color: #FFFFFF;
+            }
+
+            .sidebar-btn.is-active svg {
+                color: var(--gold-accent);
+            }
+
+            .sidebar-badge {
+                padding: 2px 6px;
+                font-size: 10px;
+                margin-left: 6px;
+            }
+
+            /* Generic Dashboard Cards */
+            .dash-card {
+                padding: 18px 14px;
+                margin-bottom: 16px;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dash-card__header {
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dash-card__title {
+                font-size: 14px;
+            }
+
+            .address-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        /* ----------------------------------------------------
+           3. Standard Mobile Phones (<= 640px)
+           ---------------------------------------------------- */
+        @media (max-width: 640px) {
+            .account-page {
+                padding: 16px 12px 50px;
+            }
+
+            .account-hero {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 16px;
+                padding-bottom: 14px;
+            }
+
+            .account-hero__title {
+                font-size: 19px;
+            }
+
+            .btn-logout {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 16px;
+            }
+
+            .dash-card {
+                padding: 16px 12px;
+                margin-bottom: 14px;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dash-card__header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .dash-card__header .btn-dash-primary,
+            .dash-card__header .btn-dash-secondary {
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+                padding: 11px 14px;
+                font-size: 11px;
+                letter-spacing: 0.08em;
+                box-sizing: border-box;
+            }
+
+            /* Overview Profile Rows */
+            .profile-row {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 9px 0;
+                gap: 3px;
+            }
+
+            .profile-label {
+                font-size: 10px;
+            }
+
+            .profile-value {
+                text-align: left;
+                font-size: 13px;
+                width: 100%;
+            }
+
+            /* Order History & Filter Bar */
+            .order-filter-bar {
+                display: flex;
+                gap: 6px;
+                overflow-x: auto;
+                padding-bottom: 6px;
+                margin-bottom: 14px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .order-filter-bar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-chip {
+                flex: 0 0 auto;
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .order-card {
+                margin-bottom: 12px;
+            }
+
+            .order-card__header {
+                padding: 12px;
+            }
+
+            .order-card__meta {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .order-card__meta .order-meta-group:last-child {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .order-meta-label {
+                font-size: 9.5px;
+            }
+
+            .order-meta-val {
+                font-size: 12px;
+            }
+
+            .status-badge {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+
+            .order-card__body {
+                padding: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .order-item-thumbnails {
+                max-width: 100%;
+                width: 100%;
+                gap: 8px;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .order-thumb {
+                width: 48px;
+                height: 48px;
+            }
+
+            .order-card__actions {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-top: 1px solid #F0EDE8;
+                padding-top: 10px;
+                gap: 8px;
+            }
+
+            .order-total-preview span {
+                font-size: 9.5px;
+            }
+
+            .order-total-preview strong {
+                font-size: 13.5px;
+            }
+
+            .order-card__actions .btn-dash-primary {
+                padding: 8px 12px;
+                font-size: 11px;
+                letter-spacing: 0.06em;
+            }
+
+            .dash-pagination {
+                gap: 6px;
+                margin-top: 16px;
+                font-size: 11.5px;
+                flex-wrap: wrap;
+            }
+
+            .dash-pagination .btn-dash-secondary {
+                padding: 7px 10px;
+                font-size: 11px;
+            }
+
+            /* Address Book */
+            .address-card {
+                padding: 14px 12px;
+            }
+
+            .address-card__name {
+                font-size: 13.5px;
+                margin-bottom: 6px;
+            }
+
+            .address-card__lines {
+                font-size: 12px;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+
+            .address-card__phone {
+                font-size: 11px;
+                margin-bottom: 12px;
+            }
+
+            .address-card__actions {
+                padding-top: 10px;
+                gap: 10px;
+            }
+
+            .btn-text-action {
+                font-size: 11px;
+                padding: 4px 0;
+            }
+
+            /* Address Form */
+            .address-form-box {
+                padding: 14px 12px;
+                margin-bottom: 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            /* iOS auto-zoom prevention: 16px prevents viewport shift */
+            .form-input,
+            .form-select {
+                height: 44px;
+                font-size: 16px;
+                padding: 0 12px;
+            }
+
+            .address-form-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 14px;
+            }
+
+            .address-form-actions .btn-dash-primary,
+            .address-form-actions .btn-dash-secondary {
+                width: 100%;
+                justify-content: center;
+                height: 42px;
+                font-size: 12px;
+            }
+
+            /* Wishlist 2-Column Responsive E-Commerce Grid */
+            .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .wishlist-card {
+                border-radius: 3px;
+            }
+
+            .wishlist-card__body {
+                padding: 10px 8px;
+            }
+
+            .wishlist-card__category {
+                font-size: 8.5px;
+                margin-bottom: 2px;
+            }
+
+            .wishlist-card__title {
+                font-size: 11.5px;
+                margin-bottom: 4px;
+                line-height: 1.35;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                min-height: 31px;
+            }
+
+            .wishlist-card__price {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .btn-move-cart {
+                padding: 8px 4px;
+                font-size: 9.5px;
+                letter-spacing: 0.04em;
+            }
+
+            .wishlist-card__remove {
+                top: 6px;
+                right: 6px;
+                width: 26px;
+                height: 26px;
+            }
+
+            .wishlist-card__remove svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            /* Order Modal */
+            .dash-modal {
+                padding: 6px;
+                align-items: flex-end;
+            }
+
+            .dash-modal__content {
+                padding: 20px 14px 16px;
+                max-height: 88vh;
+                border-radius: 12px 12px 2px 2px;
+            }
+
+            .dash-modal__close {
+                top: 12px;
+                right: 12px;
+                font-size: 24px;
+            }
+
+            .modal-item-row {
+                gap: 10px;
+                padding: 10px 0;
+            }
+
+            .modal-item-img {
+                width: 44px;
+                height: 44px;
+            }
+
+            .modal-item-name {
+                font-size: 12px;
+            }
+
+            .modal-item-meta {
+                font-size: 10px;
+            }
+
+            .modal-item-price {
+                font-size: 12px;
+            }
+
+            /* Toast */
+            .dash-toast {
+                left: 12px;
+                right: 12px;
+                bottom: 16px;
+                font-size: 11.5px;
+                padding: 10px 14px;
+                justify-content: center;
+                text-align: center;
+            }
+
+            /* Floating WhatsApp Widget */
+            .whatsapp-widget {
+                bottom: 18px;
+                right: 14px;
+                width: 44px;
+                height: 44px;
+            }
+
+            .whatsapp-widget svg {
+                width: 44px;
+                height: 44px;
+            }
+
+            /* Empty placeholder */
+            .empty-placeholder {
+                padding: 40px 14px;
+            }
+
+            .empty-placeholder svg {
+                width: 38px;
+                height: 38px;
+                margin-bottom: 10px;
+            }
+
+            .empty-placeholder h4 {
+                font-size: 14px;
+            }
+
+            .empty-placeholder p {
+                font-size: 12px;
+                margin-bottom: 16px;
+            }
+        }
+
+        /* ----------------------------------------------------
+           4. Ultra-Compact Mobile Phones (<= 360px)
+           ---------------------------------------------------- */
+        @media (max-width: 360px) {
+            .account-page {
+                padding: 14px 8px 40px;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-card__meta {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1390,7 +2004,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div style="display: flex; gap: 12px; margin-top: 20px;">
+                                        <div class="address-form-actions" style="display: flex; gap: 12px; margin-top: 20px;">
                                             <button type="submit" class="btn-dash-primary" id="btnSaveAddress">
                                                 Save Address
                                             </button>
@@ -1705,13 +2319,20 @@
 
         // Tab Switching Engine
         function switchDashboardTab(tabId) {
+            let activeBtn = null;
             document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                btn.classList.toggle('is-active', btn.dataset.tab === tabId);
+                const isActive = btn.dataset.tab === tabId;
+                btn.classList.toggle('is-active', isActive);
+                if (isActive) activeBtn = btn;
             });
 
             document.querySelectorAll('.dashboard-tab').forEach(tab => {
                 tab.classList.toggle('is-active', tab.id === `tab-${tabId}`);
             });
+
+            if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
 
             // Update URL Hash without reload
             if (history.replaceState) {
@@ -2331,6 +2952,8 @@
                 const hashTab = (window.location.hash || '').replace('#', '').toLowerCase();
                 if (['orders', 'addresses', 'wishlist'].includes(hashTab)) {
                     switchDashboardTab(hashTab);
+                } else {
+                    switchDashboardTab('overview');
                 }
 
             } catch (err) {

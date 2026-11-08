@@ -6,6 +6,13 @@
 @import url('buttons.css');
 
 /* ---------- 1. RESET & BASE LAYOUT ---------- */
+html,
+body.checkout-body {
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .checkout-body {
     background: #FFFFFF;
     color: var(--black, #111111);
@@ -13,6 +20,15 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+.checkout-wrapper,
+.checkout-grid,
+.checkout-main,
+.checkout-sidebar {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
 }
 
 /* ---------- 2. MINIMALIST DISTRACTION-FREE HEADER ---------- */
@@ -757,10 +773,14 @@
 .checkout-discount-field {
     display: flex;
     gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .checkout-discount-field input {
     flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
     height: 44px;
     padding: 0 14px;
     border: 1px solid var(--border, #E5E3DE);
@@ -1207,28 +1227,61 @@
 }
 
 /* ---------- 8. RESPONSIVE DESIGN ---------- */
+@keyframes summarySlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 1. Medium Screens / Tablets (<= 992px) */
 @media (max-width: 992px) {
+    .checkout-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
     .checkout-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: auto;
     }
 
     .mobile-summary-toggle {
         display: block;
+        padding: 14px 20px;
     }
 
+    /* Puts the collapsible sidebar immediately under the mobile summary toggle button */
     .checkout-sidebar {
+        order: -1;
         border-left: none;
         border-bottom: 1px solid var(--border, #E5E3DE);
-        padding: 24px;
+        padding: 22px 20px 28px;
         display: none;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .checkout-sidebar.is-open {
         display: block;
+        animation: summarySlideDown 0.25s ease-out;
+    }
+
+    .checkout-summary-sticky {
+        position: static;
     }
 
     .checkout-main {
-        padding: 28px 24px 48px;
+        order: 1;
+        padding: 28px 20px 48px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .checkout-header__secure {
@@ -1236,31 +1289,236 @@
     }
 }
 
+/* 2. Tablets & Landscape Phones (<= 768px) */
+@media (max-width: 768px) {
+    /* Prevent iOS auto-zoom on form inputs by requiring >=16px font */
+    .form-input,
+    .form-select,
+    .checkout-discount-field input,
+    .checkout-login-modal .form-input {
+        font-size: 16px !important;
+        height: 48px;
+    }
+
+    .checkout-breadcrumbs {
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 11.5px;
+        margin-bottom: 22px;
+    }
+
+    .checkout-section {
+        margin-bottom: 26px;
+    }
+
+    .checkout-section__head {
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .checkout-section__title {
+        font-size: 16px;
+    }
+
+    .summary-items-list {
+        max-height: 280px;
+    }
+}
+
+/* 3. Standard Mobile Phones (<= 600px) */
 @media (max-width: 600px) {
+    .checkout-main {
+        padding: 18px 14px 40px;
+    }
+
+    .checkout-sidebar {
+        padding: 16px 14px 24px;
+    }
+
+    .mobile-summary-toggle {
+        padding: 14px 14px;
+    }
+
     .form-row {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Retain MM/YY and CVV side-by-side on mobile */
+    .card-fields .form-row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px;
+    }
+
+    .payment-option__header {
+        padding: 13px 12px;
+    }
+
+    .payment-option__body {
+        padding: 12px 12px 14px;
+    }
+
+    .shipping-option {
+        padding: 12px 12px;
+        gap: 10px;
+    }
+
+    .shipping-option__left {
+        gap: 10px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .shipping-option__title {
+        font-size: 13px;
+    }
+
+    .shipping-option__time {
+        font-size: 11px;
+    }
+
+    .shipping-option__price {
+        font-size: 12.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .summary-item {
+        gap: 12px;
+    }
+
+    .summary-item__left {
+        gap: 12px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .summary-item__thumb-wrap {
+        width: 52px;
+        height: 66px;
+    }
+
+    .summary-item__title {
+        font-size: 12.5px;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .summary-item__price {
+        font-size: 13px;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .checkout-actions-row {
         flex-direction: column-reverse;
-        gap: 16px;
+        gap: 14px;
         align-items: stretch;
+        margin-top: 24px;
+        padding-top: 20px;
     }
 
     .complete-order-btn {
         width: 100%;
+        height: 52px;
+        font-size: 12.5px;
+        letter-spacing: 0.1em;
     }
 
     .checkout-back-link {
         text-align: center;
         justify-content: center;
+        padding: 8px 0;
     }
 
-    .checkout-main {
-        padding: 20px 16px 40px;
+    .checkout-footer-links {
+        justify-content: center;
+        text-align: center;
+        gap: 10px 14px;
+        margin-top: 32px;
+        padding-top: 16px;
+    }
+
+    /* Modal Dialogs */
+    .order-success-modal,
+    .checkout-login-modal {
+        padding: 14px;
     }
 
     .order-success-card {
-        padding: 28px 20px;
+        padding: 24px 16px;
+        border-radius: 6px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .order-success-title {
+        font-size: 20px;
+    }
+
+    .order-success-details {
+        padding: 12px 14px;
+        font-size: 12px;
+    }
+
+    .order-success-btn {
+        width: 100%;
+        height: 46px;
+        font-size: 11.5px;
+    }
+
+    .checkout-login-card {
+        padding: 24px 16px 20px;
+        border-radius: 6px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .checkout-login-close {
+        top: 10px;
+        right: 12px;
+        font-size: 26px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .checkout-login-title {
+        font-size: 20px;
+    }
+
+    .checkout-login-sub {
+        font-size: 12px;
+        margin-bottom: 16px;
+    }
+}
+
+/* 4. Ultra-Compact Mobile Phones (<= 360px) */
+@media (max-width: 360px) {
+    .checkout-main {
+        padding: 14px 10px 32px;
+    }
+
+    .checkout-sidebar {
+        padding: 14px 10px 20px;
+    }
+
+    .mobile-summary-toggle {
+        padding: 12px 10px;
+        font-size: 12.5px;
+    }
+
+    .mobile-summary-toggle__price {
+        font-size: 13.5px;
+    }
+
+    .cost-total-amount {
+        font-size: 18px;
     }
 }

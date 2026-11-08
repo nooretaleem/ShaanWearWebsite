@@ -30,16 +30,18 @@
     const searchInput = qs('#searchInput');
 
     function openSearch() {
+        if (!searchPanel) return;
         closeCart(); closeMobile();
         searchPanel.hidden = false;
-        searchToggle.setAttribute('aria-expanded', 'true');
+        searchToggle?.setAttribute('aria-expanded', 'true');
         requestAnimationFrame(() => searchInput?.focus());
     }
     function closeSearch() {
-        searchPanel.hidden = true;
-        searchToggle.setAttribute('aria-expanded', 'false');
+        if (searchPanel) searchPanel.hidden = true;
+        searchToggle?.setAttribute('aria-expanded', 'false');
     }
     searchToggle?.addEventListener('click', () => {
+        if (!searchPanel) return;
         searchPanel.hidden ? openSearch() : closeSearch();
     });
 
@@ -51,18 +53,22 @@
     const backdrop = qs('#backdrop');
 
     function openCart() {
+        if (!minicart) return;
         closeSearch(); closeMobile();
         minicart.hidden = false;
-        backdrop.hidden = false;
+        if (backdrop) backdrop.hidden = false;
         cartToggle?.setAttribute('aria-expanded', 'true');
     }
     function closeCart() {
-        if (!minicart) return;
-        minicart.hidden = true;
-        backdrop.hidden = true;
+        if (minicart) minicart.hidden = true;
+        if (backdrop && (!mobileNav || mobileNav.hidden)) backdrop.hidden = true;
         cartToggle?.setAttribute('aria-expanded', 'false');
     }
     cartToggle?.addEventListener('click', () => {
+        if (!minicart) {
+            window.location.href = 'cart.html';
+            return;
+        }
         minicart.hidden ? openCart() : closeCart();
     });
     minicartX?.addEventListener('click', closeCart);
@@ -88,21 +94,22 @@
 
     function openMobile() {
         closeSearch(); closeCart();
-        mobileNav.hidden = false;
-        backdrop.hidden = false;
-        hamburger.classList.add('is-open');
-        hamburger.setAttribute('aria-expanded', 'true');
+        if (mobileNav) mobileNav.hidden = false;
+        if (backdrop) backdrop.hidden = false;
+        hamburger?.classList.add('is-open');
+        hamburger?.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
     }
     function closeMobile() {
         if (!mobileNav) return;
         mobileNav.hidden = true;
-        if (!minicart || minicart.hidden) backdrop.hidden = true;
-        hamburger.classList.remove('is-open');
-        hamburger.setAttribute('aria-expanded', 'false');
+        if (backdrop && (!minicart || minicart.hidden)) backdrop.hidden = true;
+        hamburger?.classList.remove('is-open');
+        hamburger?.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
     hamburger?.addEventListener('click', () => {
+        if (!mobileNav) return;
         mobileNav.hidden ? openMobile() : closeMobile();
     });
     mobileClose?.addEventListener('click', closeMobile);
@@ -113,9 +120,9 @@
     /* ---------- 5. ESC to close anything ---------- */
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        if (!searchPanel.hidden) closeSearch();
-        else if (!minicart.hidden) closeCart();
-        else if (!mobileNav.hidden) closeMobile();
+        if (searchPanel && !searchPanel.hidden) closeSearch();
+        else if (minicart && !minicart.hidden) closeCart();
+        else if (mobileNav && !mobileNav.hidden) closeMobile();
     });
 
     /* ---------- 6. WISHLIST NAVIGATION ---------- */
