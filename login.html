@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SHAANWEAR Customer Portal — Sign in or create a new customer account." />
+    <title>Customer Account — SHAANWEAR</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/sections/base.css" />
+    <link rel="stylesheet" href="assets/css/sections/navbar.css" />
+    <link rel="stylesheet" href="assets/css/sections/footer.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+        .auth-section {
+            min-height: calc(100vh - 240px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            background: #FAFAF8;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background: #FFFFFF;
+            border: 1px solid rgba(229, 227, 222, 0.8);
+            border-radius: 4px;
+            padding: 48px 40px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        .auth-card__header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-card__eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent, #B79A68);
+            margin-bottom: 8px;
+        }
+
+        .auth-card__title {
+            font-family: var(--font, 'Inter', sans-serif);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #111111;
+            margin: 0 0 10px;
+            text-transform: uppercase;
+        }
+
+        .auth-card__subtitle {
+            font-size: 14px;
+            color: #666666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #E5E3DE;
+            margin-bottom: 30px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #888888;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab.is-active {
+            color: #111111;
+            border-bottom-color: var(--accent, #B79A68);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #333333;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid #D5D2CA;
+            border-radius: 2px;
+            font-size: 14px;
+            color: #111111;
+            background: #FFFFFF;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #111111;
+            box-shadow: 0 0 0 1px #111111;
+        }
+
+        .auth-btn {
+            width: 100%;
+            height: 50px;
+            margin-top: 10px;
+            background: #111111;
+            color: #FFFFFF;
+            border: 1px solid #111111;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-btn:hover {
+            background: var(--accent, #B79A68);
+            border-color: var(--accent, #B79A68);
+            color: #FFFFFF;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-alert {
+            padding: 12px 16px;
+            border-radius: 2px;
+            font-size: 13px;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .auth-alert--error {
+            background: #FDF2F2;
+            color: #9B1C1C;
+            border: 1px solid #F8B4B4;
+        }
+
+        .auth-alert--success {
+            background: #F3FAF7;
+            color: #0E9F6E;
+            border: 1px solid #84E1BC;
+        }
+
+        .auth-card__footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #777777;
+        }
+
+        .auth-card__footer a {
+            color: #111111;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header__top">
+            <div class="header__left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="index.html" class="header__logo-link" aria-label="SHAANWEAR Home">
+                    <img src="assets/images/logo/logo.png" alt="SHAANWEAR Logo" class="header__logo-img" />
+                </a>
+            </div>
+
+            <a href="index.html" class="logo" aria-label="SHAANWEAR — Home">
+                SHAANWEAR
+            </a>
+
+            <div class="header__actions">
+                <a href="account.html" class="icon-btn" id="accountBtn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21a8 8 0 0 1 16 0" />
+                    </svg>
+                </a>
+                <a href="cart.html" class="icon-btn" aria-label="Shopping bag">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <path d="M3 6h18" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <nav class="header__nav-secondary" aria-label="Categories">
+            <a href="sweatshirts.html">Sweatshirts</a>
+            <a href="trousers.html">Trousers</a>
+            <a href="jackets.html">Jackets</a>
+            <a href="casual-shirts.html">Casual Shirts</a>
+            <a href="belts.html">Belts</a>
+            <a href="shop.html">Shop</a>
+        </nav>
+    </header>
+
+    <!-- Main Auth Content -->
+    <main class="auth-section">
+        <div class="auth-card">
+            <div class="auth-card__header">
+                <span class="auth-card__eyebrow">Customer Portal</span>
+                <h1 class="auth-card__title" id="authTitle">Sign In</h1>
+                <p class="auth-card__subtitle" id="authSubtitle">Access your exclusive order history and tailored
+                    profile.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab is-active" id="tabLogin" onclick="switchTab('login')">Sign
+                    In</button>
+                <button type="button" class="auth-tab" id="tabRegister"
+                    onclick="switchTab('register')">Register</button>
+            </div>
+
+            <div id="authAlert" class="auth-alert"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form" onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-input" required autocomplete="email"
+                        placeholder="" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" required
+                        autocomplete="current-password" placeholder="" />
+                </div>
+                <button type="submit" class="auth-btn" id="loginSubmitBtn">Sign In</button>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="registerForm" class="auth-form" style="display: none;" onsubmit="handleRegisterSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="registerName">Full Name</label>
+                    <input type="text" id="registerName" class="form-input" required autocomplete="name"
+                        placeholder="First and last name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" class="form-input" required autocomplete="email"
+                        placeholder="" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerPassword">Password (min 6 characters)</label>
+                    <input type="password" id="registerPassword" class="form-input" minlength="6" required
+                        autocomplete="new-password" placeholder="" />
+                </div>
+                <button type="submit" class="auth-btn" id="registerSubmitBtn">Create Account</button>
+            </form>
+
+            <div class="auth-card__footer">
+                <p>By continuing, you agree to SHAANWEAR's Terms of Sourcing & Authenticity.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer__container">
+            <div class="footer__bottom">
+                <p>&copy; 2026 SHAANWEAR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
+    <script src="assets/js/utils/wishlist.js"></script>
+    <script>
+        const alertEl = document.getElementById('authAlert');
+        const accountBtn = document.getElementById('accountBtn');
+
+        function updateHeaderState() {
+            const isAuth = window.ShaanwearAuth ? window.ShaanwearAuth.isAuthenticated() : false;
+            const user = window.ShaanwearAuth ? window.ShaanwearAuth.getUser() : null;
+            if (accountBtn) {
+                if (isAuth && user) {
+                    accountBtn.classList.add('is-authenticated');
+                    accountBtn.setAttribute('title', `Logged in as ${user.name}`);
+                } else {
+                    accountBtn.classList.remove('is-authenticated');
+                    accountBtn.setAttribute('title', 'Sign In / Register');
+                }
+            }
+        }
+
+        if (accountBtn) {
+            accountBtn.addEventListener('click', (e) => {
+                if (window.ShaanwearAuth && typeof window.ShaanwearAuth.handleAccountClick === 'function') {
+                    window.ShaanwearAuth.handleAccountClick(e);
+                }
+            });
+        }
+
+        // Inform user if already logged in, provide easy action to visit profile or sign out
+        function checkExistingSession() {
+            if (window.ShaanwearAuth && window.ShaanwearAuth.isAuthenticated()) {
+                const user = window.ShaanwearAuth.getUser();
+                if (alertEl) {
+                    alertEl.innerHTML = `
+                        You are currently signed in as <strong>${(user && user.name) || 'Customer'}</strong>.<br>
+                        <div style="margin-top: 8px; display: flex; gap: 14px; align-items: center;">
+                            <a href="account.html" style="text-decoration: underline; font-weight: 700; color: inherit;">Go to Profile Dashboard &rarr;</a>
+                            <span>or</span>
+                            <button type="button" onclick="handleLogoutHere()" style="background: none; border: none; padding: 0; color: inherit; text-decoration: underline; font-size: inherit; cursor: pointer;">Sign Out to Switch Account</button>
+                        </div>
+                    `;
+                    alertEl.className = 'auth-alert auth-alert--success';
+                    alertEl.style.display = 'block';
+                }
+            }
+        }
+
+        async function handleLogoutHere() {
+            if (window.ShaanwearAuth) {
+                await window.ShaanwearAuth.logout();
+            }
+            hideAlert();
+            updateHeaderState();
+            showAlert('Signed out successfully. You can now log in or create a new account.', false);
+        }
+
+        function showAlert(msg, isError = true) {
+            if (!alertEl) return;
+            alertEl.textContent = msg;
+            alertEl.className = 'auth-alert ' + (isError ? 'auth-alert--error' : 'auth-alert--success');
+            alertEl.style.display = 'block';
+        }
+
+        function hideAlert() {
+            if (!alertEl) return;
+            alertEl.style.display = 'none';
+        }
+
+        function switchTab(mode) {
+            hideAlert();
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+
+            if (mode === 'register') {
+                tabLogin.classList.remove('is-active');
+                tabRegister.classList.add('is-active');
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'flex';
+                authTitle.textContent = 'Create Account';
+                authSubtitle.textContent = 'Join SHAANWEAR to track orders and enjoy personalized access.';
+            } else {
+                tabRegister.classList.remove('is-active');
+                tabLogin.classList.add('is-active');
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'flex';
+                authTitle.textContent = 'Sign In';
+                authSubtitle.textContent = 'Access your exclusive order history and tailored profile.';
+            }
+        }
+
+        function getRedirectTarget() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('redirect') || 'account.html';
+        }
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            hideAlert();
+            const btn = document.getElementById('loginSubmitBtn');
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Verifying...';
+
+            try {
+                await window.ShaanwearAuth.login(email, password);
+                updateHeaderState();
+                showAlert('Sign in successful. Redirecting to your account...', false);
+                setTimeout(() => {
+                    window.location.href = getRedirectTarget();
+                }, 400);
+            } catch (err) {
+                showAlert(err.message || 'Login failed. Please check credentials.');
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
+            }
+        }
+
+        async function handleRegisterSubmit(e) {
+            e.preventDefault();
+            hideAlert();
+            const btn = document.getElementById('registerSubmitBtn');
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Creating Account...';
+
+            try {
+                await window.ShaanwearAuth.register(name, email, password);
+                updateHeaderState();
+                showAlert('Account registered successfully! Redirecting...', false);
+                setTimeout(() => {
+                    window.location.href = getRedirectTarget();
+                }, 400);
+            } catch (err) {
+                showAlert(err.message || 'Registration failed. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        }
+
+        // Initialize state on page load
+        (function init() {
+            updateHeaderState();
+            checkExistingSession();
+
+            // Support ?tab=register or URL hash #register
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('tab') === 'register' || window.location.hash === '#register') {
+                switchTab('register');
+            }
+        })();
+    </script>
+    </script>
+</body>
+
+</html>

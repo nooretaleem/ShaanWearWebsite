@@ -11,6 +11,7 @@
     const CART_KEY = 'shaanwear_cart';
     const COUPON_KEY = 'shaanwear_cart_coupon';
     const ORDER_KEY = 'shaanwear_last_order';
+    const SAVED_INFO_KEY = 'shaanwear_saved_checkout_info';
 
     const FREE_SHIPPING_THRESHOLD = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.freeShippingThreshold) || 4999;
     const STANDARD_SHIPPING_FEE = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.standardShippingFee) || 250;
@@ -160,6 +161,9 @@
         initCheckoutForm();
         initModalDismissal();
         initRealtimeInputValidation();
+        restoreSavedCheckoutInfo();
+        initSaveInfoHandler();
+        initCustomerAuthIntegration();
     }
 
     /* ---------- 4. RENDER ORDER SUMMARY ITEMS ---------- */
@@ -744,12 +748,14 @@
             // Construct payload according to backend createStorefrontOrder contract
             const orderPayload = {
                 shippingName: fullName,
-                email: email,
                 shippingPhone: phone,
-                shippingAddress: fullDeliveryAddress, // <--- CHANGE THIS LINE
+                shippingAddress: fullDeliveryAddress,
                 shippingCity: city,
                 shippingPostalCode: postal,
                 shippingCountry: 'Pakistan',
+                email: email,
+                customerEmail: email,
+                customerName: fullName,
                 paymentMethod: state.selectedPaymentMethod,
                 couponCode: state.appliedCoupon ? state.appliedCoupon.code : null,
                 items: state.items.map(item => ({
@@ -765,9 +771,17 @@
                 notes: ''
             };
             try {
+                const headers = { 'Content-Type': 'application/json' };
+                const token = window.ShaanwearAuth && typeof window.ShaanwearAuth.getToken === 'function'
+                    ? window.ShaanwearAuth.getToken()
+                    : (localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
                 const response = await fetch(`${API_BASE}/orders`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers,
                     body: JSON.stringify(orderPayload)
                 });
 
@@ -776,7 +790,12 @@
                 if (response.ok && data.success && data.data?.order) {
                     const verifiedOrder = data.data.order;
                     const orderReference = verifiedOrder.orderNumber;
-                    const liveTotal = fmtPrice(verifiedOrder.totalAmount);
+                    const rawTotal = (verifiedOrder.totalAmount != null && !isNaN(Number(verifiedOrder.totalAmount)))
+                        ? Number(verifiedOrder.totalAmount)
+                        : ((verifiedOrder.total != null && !isNaN(Number(verifiedOrder.total)))
+                            ? Number(verifiedOrder.total)
+                            : (state.subtotal + state.selectedShippingRate - state.discount));
+                    const liveTotal = fmtPrice(rawTotal);
 
                     // 5. Populate confirmation modal with authoritative server values
                     if (modalRef) modalRef.textContent = orderReference;
@@ -792,7 +811,7 @@
                         customer: fullName,
                         address: fullDeliveryAddress,
                         total: liveTotal,
-                        totalAmount: verifiedOrder.totalAmount,
+                        totalAmount: rawTotal,
                         shippingMethod: state.selectedShippingMethod,
                         paymentMethod: state.selectedPaymentMethod,
                         items: verifiedOrder.items || [...state.items]
@@ -802,6 +821,49 @@
                         localStorage.setItem(ORDER_KEY, JSON.stringify(orderRecord));
                     } catch (err) {
                         console.error('[Checkout] Error saving order record:', err);
+                    }
+
+                    // Handle "Save this information for next time"
+                    const saveCheckbox = qs('#checkoutSaveInfo');
+                    if (saveCheckbox && saveCheckbox.checked) {
+                        const checkoutInfo = {
+                            email,
+                            firstName,
+                            lastName,
+                            phone,
+                            address: street,
+                            apartment,
+                            city,
+                            postalCode: postal,
+                            marketing: qs('#checkoutMarketing')?.checked ?? true
+                        };
+                        try {
+                            localStorage.setItem(SAVED_INFO_KEY, JSON.stringify(checkoutInfo));
+                        } catch (_) {}
+
+                        // If authenticated, persist to address book in database
+                        if (token && street && city && phone) {
+                            fetch(`${API_BASE}/customer/addresses`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    name: fullName || 'Recipient',
+                                    phone: phone,
+                                    address: apartment ? `${street}, ${apartment}` : street,
+                                    city: city,
+                                    province: 'Punjab',
+                                    postalCode: postal || '',
+                                    isDefault: true
+                                })
+                            }).catch(err => console.warn('[Save address error]:', err.message));
+                        }
+                    } else if (saveCheckbox && !saveCheckbox.checked) {
+                        try {
+                            localStorage.removeItem(SAVED_INFO_KEY);
+                        } catch (_) {}
                     }
 
                     // 6. Open confirmation modal
@@ -838,6 +900,356 @@
                 completeBtn.innerHTML = originalBtnHTML;
             }
         });
+    }
+
+    /* ---------- 11b. "SAVE THIS INFORMATION FOR NEXT TIME" HANDLER ---------- */
+    function restoreSavedCheckoutInfo() {
+        const checkbox = qs('#checkoutSaveInfo');
+        try {
+            const raw = localStorage.getItem(SAVED_INFO_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            if (!data) return;
+
+            if (checkbox) checkbox.checked = true;
+
+            const emailInput = qs('#checkoutEmail');
+            if (emailInput && data.email && !emailInput.value.trim()) emailInput.value = data.email;
+
+            const fnInput = qs('#checkoutFirstName');
+            if (fnInput && data.firstName && !fnInput.value.trim()) fnInput.value = data.firstName;
+
+            const lnInput = qs('#checkoutLastName');
+            if (lnInput && data.lastName && !lnInput.value.trim()) lnInput.value = data.lastName;
+
+            const phoneInput = qs('#checkoutPhone');
+            if (phoneInput && data.phone && !phoneInput.value.trim()) phoneInput.value = data.phone;
+
+            const addrInput = qs('#checkoutAddress');
+            if (addrInput && data.address && !addrInput.value.trim()) addrInput.value = data.address;
+
+            const aptInput = qs('#checkoutApartment');
+            if (aptInput && data.apartment && !aptInput.value.trim()) aptInput.value = data.apartment;
+
+            const cityInput = qs('#checkoutCity');
+            if (cityInput && data.city && !cityInput.value.trim()) cityInput.value = data.city;
+
+            const postalInput = qs('#checkoutPostal');
+            if (postalInput && data.postalCode && !postalInput.value.trim()) postalInput.value = data.postalCode;
+
+            const mktCheckbox = qs('#checkoutMarketing');
+            if (mktCheckbox && typeof data.marketing === 'boolean') mktCheckbox.checked = data.marketing;
+        } catch (e) {
+            console.warn('[Checkout] Error restoring saved checkout info:', e);
+        }
+    }
+
+    function initSaveInfoHandler() {
+        const checkbox = qs('#checkoutSaveInfo');
+        if (!checkbox) return;
+
+        function persistIfChecked() {
+            if (!checkbox.checked) {
+                try { localStorage.removeItem(SAVED_INFO_KEY); } catch (_) {}
+                return;
+            }
+            const data = {
+                email: qs('#checkoutEmail')?.value.trim() || '',
+                firstName: qs('#checkoutFirstName')?.value.trim() || '',
+                lastName: qs('#checkoutLastName')?.value.trim() || '',
+                phone: qs('#checkoutPhone')?.value.trim() || '',
+                address: qs('#checkoutAddress')?.value.trim() || '',
+                apartment: qs('#checkoutApartment')?.value.trim() || '',
+                city: qs('#checkoutCity')?.value.trim() || '',
+                postalCode: qs('#checkoutPostal')?.value.trim() || '',
+                marketing: qs('#checkoutMarketing')?.checked ?? true
+            };
+            if (data.email || data.firstName || data.address || data.phone) {
+                try {
+                    localStorage.setItem(SAVED_INFO_KEY, JSON.stringify(data));
+                } catch (_) {}
+            }
+        }
+
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                persistIfChecked();
+            } else {
+                try { localStorage.removeItem(SAVED_INFO_KEY); } catch (_) {}
+            }
+        });
+
+        // Auto-save on blur/change of any delivery input
+        const inputSelectors = [
+            '#checkoutEmail', '#checkoutFirstName', '#checkoutLastName',
+            '#checkoutAddress', '#checkoutApartment', '#checkoutCity',
+            '#checkoutPostal', '#checkoutPhone'
+        ];
+        inputSelectors.forEach(sel => {
+            const input = qs(sel);
+            if (input) {
+                input.addEventListener('blur', persistIfChecked);
+                input.addEventListener('change', persistIfChecked);
+            }
+        });
+    }
+
+    /* ---------- 11c. CUSTOMER AUTHENTICATION & AUTO-FILL INTEGRATION ---------- */
+    async function autoFillCustomerDetails() {
+        const token = window.ShaanwearAuth && typeof window.ShaanwearAuth.getToken === 'function'
+            ? window.ShaanwearAuth.getToken()
+            : (localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
+
+        const isAuth = window.ShaanwearAuth && typeof window.ShaanwearAuth.isAuthenticated === 'function'
+            ? window.ShaanwearAuth.isAuthenticated()
+            : Boolean(token);
+
+        const statusEl = qs('#checkoutUserStatus') || qs('.checkout-section__login-link');
+
+        if (!isAuth || !token) {
+            if (statusEl) {
+                statusEl.innerHTML = `Already have an account? <a href="#" id="checkoutLoginLink">Log in</a>`;
+                const link = qs('#checkoutLoginLink', statusEl);
+                if (link) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const modal = qs('#checkoutLoginModal');
+                        if (modal) {
+                            modal.hidden = false;
+                            modal.classList.add('is-active');
+                        }
+                    });
+                }
+            }
+            return;
+        }
+
+        // Authenticated customer: fetch fresh profile & saved addresses
+        let user = null;
+        try {
+            const raw = localStorage.getItem('shaanwear_user');
+            if (raw) user = JSON.parse(raw);
+        } catch (_) {}
+
+        let defaultAddress = null;
+        try {
+            const [profileRes, addressesRes] = await Promise.allSettled([
+                fetch(`${API_BASE}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                }),
+                fetch(`${API_BASE}/customer/addresses`, {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                })
+            ]);
+
+            if (profileRes.status === 'fulfilled' && profileRes.value.ok) {
+                const pData = await profileRes.value.json();
+                if (pData.data?.user) {
+                    user = pData.data.user;
+                    localStorage.setItem('shaanwear_user', JSON.stringify(user));
+                }
+            }
+
+            if (addressesRes.status === 'fulfilled' && addressesRes.value.ok) {
+                const aData = await addressesRes.value.json();
+                const addresses = aData.data?.addresses || [];
+                if (addresses.length > 0) {
+                    defaultAddress = addresses.find(a => a.isDefault) || addresses[0];
+                }
+            }
+        } catch (fetchErr) {
+            console.warn('[Checkout Auto-Fill Warning]:', fetchErr.message);
+        }
+
+        // Update login header area to show logged in state with user email and logout button
+        if (statusEl && user) {
+            statusEl.innerHTML = `
+                <span class="checkout-user-status">
+                    Logged in as <strong>${user.email}</strong> · <button type="button" class="checkout-logout-btn" id="checkoutLogoutBtn">Log out</button>
+                </span>
+            `;
+            const logoutBtn = qs('#checkoutLogoutBtn', statusEl);
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.ShaanwearAuth && typeof window.ShaanwearAuth.clearSession === 'function') {
+                        window.ShaanwearAuth.clearSession();
+                    } else {
+                        localStorage.removeItem('shaanwear_access_token');
+                        localStorage.removeItem('shaanwear_token');
+                        localStorage.removeItem('shaanwear_user');
+                    }
+                    // Reset fields
+                    ['#checkoutEmail', '#checkoutFirstName', '#checkoutLastName', '#checkoutAddress', '#checkoutApartment', '#checkoutCity', '#checkoutPostal', '#checkoutPhone'].forEach(sel => {
+                        const el = qs(sel);
+                        if (el) el.value = '';
+                    });
+                    autoFillCustomerDetails();
+                });
+            }
+        }
+
+        // 1. Fill Email
+        const emailInput = qs('#checkoutEmail');
+        if (emailInput && user?.email && !emailInput.value.trim()) {
+            emailInput.value = user.email;
+        }
+
+        // 2. Resolve Name
+        const fullName = defaultAddress?.name || user?.name || '';
+        if (fullName) {
+            const parts = fullName.trim().split(/\s+/);
+            const firstName = parts[0] || '';
+            const lastName = parts.slice(1).join(' ') || '';
+
+            const fnInput = qs('#checkoutFirstName');
+            const lnInput = qs('#checkoutLastName');
+            if (fnInput && !fnInput.value.trim()) fnInput.value = firstName;
+            if (lnInput && !lnInput.value.trim()) lnInput.value = lastName;
+        }
+
+        // 3. Resolve Phone
+        const phone = defaultAddress?.phone || user?.phone || '';
+        const phoneInput = qs('#checkoutPhone');
+        if (phoneInput && phone && !phoneInput.value.trim()) {
+            phoneInput.value = phone;
+        }
+
+        // 4. Resolve Address fields if available
+        if (defaultAddress) {
+            const addressInput = qs('#checkoutAddress');
+            if (addressInput && defaultAddress.address && !addressInput.value.trim()) {
+                addressInput.value = defaultAddress.address;
+            }
+
+            const cityInput = qs('#checkoutCity');
+            if (cityInput && defaultAddress.city && !cityInput.value.trim()) {
+                cityInput.value = defaultAddress.city;
+            }
+
+            const postalInput = qs('#checkoutPostal');
+            if (postalInput && defaultAddress.postalCode && !postalInput.value.trim()) {
+                postalInput.value = defaultAddress.postalCode;
+            }
+        }
+    }
+
+    function initCustomerAuthIntegration() {
+        const modal = qs('#checkoutLoginModal');
+        const modalClose = qs('#checkoutLoginClose');
+        const modalGuest = qs('#checkoutLoginGuestBtn');
+        const loginForm = qs('#checkoutQuickLoginForm');
+        const alertEl = qs('#checkoutLoginAlert');
+        const emailInput = qs('#checkoutEmail');
+
+        function openLoginModal(e) {
+            if (e) e.preventDefault();
+            if (!modal) return;
+            const modalEmail = qs('#checkoutModalEmail');
+            if (modalEmail && emailInput && emailInput.value.trim() && !modalEmail.value) {
+                modalEmail.value = emailInput.value.trim();
+            }
+            if (alertEl) {
+                alertEl.hidden = true;
+                alertEl.textContent = '';
+            }
+            modal.hidden = false;
+            modal.classList.add('is-active');
+            const passInput = qs('#checkoutModalPassword');
+            if (modalEmail && !modalEmail.value) {
+                modalEmail.focus();
+            } else if (passInput) {
+                passInput.focus();
+            }
+        }
+
+        function closeLoginModal() {
+            if (!modal) return;
+            modal.classList.remove('is-active');
+            modal.hidden = true;
+        }
+
+        // Event delegation for opening login modal from any login link
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('#checkoutLoginLink, .checkout-section__login-link a');
+            if (link && !link.id?.includes('Logout')) {
+                openLoginModal(e);
+            }
+        });
+
+        if (modalClose) modalClose.addEventListener('click', closeLoginModal);
+        if (modalGuest) modalGuest.addEventListener('click', closeLoginModal);
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeLoginModal();
+            });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal && modal.classList.contains('is-active')) {
+                closeLoginModal();
+            }
+        });
+
+        // Form submit on Login Modal
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const emailVal = qs('#checkoutModalEmail')?.value.trim();
+                const passwordVal = qs('#checkoutModalPassword')?.value;
+                const submitBtn = qs('#checkoutLoginSubmitBtn');
+
+                if (!emailVal || !passwordVal) {
+                    if (alertEl) {
+                        alertEl.hidden = false;
+                        alertEl.textContent = 'Please enter both your email address and password.';
+                    }
+                    return;
+                }
+
+                try {
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span>SIGNING IN...</span>';
+                    }
+                    if (alertEl) alertEl.hidden = true;
+
+                    if (window.ShaanwearAuth && typeof window.ShaanwearAuth.login === 'function') {
+                        await window.ShaanwearAuth.login(emailVal, passwordVal);
+                    } else {
+                        const res = await fetch(`${API_BASE}/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: emailVal, password: passwordVal })
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error?.message || data.message || 'Login failed.');
+                        if (data.data?.accessToken || data.data?.token) {
+                            localStorage.setItem('shaanwear_access_token', data.data.accessToken || data.data.token);
+                            localStorage.setItem('shaanwear_token', data.data.accessToken || data.data.token);
+                        }
+                        if (data.data?.user) {
+                            localStorage.setItem('shaanwear_user', JSON.stringify(data.data.user));
+                        }
+                    }
+
+                    closeLoginModal();
+                    await autoFillCustomerDetails();
+                } catch (err) {
+                    if (alertEl) {
+                        alertEl.hidden = false;
+                        alertEl.textContent = err.message || 'Invalid email or password.';
+                    }
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<span>SIGN IN</span>';
+                    }
+                }
+            });
+        }
+
+        // Run auto-fill on initialization
+        autoFillCustomerDetails();
     }
 
     /* ---------- 12. MODAL DISMISSAL LOGIC ---------- */

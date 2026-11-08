@@ -273,17 +273,19 @@
         }
 
         /* wishlist */
+        const isWished = window.ShaanwearWishlist ? window.ShaanwearWishlist.has(p.id) : wished.has(p.id);
         const wish = el('button', 'tshirt-card__wish', {
             type: 'button',
-            'aria-label': 'Add ' + p.name + ' to wishlist',
-            'aria-pressed': wished.has(p.id) ? 'true' : 'false'
+            'data-wish-product-id': String(p.id),
+            'aria-label': (isWished ? 'Remove ' : 'Add ') + p.name + (isWished ? ' from wishlist' : ' to wishlist'),
+            'aria-pressed': isWished ? 'true' : 'false'
         });
-        if (wished.has(p.id)) wish.classList.add('is-active');
+        if (isWished) wish.classList.add('is-active');
         wish.appendChild(svg([HEART]));
         wish.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            toggleWish(p.id, wish, p.name);
+            toggleWish(p.id, wish, p.name, p);
         });
         media.appendChild(wish);
 
@@ -375,7 +377,15 @@
     }
 
     /* ---------- WISHLIST ---------- */
-    function toggleWish(id, btn, name) {
+    async function toggleWish(id, btn, name, productData) {
+        if (window.ShaanwearWishlist && typeof window.ShaanwearWishlist.toggle === 'function') {
+            const isNowWished = await window.ShaanwearWishlist.toggle(id, productData || { name });
+            btn.classList.toggle('is-active', isNowWished);
+            btn.setAttribute('aria-pressed', String(isNowWished));
+            btn.setAttribute('aria-label', (isNowWished ? 'Remove ' : 'Add ') + name + (isNowWished ? ' from wishlist' : ' to wishlist'));
+            return;
+        }
+
         const on = !wished.has(id);
         if (on) wished.add(id); else wished.delete(id);
         btn.classList.toggle('is-active', on);
@@ -427,6 +437,30 @@
         }
         saveStoredCart(stored);
         renderCart();
+
+        // Sync to backend if authenticated
+        const token = window.ShaanwearAuth && typeof window.ShaanwearAuth.getToken === 'function'
+            ? window.ShaanwearAuth.getToken()
+            : (localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
+        if (token) {
+            const apiBase = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'https://shaan-wear-backend.vercel.app/api';
+            fetch(`${apiBase}/customer/cart/items`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId: p.id,
+                    size: size,
+                    color: colorName,
+                    quantity: 1
+                })
+            }).catch(() => {});
+        }
+
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('shaanwear:cart-updated'));
 
         const cartToggle = document.getElementById('cartToggle');
         const minicart = document.getElementById('minicart');

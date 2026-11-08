@@ -307,9 +307,23 @@
             </div>
         </div>
     </footer>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
+    <script src="assets/js/utils/wishlist.js"></script>
     <script src="assets/js/data/products.js?v=2"></script>
     <script src="assets/js/modules/tshirts.js?v=2"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        // Redirect to live Customer Dashboard Wishlist
+        (function() {
+            const isAuth = window.ShaanwearAuth && window.ShaanwearAuth.isAuthenticated();
+            if (isAuth) {
+                window.location.replace('account.html#wishlist');
+            } else {
+                window.location.replace('login.html?redirect=' + encodeURIComponent('account.html#wishlist'));
+            }
+        })();
+    </script>
 </body>
 
 </html>

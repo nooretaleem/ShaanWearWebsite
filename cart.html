@@ -217,7 +217,8 @@
                     <div class="cart-shipping-banner" id="shippingBanner">
                         <div class="shipping-banner__text">
                             <span class="shipping-icon" aria-hidden="true">🚚</span>
-                            <span id="shippingBannerMsg">Add items to qualify for <strong>FREE Nationwide Delivery</strong></span>
+                            <span id="shippingBannerMsg">Add items to qualify for <strong>FREE Nationwide
+                                    Delivery</strong></span>
                         </div>
                         <div class="shipping-banner__bar">
                             <div class="shipping-banner__fill" id="shippingBannerFill" style="width: 0%;"></div>
@@ -244,7 +245,8 @@
                         <!-- Cart Note for Special Instructions -->
                         <div class="cart-note-box">
                             <label for="cartNoteInput" class="cart-note-box__label">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                 </svg>
@@ -258,14 +260,15 @@
                         <!-- Secure Shopping Guarantee Trust Badge -->
                         <div class="cart-trust-badge">
                             <div class="cart-trust-badge__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                     <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
                             <div class="cart-trust-badge__text">
                                 <h4>Secure Shopping Guarantee</h4>
-                                <p>Every order is safeguarded with 256-bit SSL encryption. 100% authentic surplus inspection with safe door-to-door delivery across Pakistan.</p>
+                                <!-- <p>Every order is safeguarded with 256-bit SSL encryption. 100% authentic surplus inspection with safe door-to-door delivery across Pakistan.</p> -->
                             </div>
                         </div>
 
@@ -319,7 +322,10 @@
                             <!-- CHECKOUT: Solid black background, white text -->
                             <a href="checkout.html" class="cart-btn-checkout" id="cartCheckoutBtn">
                                 <span>CHECKOUT</span>
-                                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"
+                                        fill="none" />
+                                </svg>
                             </a>
 
                             <!-- CONTINUE SHOPPING: Outlined/Transparent background, black border -->
@@ -340,18 +346,33 @@
     </main>
 
     <!-- ============================================================
-     SITE FOOTER (Exact copy from index.html)
+     FOOTER — SHAANWEAR Modern Minimalist Footer
      ============================================================ -->
     <footer class="site-footer">
         <div class="footer__container">
-            <!-- Top Section: 4 Columns Grid -->
-            <div class="footer__grid">
-                <!-- Column 1: Brand Info & Socials -->
-                <div class="footer__brand-col">
-                    <h3 class="footer__brand-title">SHAANWEAR</h3>
-                    <p class="footer__brand-text">
-                        Premium Everyday Fashion. Curating genuine export surplus, factory leftovers, and authentic
-                        wholesale apparel for modern everyday comfort.
+            <!-- Top Section: Newsletter Bar -->
+            <div class="footer__newsletter">
+                <div class="footer__newsletter-info">
+                    <h3 class="footer__newsletter-title">Newsletter</h3>
+                    <p class="footer__newsletter-text">Be the first one to know about discounts, offers and events</p>
+                </div>
+                <form class="footer__newsletter-form" onsubmit="event.preventDefault();">
+                    <div class="footer__input-group">
+                        <input type="email" class="footer__input" placeholder="Enter your email address..." required
+                            aria-label="Email address" />
+                        <button type="submit" class="footer__submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Main Section: 4-Column Grid -->
+            <div class="footer__main">
+                <!-- Column 1: Brand Info -->
+                <div class="footer__brand">
+                    <a href="index.html" class="footer__logo">SHAANWEAR</a>
+                    <p class="footer__brand-desc">
+                        SHAANWEAR is a registered trademark of SHAAN APPAREL and has been in the fashion industry since
+                        2026. We believe in satisfying customers through our quality and brilliant customer service.
                     </p>
                     <div class="footer__socials">
                         <!-- Facebook -->
@@ -396,7 +417,8 @@
                         <li><a href="#">Shipping & Handling</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
                         <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#sourcing-disclaimer" class="sourcing-disclaimer-trigger">Sourcing Disclaimer</a></li>
+                        <li><a href="#sourcing-disclaimer" class="sourcing-disclaimer-trigger">Sourcing Disclaimer</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -417,7 +439,7 @@
                 <div>
                     <h4 class="footer__heading">My Account</h4>
                     <ul class="footer__links">
-                        <li><a href="#">Login</a></li>
+                        <li><a href="login.html">Login / Register</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="#">FAQS</a></li>
                     </ul>
@@ -494,6 +516,8 @@
 
     <!-- Scripts -->
     <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
+    <script src="assets/js/utils/wishlist.js"></script>
     <script src="assets/js/data/products.js?v=2"></script>
     <script src="assets/js/modules/cart.js"></script>
     <script src="assets/js/main.js"></script>

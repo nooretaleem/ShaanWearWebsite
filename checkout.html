@@ -227,7 +227,7 @@
                     <section class="checkout-section" aria-labelledby="contactTitle">
                         <div class="checkout-section__head">
                             <h2 class="checkout-section__title" id="contactTitle">Contact Information</h2>
-                            <span class="checkout-section__login-link">Already have an account? <a href="#">Log in</a></span>
+                            <span class="checkout-section__login-link" id="checkoutUserStatus">Already have an account? <a href="#" id="checkoutLoginLink">Log in</a></span>
                         </div>
                         <div class="form-group">
                             <label for="checkoutEmail" class="form-label">Email Address</label>
@@ -515,8 +515,48 @@
         </div>
     </div>
 
+    <!-- ============================================================
+     CHECKOUT QUICK LOGIN MODAL
+     ============================================================ -->
+    <div class="checkout-login-modal" id="checkoutLoginModal" role="dialog" aria-modal="true" aria-labelledby="checkoutLoginTitle" hidden>
+        <div class="checkout-login-card">
+            <button type="button" class="checkout-login-close" id="checkoutLoginClose" aria-label="Close login dialog">&times;</button>
+            <div class="checkout-login-head">
+                <span class="checkout-login-eyebrow">SHAANWEAR ACCOUNT</span>
+                <h2 class="checkout-login-title" id="checkoutLoginTitle">Sign In to Your Account</h2>
+                <p class="checkout-login-sub">Sign in to automatically load your saved delivery addresses and order history.</p>
+            </div>
+
+            <div class="checkout-login-alert" id="checkoutLoginAlert" hidden></div>
+
+            <form id="checkoutQuickLoginForm" novalidate>
+                <div class="form-group">
+                    <label for="checkoutModalEmail" class="form-label">Email Address</label>
+                    <input type="email" id="checkoutModalEmail" class="form-input" placeholder="e.g. yourname@domain.com" required autocomplete="email" />
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label for="checkoutModalPassword" class="form-label" style="margin-bottom: 0;">Password</label>
+                        <a href="login.html?redirect=checkout.html" class="form-hint-link" style="font-size: 11.5px; color: #b79a68; text-decoration: none;">Forgot password?</a>
+                    </div>
+                    <input type="password" id="checkoutModalPassword" class="form-input" placeholder="Enter your password" required autocomplete="current-password" />
+                </div>
+
+                <button type="submit" class="checkout-login-btn" id="checkoutLoginSubmitBtn">
+                    <span>SIGN IN</span>
+                </button>
+            </form>
+
+            <div class="checkout-login-footer">
+                <p>New to SHAANWEAR? <a href="login.html?tab=register&redirect=checkout.html" class="checkout-login-register-link">Create an account</a></p>
+                <button type="button" class="checkout-login-guest-btn" id="checkoutLoginGuestBtn">Continue as Guest</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Script modules -->
     <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
     <script src="assets/js/modules/checkout.js"></script>
     <script src="assets/js/main.js"></script>
 </body>

@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="SHAANWEAR Customer Portal — Your account profile, preferences, orders, addresses, and wishlist." />
+    <title>Customer Dashboard — SHAANWEAR</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/sections/base.css" />
+    <link rel="stylesheet" href="assets/css/sections/navbar.css" />
+    <link rel="stylesheet" href="assets/css/sections/footer.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+        :root {
+            --dashboard-bg: #F8F7F4;
+            --card-border: rgba(229, 227, 222, 0.9);
+            --gold-accent: #B79A68;
+            --gold-hover: #9E8353;
+            --dark-charcoal: #111111;
+        }
+
+        .account-page {
+            min-height: calc(100vh - 240px);
+            padding: 50px 20px 100px;
+            background: var(--dashboard-bg);
+        }
+
+        .account-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Top Hero Profile Bar */
+        .account-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #E5E3DE;
+            margin-bottom: 36px;
+        }
+
+        .account-hero__titles {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .account-hero__eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold-accent);
+        }
+
+        .account-hero__title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #111111;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            background: transparent;
+            border: 1px solid #D5D2CA;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #333333;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-logout:hover {
+            background: #111111;
+            border-color: #111111;
+            color: #FFFFFF;
+        }
+
+        /* Two-column Dashboard Layout */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 36px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .account-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+
+        /* Sidebar Navigation */
+        .dashboard-sidebar {
+            background: #FFFFFF;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #F0EDE8;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #111111;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 2px solid var(--gold-accent);
+            flex-shrink: 0;
+        }
+
+        .sidebar-userinfo {
+            overflow: hidden;
+        }
+
+        .sidebar-userinfo__name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111111;
+            margin: 0 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-userinfo__email {
+            font-size: 12px;
+            color: #718096;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-sidebar {
+                position: static;
+                padding: 16px;
+            }
+
+            .sidebar-profile {
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 8px;
+            }
+
+            .sidebar-btn {
+                white-space: nowrap;
+                flex: 1;
+            }
+        }
+
+        .sidebar-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #4A5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .sidebar-btn__left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 1.8;
+            color: #718096;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-btn:hover {
+            background: #F7FAFC;
+            color: #111111;
+        }
+
+        .sidebar-btn:hover svg {
+            color: var(--gold-accent);
+        }
+
+        .sidebar-btn.is-active {
+            background: #111111;
+            color: #FFFFFF;
+        }
+
+        .sidebar-btn.is-active svg {
+            color: var(--gold-accent);
+        }
+
+        .sidebar-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 12px;
+            background: #EDF2F7;
+            color: #4A5568;
+            line-height: 1;
+        }
+
+        .sidebar-btn.is-active .sidebar-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+        }
+
+        /* Tab Content Panes */
+        .dashboard-tab {
+            display: none;
+        }
+
+        .dashboard-tab.is-active {
+            display: block;
+            animation: fadeInTab 0.3s ease;
+        }
+
+        @keyframes fadeInTab {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Generic Dashboard Card */
+        .dash-card {
+            background: #FFFFFF;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            margin-bottom: 24px;
+        }
+
+        .dash-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #F0EDE8;
+        }
+
+        .dash-card__title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #111111;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-dash-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #111111;
+            color: #FFFFFF;
+            border: 1px solid #111111;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-dash-primary:hover {
+            background: var(--gold-accent);
+            border-color: var(--gold-accent);
+            color: #FFFFFF;
+        }
+
+        .btn-dash-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: transparent;
+            color: #333333;
+            border: 1px solid #D5D2CA;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-dash-secondary:hover {
+            background: #F7FAFC;
+            border-color: #111111;
+            color: #111111;
+        }
+
+        /* Profile Row Table */
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #F0EDE8;
+            font-size: 13px;
+        }
+
+        .profile-row:last-child {
+            border-bottom: none;
+        }
+
+        .profile-label {
+            color: #718096;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .profile-value {
+            color: #111111;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-all;
+        }
+
+        /* Order Cards */
+        .order-filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-chip {
+            padding: 6px 14px;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            background: #FFFFFF;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #718096;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-chip.is-active,
+        .filter-chip:hover {
+            background: #111111;
+            border-color: #111111;
+            color: #FFFFFF;
+        }
+
+        .order-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            background: #FFFFFF;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .order-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #FAFAF8;
+            border-bottom: 1px solid #E2E8F0;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .order-card__meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .order-meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .order-meta-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #A0AEC0;
+        }
+
+        .order-meta-val {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .status-badge--unfulfilled,
+        .status-badge--pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-badge--processing {
+            background: #EBF8FF;
+            color: #2B6CB0;
+        }
+
+        .status-badge--shipped {
+            background: #EDE9FE;
+            color: #5B21B6;
+        }
+
+        .status-badge--delivered {
+            background: #DEF7EC;
+            color: #03543F;
+        }
+
+        .status-badge--cancelled {
+            background: #FDE8E8;
+            color: #9B1C1C;
+        }
+
+        .order-card__body {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .order-item-thumbnails {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            max-width: 500px;
+        }
+
+        .order-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 3px;
+            border: 1px solid #E2E8F0;
+            object-fit: cover;
+            background: #F7FAFC;
+            flex-shrink: 0;
+        }
+
+        .order-card__actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .order-total-preview {
+            text-align: right;
+        }
+
+        .order-total-preview span {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #718096;
+        }
+
+        .order-total-preview strong {
+            font-size: 16px;
+            color: #111111;
+        }
+
+        /* Pagination */
+        .dash-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        /* Address Book Grid */
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .address-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 22px;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .address-card.is-default {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 0 1px var(--gold-accent);
+        }
+
+        .default-pill {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: var(--gold-accent);
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+        }
+
+        .address-card__name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111111;
+            margin: 0 0 8px;
+        }
+
+        .address-card__lines {
+            font-size: 13px;
+            color: #4A5568;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .address-card__phone {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .address-card__actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-top: 1px solid #F0EDE8;
+            padding-top: 14px;
+        }
+
+        .btn-text-action {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--gold-accent);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .btn-text-action:hover {
+            color: #111111;
+            text-decoration: underline;
+        }
+
+        .btn-text-action--danger {
+            color: #E53E3E;
+        }
+
+        .btn-text-action--danger:hover {
+            color: #9B1C1C;
+        }
+
+        /* Address Form Box */
+        .address-form-box {
+            background: #FAFAF8;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 28px;
+            display: none;
+            animation: fadeInTab 0.25s ease;
+        }
+
+        .address-form-box.is-open {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group--full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #4A5568;
+        }
+
+        .form-input,
+        .form-select {
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid #CBD5E0;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #111111;
+            background: #FFFFFF;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #111111;
+        }
+
+        .form-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #4A5568;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Wishlist Grid */
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .wishlist-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            background: #FFFFFF;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .wishlist-card__image-wrap {
+            position: relative;
+            padding-top: 120%;
+            background: #F7FAFC;
+        }
+
+        .wishlist-card__image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-card__remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #718096;
+        }
+
+        .wishlist-card__remove:hover {
+            background: #E53E3E;
+            color: #FFFFFF;
+            border-color: #E53E3E;
+        }
+
+        .wishlist-card__body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .wishlist-card__category {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gold-accent);
+            margin-bottom: 4px;
+        }
+
+        .wishlist-card__title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111111;
+            margin: 0 0 8px;
+            line-height: 1.4;
+        }
+
+        .wishlist-card__price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 14px;
+        }
+
+        .btn-move-cart {
+            width: 100%;
+            padding: 10px;
+            background: #111111;
+            color: #FFFFFF;
+            border: 1px solid #111111;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-move-cart:hover {
+            background: var(--gold-accent);
+            border-color: var(--gold-accent);
+            color: #FFFFFF;
+        }
+
+        /* Order Details Modal */
+        .dash-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dash-modal.is-open {
+            display: flex;
+        }
+
+        .dash-modal__backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .dash-modal__content {
+            position: relative;
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            background: #FFFFFF;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            z-index: 2;
+            padding: 32px;
+            animation: modalPop 0.25s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .dash-modal__close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            line-height: 1;
+            color: #718096;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .dash-modal__close:hover {
+            color: #111111;
+        }
+
+        /* Modal Order Items Table */
+        .modal-item-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #F0EDE8;
+        }
+
+        .modal-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-item-img {
+            width: 56px;
+            height: 56px;
+            border-radius: 3px;
+            object-fit: cover;
+            background: #F7FAFC;
+            border: 1px solid #E2E8F0;
+            flex-shrink: 0;
+        }
+
+        .modal-item-details {
+            flex: 1;
+        }
+
+        .modal-item-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111111;
+            margin: 0 0 4px;
+        }
+
+        .modal-item-meta {
+            font-size: 11px;
+            color: #718096;
+        }
+
+        .modal-item-price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111111;
+            text-align: right;
+        }
+
+        /* Toast notifications */
+        .dash-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #111111;
+            color: #FFFFFF;
+            padding: 14px 22px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid var(--gold-accent);
+            animation: fadeInTab 0.3s ease;
+        }
+
+        .dash-toast.is-visible {
+            display: flex;
+        }
+
+        .empty-placeholder {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-placeholder svg {
+            width: 48px;
+            height: 48px;
+            color: #CBD5E0;
+            margin-bottom: 14px;
+        }
+
+        .empty-placeholder h4 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: #111111;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .empty-placeholder p {
+            margin: 0 0 20px;
+            font-size: 13px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header__top">
+            <div class="header__left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="index.html" class="header__logo-link" aria-label="SHAANWEAR Home">
+                    <img src="assets/images/logo/logo.png" alt="SHAANWEAR Logo" class="header__logo-img" />
+                </a>
+            </div>
+
+            <a href="index.html" class="logo" aria-label="SHAANWEAR — Home">
+                SHAANWEAR
+            </a>
+
+            <div class="header__actions">
+                <a href="account.html" class="icon-btn is-authenticated" id="accountBtn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21a8 8 0 0 1 16 0" />
+                    </svg>
+                </a>
+                <button class="icon-btn" id="wishToggle" aria-label="Wishlist" onclick="switchDashboardTab('wishlist')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6l8.8 8.8 8.8-8.8a5.4 5.4 0 0 0 0-7.6z" />
+                    </svg>
+                    <span class="badge" id="wishCount" hidden>0</span>
+                </button>
+                <a href="cart.html" class="icon-btn" id="cartToggle" aria-label="Shopping bag">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <path d="M3 6h18" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span class="badge" id="cartCount" hidden>0</span>
+                </a>
+            </div>
+        </div>
+
+        <nav class="header__nav-secondary" aria-label="Categories">
+            <a href="sweatshirts.html">Sweatshirts</a>
+            <a href="trousers.html">Trousers</a>
+            <a href="jackets.html">Jackets</a>
+            <a href="casual-shirts.html">Casual Shirts</a>
+            <a href="belts.html">Belts</a>
+            <a href="shop.html">Shop</a>
+        </nav>
+
+        <div class="backdrop" id="backdrop" hidden></div>
+
+        <!-- ============================================================
+       MOBILE NAV DRAWER
+       ============================================================ -->
+        <div class="mobile-nav" id="mobileNav" hidden aria-label="Mobile navigation">
+            <div class="mobile-nav__inner">
+                <div class="mobile-nav__head">
+                    <span class="mobile-nav__brand">SHAANWEAR</span>
+                    <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav__links">
+                    <a href="index.html">Home</a>
+                    <a href="sweatshirts.html">Sweatshirts</a>
+                    <a href="trousers.html">Trousers</a>
+                    <a href="jackets.html">Jackets</a>
+                    <a href="casual-shirts.html">Casual Shirts</a>
+                    <a href="belts.html">Belts</a>
+                    <span class="mobile-nav__divider"></span>
+                    <a href="jackets.html">Export Surplus</a>
+                    <a href="sweatshirts.html">Sweats Drop</a>
+                    <a href="account.html" style="font-weight: 700; color: var(--accent, #B79A68);">My Account</a>
+                </nav>
+                <div class="mobile-nav__foot">
+                    <span>Pakistan / PKR</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="account-page">
+        <div class="account-container">
+
+            <!-- Loading Spinner State -->
+            <div id="loadingIndicator" style="text-align: center; padding: 100px 0;">
+                <p style="font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #718096;">
+                    Loading your personalized dashboard...
+                </p>
+            </div>
+
+            <!-- Dashboard Root (shown upon auth resolution) -->
+            <div id="accountContent" style="display: none;">
+
+                <!-- Hero Header -->
+                <div class="account-hero">
+                    <div class="account-hero__titles">
+                        <span class="account-hero__eyebrow">Customer Portal</span>
+                        <h1 class="account-hero__title" id="greetingTitle">Customer Dashboard</h1>
+                    </div>
+                    <button type="button" class="btn-logout" onclick="handleLogout()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                        Sign Out
+                    </button>
+                </div>
+
+                <!-- Two-Column Layout -->
+                <div class="dashboard-layout">
+
+                    <!-- Left Sidebar -->
+                    <aside class="dashboard-sidebar">
+                        <div class="sidebar-profile">
+                            <div class="sidebar-avatar" id="avatarInitials">SW</div>
+                            <div class="sidebar-userinfo">
+                                <h3 class="sidebar-userinfo__name" id="sidebarName">Customer</h3>
+                                <p class="sidebar-userinfo__email" id="sidebarEmail">—</p>
+                            </div>
+                        </div>
+
+                        <nav class="sidebar-nav" aria-label="Dashboard Navigation">
+                            <button type="button" class="sidebar-btn is-active" data-tab="overview"
+                                onclick="switchDashboardTab('overview')">
+                                <span class="sidebar-btn__left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <circle cx="12" cy="8" r="4" />
+                                        <path d="M4 21a8 8 0 0 1 16 0" />
+                                    </svg>
+                                    Overview
+                                </span>
+                            </button>
+
+                            <button type="button" class="sidebar-btn" data-tab="orders"
+                                onclick="switchDashboardTab('orders')">
+                                <span class="sidebar-btn__left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                        <line x1="3" y1="6" x2="21" y2="6" />
+                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                    </svg>
+                                    Orders
+                                </span>
+                                <span class="sidebar-badge" id="badgeOrdersCount">0</span>
+                            </button>
+
+                            <button type="button" class="sidebar-btn" data-tab="addresses"
+                                onclick="switchDashboardTab('addresses')">
+                                <span class="sidebar-btn__left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                    Addresses
+                                </span>
+                                <span class="sidebar-badge" id="badgeAddressCount">0</span>
+                            </button>
+
+                            <button type="button" class="sidebar-btn" data-tab="wishlist"
+                                onclick="switchDashboardTab('wishlist')">
+                                <span class="sidebar-btn__left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                    </svg>
+                                    Wishlist
+                                </span>
+                                <span class="sidebar-badge" id="badgeWishlistCount">0</span>
+                            </button>
+                        </nav>
+                    </aside>
+
+                    <!-- Right Main Display Area -->
+                    <div class="dashboard-main">
+
+                        <!-- ========================================== -->
+                        <!-- TAB 1: OVERVIEW -->
+                        <!-- ========================================== -->
+                        <div class="dashboard-tab is-active" id="tab-overview">
+                            <div class="dash-card">
+                                <div class="dash-card__header">
+                                    <h2 class="dash-card__title">Personal Information</h2>
+                                </div>
+                                <div class="profile-row">
+                                    <span class="profile-label">Full Name</span>
+                                    <span class="profile-value" id="profileName">—</span>
+                                </div>
+                                <div class="profile-row">
+                                    <span class="profile-label">Email Address</span>
+                                    <span class="profile-value" id="profileEmail">—</span>
+                                </div>
+                                <div class="profile-row">
+                                    <span class="profile-label">Member Since</span>
+                                    <span class="profile-value" id="profileCreatedAt">—</span>
+                                </div>
+                                <!-- <div class="profile-row">
+                                    <span class="profile-label">Customer ID</span>
+                                    <span class="profile-value" id="profileId"
+                                        style="font-size: 11px; color: #718096;">—</span>
+                                </div> -->
+                            </div>
+
+                            <div class="dash-card">
+                                <div class="dash-card__header">
+                                    <h2 class="dash-card__title">Account & Security</h2>
+                                </div>
+                                <!-- <div class="profile-row">
+                                    <span class="profile-label">Status</span>
+                                    <span class="profile-value" style="color: #0E9F6E;">Verified Active</span>
+                                </div> -->
+                                <!-- <div class="profile-row">
+                                    <span class="profile-label">Auth Method</span>
+                                    <span class="profile-value">JWT Secure Session</span>
+                                </div> -->
+                                <div class="profile-row">
+                                    <span class="profile-label">Currency / Region</span>
+                                    <span class="profile-value">Pakistan (PKR)</span>
+                                </div>
+                            </div>
+
+                            <!-- Seasonal Surplus Banner -->
+                            <div class="dash-card" style="background: #111111; color: #FFFFFF; border: none;">
+                                <span
+                                    style="font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-accent); margin-bottom: 6px; display: block;">Exclusive
+                                    Surplus</span>
+                                <h3 style="font-size: 18px; margin: 0 0 8px; text-transform: uppercase;">Factory
+                                    Export Leftovers</h3>
+                                <p style="font-size: 13px; color: #A0AEC0; margin: 0 0 20px; line-height: 1.5;">
+                                    Browse authentic surplus pieces sourced directly from wholesale manufacturing
+                                    runs.
+                                </p>
+                                <a href="shop.html" class="btn-dash-primary"
+                                    style="background: var(--gold-accent); border-color: var(--gold-accent);">
+                                    Shop Collection &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- ========================================== -->
+                        <!-- TAB 2: ORDERS (OrderHistory Component) -->
+                        <!-- ========================================== -->
+                        <div class="dashboard-tab" id="tab-orders">
+                            <div class="dash-card">
+                                <div class="dash-card__header">
+                                    <h2 class="dash-card__title">Order History</h2>
+                                    <button type="button" class="btn-dash-secondary" onclick="loadOrderHistory()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                                        </svg>
+                                        Refresh
+                                    </button>
+                                </div>
+
+                                <!-- Filter Chips -->
+                                <div class="order-filter-bar">
+                                    <button type="button" class="filter-chip is-active" data-status=""
+                                        onclick="filterOrders(this, '')">All</button>
+                                    <button type="button" class="filter-chip" data-status="PENDING"
+                                        onclick="filterOrders(this, 'PENDING')">Pending</button>
+                                    <button type="button" class="filter-chip" data-status="PROCESSING"
+                                        onclick="filterOrders(this, 'PROCESSING')">Processing</button>
+                                    <button type="button" class="filter-chip" data-status="SHIPPED"
+                                        onclick="filterOrders(this, 'SHIPPED')">Shipped</button>
+                                    <button type="button" class="filter-chip" data-status="DELIVERED"
+                                        onclick="filterOrders(this, 'DELIVERED')">Delivered</button>
+                                </div>
+
+                                <!-- Orders Container -->
+                                <div id="ordersContainer">
+                                    <p style="text-align: center; color: #718096; padding: 40px 0;">Loading orders...
+                                    </p>
+                                </div>
+
+                                <!-- Pagination -->
+                                <div class="dash-pagination" id="ordersPagination" style="display: none;">
+                                    <button type="button" class="btn-dash-secondary" id="btnPrevOrders"
+                                        onclick="changeOrdersPage(-1)">Previous</button>
+                                    <span id="pageIndicator"
+                                        style="font-size: 13px; font-weight: 600; color: #4A5568;">Page 1</span>
+                                    <button type="button" class="btn-dash-secondary" id="btnNextOrders"
+                                        onclick="changeOrdersPage(1)">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================== -->
+                        <!-- TAB 3: ADDRESSES (AddressBook Component) -->
+                        <!-- ========================================== -->
+                        <div class="dashboard-tab" id="tab-addresses">
+                            <div class="dash-card">
+                                <div class="dash-card__header">
+                                    <h2 class="dash-card__title">Address Book</h2>
+                                    <button type="button" class="btn-dash-primary" onclick="toggleAddressForm()">
+                                        + Add New Address
+                                    </button>
+                                </div>
+
+                                <!-- Add Address Collapsible Form -->
+                                <div class="address-form-box" id="addressFormBox">
+                                    <h3
+                                        style="margin: 0 0 16px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: #111111;">
+                                        Add Shipping Destination
+                                    </h3>
+                                    <form id="newAddressForm" onsubmit="handleSaveAddress(event)">
+                                        <div class="form-grid">
+                                            <div class="form-group">
+                                                <label class="form-label" for="addrName">Recipient Full Name *</label>
+                                                <input type="text" id="addrName" class="form-input" required
+                                                    placeholder="e.g. Malik Hamza" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="addrPhone">Contact Phone *</label>
+                                                <input type="tel" id="addrPhone" class="form-input" required
+                                                    placeholder="e.g. 03001234567" />
+                                            </div>
+                                            <div class="form-group form-group--full">
+                                                <label class="form-label" for="addrStreet">Street / Flat / House
+                                                    Address *</label>
+                                                <input type="text" id="addrStreet" class="form-input" required
+                                                    placeholder="e.g. House 42, Street 7, Sector F-8/2" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="addrCity">City *</label>
+                                                <input type="text" id="addrCity" class="form-input" required
+                                                    placeholder="e.g. Islamabad, Lahore, Karachi" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="addrProvince">Province</label>
+                                                <select id="addrProvince" class="form-select">
+                                                    <option value="Punjab">Punjab</option>
+                                                    <option value="Sindh">Sindh</option>
+                                                    <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
+                                                    <option value="Balochistan">Balochistan</option>
+                                                    <option value="Islamabad Capital Territory">Islamabad Capital
+                                                        Territory</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="addrPostal">Postal Code</label>
+                                                <input type="text" id="addrPostal" class="form-input"
+                                                    placeholder="e.g. 44000" />
+                                            </div>
+                                            <div class="form-group form-group--full" style="margin-top: 6px;">
+                                                <label class="form-checkbox-label">
+                                                    <input type="checkbox" id="addrIsDefault" checked />
+                                                    Set as default shipping address
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 12px; margin-top: 20px;">
+                                            <button type="submit" class="btn-dash-primary" id="btnSaveAddress">
+                                                Save Address
+                                            </button>
+                                            <button type="button" class="btn-dash-secondary"
+                                                onclick="toggleAddressForm(false)">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Addresses Grid -->
+                                <div class="address-grid" id="addressGrid">
+                                    <p
+                                        style="text-align: center; color: #718096; padding: 40px 0; grid-column: 1 / -1;">
+                                        Loading saved addresses...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================== -->
+                        <!-- TAB 4: WISHLIST (Wishlist Component) -->
+                        <!-- ========================================== -->
+                        <div class="dashboard-tab" id="tab-wishlist">
+                            <div class="dash-card">
+                                <div class="dash-card__header">
+                                    <h2 class="dash-card__title">Saved Wishlist</h2>
+                                    <a href="shop.html" class="btn-dash-secondary">
+                                        + Browse More
+                                    </a>
+                                </div>
+
+                                <div class="wishlist-grid" id="wishlistGrid">
+                                    <p
+                                        style="text-align: center; color: #718096; padding: 40px 0; grid-column: 1 / -1;">
+                                        Loading wishlist items...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+     ORDER DETAILS MODAL COMPONENT
+     ============================================================ -->
+    <div class="dash-modal" id="orderModal" aria-hidden="true">
+        <div class="dash-modal__backdrop" onclick="closeOrderModal()"></div>
+        <div class="dash-modal__content" role="dialog" aria-labelledby="modalOrderTitle">
+            <button class="dash-modal__close" onclick="closeOrderModal()" aria-label="Close modal">&times;</button>
+            <div id="modalOrderBody">
+                <!-- Dynamically injected via getCustomerOrderById -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Luxury Toast Notification -->
+    <div class="dash-toast" id="dashToast">
+        <span id="toastMsg">Action completed successfully.</span>
+    </div>
+
+    <!-- ============================================================
+     FOOTER — SHAANWEAR Modern Minimalist Footer
+     ============================================================ -->
+    <footer class="site-footer">
+        <div class="footer__container">
+            <!-- Top Section: Newsletter Bar -->
+            <div class="footer__newsletter">
+                <div class="footer__newsletter-info">
+                    <h3 class="footer__newsletter-title">Newsletter</h3>
+                    <p class="footer__newsletter-text">Be the first one to know about discounts, offers and events</p>
+                </div>
+                <form class="footer__newsletter-form" onsubmit="event.preventDefault();">
+                    <div class="footer__input-group">
+                        <input type="email" class="footer__input" placeholder="Enter your email address..." required
+                            aria-label="Email address" />
+                        <button type="submit" class="footer__submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Main Section: 4-Column Grid -->
+            <div class="footer__main">
+                <!-- Column 1: Brand Info -->
+                <div class="footer__brand">
+                    <a href="index.html" class="footer__logo">SHAANWEAR</a>
+                    <p class="footer__brand-desc">
+                        SHAANWEAR is a registered trademark of SHAAN APPAREL and has been in the fashion industry since
+                        2026. We believe in satisfying customers through our quality and brilliant customer service.
+                    </p>
+                    <div class="footer__socials">
+                        <!-- Facebook -->
+                        <a href="#" class="footer__social-icon" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="#" class="footer__social-icon" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                        <!-- YouTube -->
+                        <a href="#" class="footer__social-icon" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                            </svg>
+                        </a>
+                        <!-- X / Twitter -->
+                        <a href="#" class="footer__social-icon" aria-label="X (Twitter)">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="footer__support">
+                        How can we help you, Let us know at <a href="mailto:cs@shaanwear.com.pk">cs@shaanwear.com.pk</a>
+                    </p>
+                </div>
+
+                <!-- Column 2: Help Links -->
+                <div>
+                    <h4 class="footer__heading">Help</h4>
+                    <ul class="footer__links">
+                        <li><a href="#">Exchange & Return</a></li>
+                        <li><a href="#">Shipping & Handling</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#sourcing-disclaimer" class="sourcing-disclaimer-trigger">Sourcing Disclaimer</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: About Links -->
+                <div>
+                    <h4 class="footer__heading">About</h4>
+                    <ul class="footer__links">
+                        <li><a href="#">Corporate Orders</a></li>
+                        <li><a href="#">Store Locator</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Career</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#sourcing-disclaimer" class="sourcing-disclaimer-trigger">About Our Stock</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: My Account Links -->
+                <div>
+                    <h4 class="footer__heading">My Account</h4>
+                    <ul class="footer__links">
+                        <li><a href="login.html">Login / Register</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="#">FAQS</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__divider"></div>
+
+            <!-- Bottom Section: Copyright & Payments -->
+            <div class="footer__bottom">
+                <div class="footer__copyright">
+                    Copyright © 2026 (Shaanwear) Shaan Apparel. All Rights Reserved.
+                </div>
+                <div class="footer__payments">
+                    <div class="footer__payment-icons">
+                        <!-- Visa Badge -->
+                        <span class="footer__payment-badge" title="Visa">
+                            <svg viewBox="0 0 36 24" width="36" height="24">
+                                <rect width="36" height="24" rx="3" fill="#FFFFFF" />
+                                <path fill="#1434CB"
+                                    d="M13.8 16.4h-2.2l1.4-8.6h2.2l-1.4 8.6zm7.8-8.4c-.4-.2-1.1-.3-2-.3-2.2 0-3.7 1.2-3.7 2.8 0 1.2 1.1 1.9 1.9 2.3.9.4 1.2.7 1.2 1.1 0 .6-.7.9-1.4.9-1 0-1.5-.1-2.3-.5l-.3-.2-.4 2.3c.6.3 1.8.5 3 .5 2.3 0 3.8-1.1 3.8-2.9 0-1-.6-1.7-2-2.4-.8-.4-1.3-.7-1.3-1.1 0-.4.4-.8 1.3-.8.8 0 1.4.2 1.8.4l.2.1.4-2.2zm4.8 6c.2-.5 1-2.7 1-2.7l.2.9s.4 2 .5 2.4h-1.7zm2.6-6.2h-1.7c-.5 0-.9.2-1.1.7l-3.1 7.4h2.3s.4-1 .4-1.2h2.8c.1.3.3 1.2.3 1.2h2l-1.9-8.1zm-18.4 0l-2.1 5.8-.2-1.2c-.4-1.4-1.6-3-3-3.7l1.9 7.2h2.3l3.4-8.1h-2.3z" />
+                                <path fill="#E5A93B" d="M6.3 7.8h-4.3c-.2 0-.4.1-.4.3 0 0 .7 3 2.8 6.4l2.8-6.7z" />
+                            </svg>
+                        </span>
+                        <!-- Mastercard Badge -->
+                        <span class="footer__payment-badge" title="Mastercard">
+                            <svg viewBox="0 0 36 24" width="36" height="24">
+                                <rect width="36" height="24" rx="3" fill="#FFFFFF" />
+                                <circle cx="13" cy="12" r="7" fill="#EB001B" />
+                                <circle cx="23" cy="12" r="7" fill="#F79E1B" />
+                                <path fill="#FF5F00"
+                                    d="M18 6.7A6.97 6.97 0 0 0 15.3 12c0 2.2.9 4.2 2.7 5.3A6.97 6.97 0 0 0 20.7 12c0-2.2-.9-4.2-2.7-5.3z" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="whatsapp-widget"
+        aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50" height="50">
+            <!-- Green Circle Background -->
+            <circle cx="12" cy="12" r="12" fill="#25D366" />
+
+            <!-- White WhatsApp Icon -->
+            <path fill="#FFFFFF"
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+    </a>
+
+    <!-- ============================================================
+     SOURCING DISCLAIMER MODAL OVERLAY
+     ============================================================ -->
+    <div class="disclaimer-modal" id="disclaimerModal" hidden aria-hidden="true">
+        <div class="disclaimer-modal__backdrop" id="disclaimerBackdrop"></div>
+        <div class="disclaimer-modal__content" role="dialog" aria-labelledby="disclaimerTitle">
+            <button class="disclaimer-modal__close" id="disclaimerClose" aria-label="Close modal">&times;</button>
+            <span class="disclaimer-modal__eyebrow">AUTHENTICITY & STOCK DISCLAIMER</span>
+            <h2 id="disclaimerTitle" class="disclaimer-modal__title">About Our Stock</h2>
+            <div class="disclaimer-modal__body">
+                <p><strong>Genuine Wholesale & Factory Surplus</strong></p>
+                <p>At SHAANWEAR, we curate genuine export leftovers, overstock, and factory surplus garments sourced
+                    directly from wholesale manufacturing channels.</p>
+                <p><strong>Official Distributor Notice</strong></p>
+                <p>Please note that while all items featured in our surplus section are authentic quality products
+                    sourced from wholesale market finds, <strong>SHAANWEAR is not an official distributor, authorized
+                        representative, or licensed agent for third-party brands</strong> featured in our surplus
+                    collection. All brand names, trademarks, and logos belong solely to their respective owners.</p>
+                <p>We believe in delivering maximum value to our customers through transparent sourcing and
+                    uncompromised quality service.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
+    <script src="assets/js/utils/wishlist.js"></script>
+    <script>
+        /* =====================================================
+           SHAANWEAR — Customer Dashboard State & Controllers
+           ===================================================== */
+        const state = {
+            user: null,
+            orders: [],
+            ordersPage: 1,
+            ordersTotalPages: 1,
+            ordersStatusFilter: '',
+            addresses: [],
+            wishlist: []
+        };
+
+        // Format PKR currency
+        const fmtPKR = (amount) => 'PKR ' + Number(amount || 0).toLocaleString('en-PK');
+
+        // Non-intrusive Toast
+        function showToast(msg) {
+            const toast = document.getElementById('dashToast');
+            const toastMsg = document.getElementById('toastMsg');
+            if (!toast || !toastMsg) return;
+            toastMsg.textContent = msg;
+            toast.classList.add('is-visible');
+            setTimeout(() => {
+                toast.classList.remove('is-visible');
+            }, 3500);
+        }
+
+        // Centralized API Caller with JWT Auth Token in Headers
+        async function apiCall(endpoint, options = {}) {
+            const token = window.ShaanwearAuth ? window.ShaanwearAuth.getToken() : null;
+            if (!token) {
+                window.location.replace('login.html');
+                throw new Error('Not authenticated');
+            }
+
+            const apiUrl = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl)
+                ? window.SHAANWEAR_CONFIG.apiUrl.replace(/\/+$/, '')
+                : 'http://localhost:5000/api';
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...(options.headers || {})
+            };
+
+            const response = await fetch(`${apiUrl}${endpoint}`, {
+                ...options,
+                headers
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    if (window.ShaanwearAuth) window.ShaanwearAuth.clearSession();
+                    window.location.replace('login.html');
+                }
+                throw new Error(data.error?.message || data.message || `Request failed (${response.status})`);
+            }
+
+            return data;
+        }
+
+        // Safe DOM Text Helper
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
+        // Tab Switching Engine
+        function switchDashboardTab(tabId) {
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.toggle('is-active', btn.dataset.tab === tabId);
+            });
+
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.classList.toggle('is-active', tab.id === `tab-${tabId}`);
+            });
+
+            // Update URL Hash without reload
+            if (history.replaceState) {
+                history.replaceState(null, null, `#${tabId}`);
+            }
+
+            // Lazy data hydration
+            if (tabId === 'orders' && !state.orders.length) loadOrderHistory();
+            if (tabId === 'addresses' && !state.addresses.length) loadAddresses();
+            if (tabId === 'wishlist') loadWishlist();
+        }
+        window.switchDashboardTab = switchDashboardTab;
+
+        /* =====================================================
+           1. ORDER HISTORY COMPONENT
+           ===================================================== */
+        async function loadOrderHistory() {
+            const container = document.getElementById('ordersContainer');
+            const pagination = document.getElementById('ordersPagination');
+            if (!container) return;
+
+            container.innerHTML = '<p style="text-align: center; color: #718096; padding: 40px 0;">Retrieving your orders...</p>';
+
+            try {
+                const query = new URLSearchParams({
+                    page: state.ordersPage,
+                    limit: 5,
+                    status: state.ordersStatusFilter
+                });
+
+                const res = await apiCall(`/customer/orders?${query.toString()}`);
+                state.orders = res.data?.orders || [];
+                const pag = res.data?.pagination || {};
+                state.ordersTotalPages = pag.totalPages || 1;
+
+                setText('badgeOrdersCount', pag.total || state.orders.length);
+
+                if (!state.orders.length) {
+                    container.innerHTML = `
+                        <div class="empty-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                            </svg>
+                            <h4>No Orders Found</h4>
+                            <p>You have not placed any orders matching this filter yet.</p>
+                            <a href="shop.html" class="btn-dash-primary">Explore Products</a>
+                        </div>
+                    `;
+                    if (pagination) pagination.style.display = 'none';
+                    return;
+                }
+
+                // Render Order Cards
+                container.innerHTML = state.orders.map(order => {
+                    const statusClass = `status-badge--${(order.fulfillmentStatus || 'pending').toLowerCase()}`;
+                    const dateFormatted = new Date(order.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    const thumbsHtml = order.items.map(it => `
+                        <img src="${it.thumbnail || 'assets/images/placeholder.jpg'}" alt="${it.productName}" class="order-thumb" title="${it.productName} (x${it.quantity})" />
+                    `).join('');
+
+                    return `
+                        <div class="order-card">
+                            <div class="order-card__header">
+                                <div class="order-card__meta">
+                                    <div class="order-meta-group">
+                                        <span class="order-meta-label">Order Number</span>
+                                        <span class="order-meta-val">${order.orderNumber}</span>
+                                    </div>
+                                    <div class="order-meta-group">
+                                        <span class="order-meta-label">Date Placed</span>
+                                        <span class="order-meta-val">${dateFormatted}</span>
+                                    </div>
+                                    <div class="order-meta-group">
+                                        <span class="order-meta-label">Delivery Status</span>
+                                        <span class="status-badge ${statusClass}">${order.fulfillmentStatus}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-card__body">
+                                <div class="order-item-thumbnails">
+                                    ${thumbsHtml}
+                                </div>
+                                <div class="order-card__actions">
+                                    <div class="order-total-preview">
+                                        <span>Total (${order.itemCount} items)</span>
+                                        <strong>${fmtPKR(order.total)}</strong>
+                                    </div>
+                                    <button type="button" class="btn-dash-primary" onclick="viewOrderDetails('${order.id}')">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Update pagination controls
+                if (pagination) {
+                    pagination.style.display = state.ordersTotalPages > 1 ? 'flex' : 'none';
+                    setText('pageIndicator', `Page ${state.ordersPage} of ${state.ordersTotalPages}`);
+                    document.getElementById('btnPrevOrders').disabled = state.ordersPage <= 1;
+                    document.getElementById('btnNextOrders').disabled = state.ordersPage >= state.ordersTotalPages;
+                }
+
+            } catch (err) {
+                container.innerHTML = `<p style="text-align: center; color: #E53E3E; padding: 30px;">Error loading orders: ${err.message}</p>`;
+            }
+        }
+
+        function filterOrders(btn, status) {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            state.ordersStatusFilter = status;
+            state.ordersPage = 1;
+            loadOrderHistory();
+        }
+
+        function changeOrdersPage(delta) {
+            const target = state.ordersPage + delta;
+            if (target >= 1 && target <= state.ordersTotalPages) {
+                state.ordersPage = target;
+                loadOrderHistory();
+            }
+        }
+
+        // View Order Details Modal
+        async function viewOrderDetails(orderId) {
+            const modal = document.getElementById('orderModal');
+            const body = document.getElementById('modalOrderBody');
+            if (!modal || !body) return;
+
+            body.innerHTML = '<p style="text-align: center; padding: 40px 0; color: #718096;">Fetching order details...</p>';
+            modal.classList.add('is-open');
+
+            try {
+                const res = await apiCall(`/customer/orders/${orderId}`);
+                const order = res.data?.order;
+                if (!order) throw new Error('Order details not found.');
+
+                const dateFormatted = new Date(order.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                body.innerHTML = `
+                    <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 16px; margin-bottom: 20px;">
+                        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-accent);">
+                            Order Details
+                        </span>
+                        <h2 style="font-size: 22px; font-weight: 700; margin: 4px 0 10px; color: #111111;">
+                            ${order.orderNumber}
+                        </h2>
+                        <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: #718096;">
+                            <span>Placed on: <strong>${dateFormatted}</strong></span>
+                            <span>Payment: <strong style="color: #0E9F6E;">${order.paymentStatus}</strong></span>
+                            <span>Fulfillment: <strong>${order.fulfillmentStatus}</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Address Snapshot -->
+                    <div style="background: #FAFAF8; border: 1px solid #E2E8F0; border-radius: 4px; padding: 16px; margin-bottom: 24px;">
+                        <h4 style="margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #111;">
+                            Delivery Destination
+                        </h4>
+                        <p style="margin: 0; font-size: 13px; color: #4A5568; line-height: 1.5;">
+                            <strong>${order.shippingDetails?.name || 'Customer'}</strong><br>
+                            ${order.shippingDetails?.address || ''}, ${order.shippingDetails?.city || ''} ${order.shippingDetails?.province || ''}<br>
+                            Phone: ${order.shippingDetails?.phone || '—'}
+                        </p>
+                    </div>
+
+                    <!-- Items List -->
+                    <h4 style="margin: 0 0 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #111;">
+                        Ordered Items (${order.items.length})
+                    </h4>
+                    <div style="margin-bottom: 24px;">
+                        ${order.items.map(item => `
+                            <div class="modal-item-row">
+                                <img src="${item.thumbnail || 'assets/images/placeholder.jpg'}" alt="${item.productName}" class="modal-item-img" />
+                                <div class="modal-item-details">
+                                    <h5 class="modal-item-name">${item.productName}</h5>
+                                    <div class="modal-item-meta">
+                                        ${item.size ? `Size: ${item.size}` : ''} 
+                                        ${item.color ? `| Color: ${item.color}` : ''}
+                                        | Qty: ${item.quantity}
+                                    </div>
+                                </div>
+                                <div class="modal-item-price">
+                                    ${fmtPKR(item.lineTotal)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Financial Summary -->
+                    <div style="background: #FAFAF8; padding: 16px; border-radius: 4px; border: 1px solid #E2E8F0;">
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                            <span style="color: #718096;">Subtotal</span>
+                            <span style="font-weight: 600;">${fmtPKR(order.financials?.subtotal)}</span>
+                        </div>
+                        ${order.financials?.discountAmount > 0 ? `
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: #E53E3E;">
+                                <span>Discount (${order.financials.discountCode || 'Applied'})</span>
+                                <span>-${fmtPKR(order.financials.discountAmount)}</span>
+                            </div>
+                        ` : ''}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px;">
+                            <span style="color: #718096;">Shipping Fee</span>
+                            <span style="font-weight: 600;">${order.financials?.shippingAmount === 0 ? 'FREE' : fmtPKR(order.financials?.shippingAmount)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; border-top: 1px solid #E2E8F0; padding-top: 10px; color: #111;">
+                            <span>Grand Total</span>
+                            <span>${fmtPKR(order.financials?.total)}</span>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                body.innerHTML = `<p style="text-align: center; color: #E53E3E; padding: 30px;">Error fetching details: ${err.message}</p>`;
+            }
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('orderModal');
+            if (modal) modal.classList.remove('is-open');
+        }
+
+        /* =====================================================
+           2. ADDRESS BOOK COMPONENT
+           ===================================================== */
+        function toggleAddressForm(forceOpen) {
+            const formBox = document.getElementById('addressFormBox');
+            if (!formBox) return;
+            const isOpen = forceOpen !== undefined ? forceOpen : !formBox.classList.contains('is-open');
+            formBox.classList.toggle('is-open', isOpen);
+            if (isOpen) {
+                document.getElementById('addrName')?.focus();
+            }
+        }
+
+        async function loadAddresses() {
+            const grid = document.getElementById('addressGrid');
+            if (!grid) return;
+
+            grid.innerHTML = '<p style="text-align: center; color: #718096; padding: 40px 0; grid-column: 1 / -1;">Retrieving addresses...</p>';
+
+            try {
+                const res = await apiCall('/customer/addresses');
+                state.addresses = res.data?.addresses || [];
+                setText('badgeAddressCount', state.addresses.length);
+
+                if (!state.addresses.length) {
+                    grid.innerHTML = `
+                        <div class="empty-placeholder" style="grid-column: 1 / -1;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <h4>No Saved Addresses</h4>
+                            <p>You haven't added any shipping addresses yet. Save your primary address for faster 1-click checkouts.</p>
+                            <button type="button" class="btn-dash-primary" onclick="toggleAddressForm(true)">Add New Address</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = state.addresses.map(addr => `
+                    <div class="address-card ${addr.isDefault ? 'is-default' : ''}">
+                        ${addr.isDefault ? '<span class="default-pill">Default Shipping</span>' : ''}
+                        <div>
+                            <h4 class="address-card__name">${addr.name}</h4>
+                            <div class="address-card__lines">
+                                ${addr.address}<br>
+                                ${addr.city}, ${addr.province || 'Punjab'} ${addr.postalCode || ''}
+                            </div>
+                            <div class="address-card__phone">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                ${addr.phone}
+                            </div>
+                        </div>
+
+                        <div class="address-card__actions">
+                            ${!addr.isDefault ? `
+                                <button type="button" class="btn-text-action" onclick="handleSetDefaultAddress('${addr.id}')">
+                                    Set as Default
+                                </button>
+                                <span>&bull;</span>
+                            ` : ''}
+                            <button type="button" class="btn-text-action btn-text-action--danger" onclick="handleDeleteAddress('${addr.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                grid.innerHTML = `<p style="text-align: center; color: #E53E3E; grid-column: 1 / -1;">Error loading addresses: ${err.message}</p>`;
+            }
+        }
+
+        async function handleSaveAddress(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSaveAddress');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            const payload = {
+                name: document.getElementById('addrName').value.trim(),
+                phone: document.getElementById('addrPhone').value.trim(),
+                address: document.getElementById('addrStreet').value.trim(),
+                city: document.getElementById('addrCity').value.trim(),
+                province: document.getElementById('addrProvince').value,
+                postalCode: document.getElementById('addrPostal').value.trim(),
+                isDefault: document.getElementById('addrIsDefault').checked
+            };
+
+            try {
+                await apiCall('/customer/addresses', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                showToast('New shipping address saved successfully!');
+                document.getElementById('newAddressForm').reset();
+                toggleAddressForm(false);
+                await loadAddresses();
+            } catch (err) {
+                alert(`Could not save address: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Address';
+            }
+        }
+
+        async function handleSetDefaultAddress(id) {
+            try {
+                await apiCall(`/customer/addresses/${id}/default`, { method: 'PATCH' });
+                showToast('Default shipping address updated.');
+                await loadAddresses();
+            } catch (err) {
+                alert(`Error setting default: ${err.message}`);
+            }
+        }
+
+        async function handleDeleteAddress(id) {
+            if (!confirm('Are you sure you want to remove this saved address?')) return;
+            try {
+                await apiCall(`/customer/addresses/${id}`, { method: 'DELETE' });
+                showToast('Address removed from address book.');
+                await loadAddresses();
+            } catch (err) {
+                alert(`Error deleting address: ${err.message}`);
+            }
+        }
+
+        /* =====================================================
+           3. WISHLIST & MOVE TO CART COMPONENT
+           ===================================================== */
+        async function loadWishlist() {
+            const grid = document.getElementById('wishlistGrid');
+            if (!grid) return;
+
+            grid.innerHTML = '<p style="text-align: center; color: #718096; padding: 40px 0; grid-column: 1 / -1;">Loading your saved items...</p>';
+
+            try {
+                const res = await apiCall('/customer/wishlist');
+                state.wishlist = res.data?.wishlist?.items || [];
+                setText('badgeWishlistCount', state.wishlist.length);
+
+                // Synchronize global Wishlist cache and header badge
+                if (window.ShaanwearWishlist) {
+                    window.ShaanwearWishlist.syncLocalIds(state.wishlist.map(i => i.productId));
+                }
+
+                if (!state.wishlist.length) {
+                    grid.innerHTML = `
+                        <div class="empty-placeholder" style="grid-column: 1 / -1;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                            <h4>Your Wishlist is Empty</h4>
+                            <p>Save surplus essentials you love while browsing to buy them whenever you're ready.</p>
+                            <a href="shop.html" class="btn-dash-primary">Browse New Arrivals</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = state.wishlist.map(item => `
+                    <div class="wishlist-card">
+                        <div class="wishlist-card__image-wrap">
+                            <img src="${item.image || 'assets/images/products/jackets/jacketcategory-01.jpg'}" alt="${item.name}" class="wishlist-card__image" onerror="this.onerror=null;this.src='assets/images/products/jackets/jacketcategory-01.jpg';" />
+                            <button type="button" class="wishlist-card__remove" onclick="handleRemoveWishlist('${item.productId}')" title="Remove from Wishlist">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="wishlist-card__body">
+                            <div>
+                                <span class="wishlist-card__category">${item.category || 'Collection'}</span>
+                                <h4 class="wishlist-card__title">${item.name}</h4>
+                            </div>
+                            <div>
+                                <div class="wishlist-card__price">${fmtPKR(item.basePrice)}</div>
+                                <button type="button" class="btn-move-cart" onclick="handleMoveToCart('${item.productId}')">
+                                    Move to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                grid.innerHTML = `<p style="text-align: center; color: #E53E3E; grid-column: 1 / -1;">Error loading wishlist: ${err.message}</p>`;
+            }
+        }
+
+        // Synchronize and persist cart item to localStorage for storefront / cart.html
+        function syncCartItemToLocalStorage(itemData) {
+            try {
+                const raw = localStorage.getItem('shaanwear_cart');
+                const cart = raw ? JSON.parse(raw) : [];
+                const pid = String(itemData.productId || itemData.id);
+                const color = itemData.color || (itemData.variants?.[0]?.color) || 'Standard';
+                const size = itemData.size || (itemData.variants?.[0]?.size) || 'M';
+                const price = Number(itemData.unitPrice || itemData.basePrice || itemData.price || 0);
+                const image = itemData.image || itemData.thumbnail || (itemData.variants?.[0]?.images?.[0]?.secureUrl) || 'assets/images/products/jackets/jacketcategory-01.jpg';
+                const name = itemData.name || itemData.productName || 'Garment';
+                const qty = Number(itemData.quantity || itemData.qty || 1);
+
+                const existingIndex = cart.findIndex(i => String(i.id) === pid && (i.color || 'Standard') === color && (i.size || 'M') === size);
+                if (existingIndex > -1) {
+                    cart[existingIndex].qty = (Number(cart[existingIndex].qty) || 1) + qty;
+                } else {
+                    cart.push({
+                        id: pid,
+                        name: name,
+                        price: price,
+                        color: color,
+                        size: size,
+                        item: '1 Piece',
+                        qty: qty,
+                        image: image
+                    });
+                }
+                localStorage.setItem('shaanwear_cart', JSON.stringify(cart));
+                updateDashboardCartBadge();
+                window.dispatchEvent(new Event('storage'));
+                window.dispatchEvent(new CustomEvent('shaanwear:cart-updated', { detail: { cart } }));
+                return cart;
+            } catch (e) {
+                console.warn('[Cart LocalStorage Sync Warning]:', e);
+                return [];
+            }
+        }
+
+        function updateDashboardCartBadge() {
+            try {
+                const raw = localStorage.getItem('shaanwear_cart');
+                const cart = raw ? JSON.parse(raw) : [];
+                const total = cart.reduce((sum, it) => sum + (Number(it.qty) || 1), 0);
+                document.querySelectorAll('#cartCount').forEach(badge => {
+                    badge.textContent = total;
+                    badge.hidden = total === 0;
+                });
+            } catch (_) {}
+        }
+
+        async function handleMoveToCart(productId) {
+            const wishItem = (state.wishlist || []).find(i => String(i.productId) === String(productId));
+            if (!wishItem) return;
+
+            const btn = document.querySelector(`button[onclick*="${productId}"]`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Moving...';
+            }
+
+            try {
+                // 1. Add ONLY this single clicked item to the customer's cart
+                syncCartItemToLocalStorage({
+                    productId: wishItem.productId,
+                    name: wishItem.name,
+                    basePrice: wishItem.basePrice,
+                    image: wishItem.image,
+                    color: wishItem.variants?.[0]?.color || 'Standard',
+                    size: wishItem.variants?.[0]?.size || 'M',
+                    quantity: 1
+                });
+
+                // 2. Persist moving ONLY this item to Backend Cart & Remove from DB Wishlist
+                await apiCall('/customer/wishlist/move-to-cart', {
+                    method: 'POST',
+                    body: JSON.stringify({ productId: wishItem.productId, quantity: 1 })
+                });
+
+                if (window.ShaanwearWishlist) {
+                    window.ShaanwearWishlist.removeLocalId(productId);
+                }
+
+                showToast(`Added "${wishItem.name}" to your bag!`);
+                await loadWishlist();
+            } catch (err) {
+                console.error('[Move to Cart Error]:', err);
+                if (window.ShaanwearWishlist) {
+                    window.ShaanwearWishlist.removeLocalId(productId);
+                }
+                showToast(`Added "${wishItem.name}" to your bag!`);
+                await loadWishlist();
+            }
+        }
+
+        async function handleRemoveWishlist(productId) {
+            try {
+                await apiCall(`/customer/wishlist/items/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (window.ShaanwearWishlist) {
+                    window.ShaanwearWishlist.removeLocalId(productId);
+                }
+                showToast('Item removed from wishlist.');
+                await loadWishlist();
+            } catch (err) {
+                alert(`Error removing item: ${err.message}`);
+            }
+        }
+
+        /* =====================================================
+           4. INITIALIZATION & AUTH GUARD
+           ===================================================== */
+        (async function initDashboard() {
+            // Guard: Check if authenticated
+            if (!window.ShaanwearAuth || !window.ShaanwearAuth.isAuthenticated()) {
+                window.location.replace('login.html');
+                return;
+            }
+
+            // Sync Header Account Button
+            const accountBtn = document.getElementById('accountBtn');
+            if (accountBtn) {
+                accountBtn.classList.add('is-authenticated');
+                accountBtn.addEventListener('click', (e) => {
+                    if (window.ShaanwearAuth && typeof window.ShaanwearAuth.handleAccountClick === 'function') {
+                        window.ShaanwearAuth.handleAccountClick(e);
+                    }
+                });
+            }
+
+            // Sync Header Cart badge with current cart in localStorage
+            updateDashboardCartBadge();
+
+            const loadingEl = document.getElementById('loadingIndicator');
+            const contentEl = document.getElementById('accountContent');
+
+            try {
+                // Fetch customer profile: GET /api/auth/me
+                const user = await window.ShaanwearAuth.fetchProfile();
+                if (!user) throw new Error('Could not retrieve user details.');
+
+                state.user = user;
+
+                // Populate User Display
+                setText('greetingTitle', `Welcome, ${user.name}`);
+                setText('sidebarName', user.name || 'Customer');
+                setText('sidebarEmail', user.email || '—');
+                setText('profileName', user.name || '—');
+                setText('profileEmail', user.email || '—');
+                setText('profileId', user.id || '—');
+
+                // Avatar initials (e.g. "MH")
+                const initials = (user.name || 'SW')
+                    .split(' ')
+                    .filter(Boolean)
+                    .map(p => p[0])
+                    .slice(0, 2)
+                    .join('')
+                    .toUpperCase();
+                setText('avatarInitials', initials || 'SW');
+
+                if (user.createdAt) {
+                    const date = new Date(user.createdAt);
+                    setText('profileCreatedAt', isNaN(date.getTime()) ? '—' : date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }));
+                }
+
+                // Eagerly prefetch counter badges
+                apiCall('/customer/orders?limit=1').then(res => {
+                    setText('badgeOrdersCount', res.data?.pagination?.total ?? 0);
+                }).catch(() => { });
+
+                apiCall('/customer/addresses').then(res => {
+                    state.addresses = res.data?.addresses || [];
+                    setText('badgeAddressCount', state.addresses.length);
+                }).catch(() => { });
+
+                apiCall('/customer/wishlist').then(res => {
+                    state.wishlist = res.data?.wishlist?.items || [];
+                    setText('badgeWishlistCount', state.wishlist.length);
+                }).catch(() => { });
+
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (contentEl) contentEl.style.display = 'block';
+
+                // Check URL Hash for initial active tab (e.g. #orders, #addresses, #wishlist)
+                const hashTab = (window.location.hash || '').replace('#', '').toLowerCase();
+                if (['orders', 'addresses', 'wishlist'].includes(hashTab)) {
+                    switchDashboardTab(hashTab);
+                }
+
+            } catch (err) {
+                console.error('[Dashboard Load Error]:', err);
+                if (err.isAuthError || err.status === 401 || err.status === 403) {
+                    if (window.ShaanwearAuth) window.ShaanwearAuth.clearSession();
+                    window.location.replace('login.html');
+                    return;
+                }
+
+                if (loadingEl) {
+                    loadingEl.innerHTML = `
+                        <div style="max-width: 520px; margin: 40px auto; padding: 28px; background: #FFF; border: 1px solid #E2E8F0; border-radius: 4px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+                            <h3 style="margin: 0 0 10px; font-size: 16px; color: #1A202C; text-transform: uppercase; letter-spacing: 0.08em;">Server Disconnected</h3>
+                            <p style="margin: 0 0 20px; font-size: 13px; color: #718096; line-height: 1.5;">
+                                Could not connect to API server at <code>${(window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'http://localhost:5000/api'}</code>.<br>
+                                Please verify your backend server is active.
+                            </p>
+                            <div style="display: flex; gap: 12px; justify-content: center;">
+                                <button onclick="window.location.reload()" class="btn-dash-primary">Retry</button>
+                                <button onclick="handleLogout()" class="btn-dash-secondary">Log Out</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        })();
+
+        async function handleLogout() {
+            if (confirm('Are you sure you want to sign out of your account?')) {
+                if (window.ShaanwearAuth) {
+                    await window.ShaanwearAuth.logout();
+                }
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeOrderModal();
+        });
+    </script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

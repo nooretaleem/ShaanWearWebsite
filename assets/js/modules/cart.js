@@ -86,6 +86,7 @@
         initContinueShopping();
         initStorageSync();
         updateHeaderCartCount();
+        reconcileRemoteCart();
     }
 
     /* ---------- 3. HEADER BADGE & MINICART SYNC ---------- */
@@ -327,6 +328,52 @@
         });
     }
 
+    function getAuthToken() {
+        return window.ShaanwearAuth && typeof window.ShaanwearAuth.getToken === 'function'
+            ? window.ShaanwearAuth.getToken()
+            : (localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
+    }
+
+    function syncRemoteRemove(item) {
+        const token = getAuthToken();
+        if (!token || !item) return;
+
+        const targetId = item.cartItemId || item.id;
+        fetch(`${API_BASE}/customer/cart/items/${encodeURIComponent(targetId)}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).catch(err => console.warn('[Cart Remote Remove Warning]:', err.message));
+    }
+
+    function syncRemoteQty(item, newQty) {
+        const token = getAuthToken();
+        if (!token || !item) return;
+
+        const targetId = item.cartItemId || item.id;
+        fetch(`${API_BASE}/customer/cart/items/${encodeURIComponent(targetId)}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantity: newQty })
+        }).catch(err => console.warn('[Cart Remote Qty Warning]:', err.message));
+    }
+
+    function syncRemoteClear() {
+        const token = getAuthToken();
+        if (!token) return;
+
+        fetch(`${API_BASE}/customer/cart`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).catch(err => console.warn('[Cart Remote Clear Warning]:', err.message));
+    }
+
     function updateItemQty(index, newQty) {
         if (!state.items[index]) return;
 
@@ -337,9 +384,11 @@
 
         if (newQty > 10) newQty = 10;
 
+        const targetItem = state.items[index];
         state.items[index].qty = newQty;
         saveStoredCart(state.items);
         renderCart();
+        syncRemoteQty(targetItem, newQty);
     }
 
     function removeItem(index) {
@@ -347,21 +396,22 @@
 
         const container = qs('#cart-items-container');
         const itemRow = qs(`.cart-item[data-index="${index}"]`, container);
-        const itemName = state.items[index].name;
+        const targetItem = state.items[index];
+        const itemName = targetItem.name;
 
-        if (itemRow) {
-            itemRow.classList.add('is-removing');
-            setTimeout(() => {
-                state.items.splice(index, 1);
-                saveStoredCart(state.items);
-                renderCart();
-                showToast(`Removed "${itemName}" from your cart`);
-            }, 200);
-        } else {
+        const doRemove = () => {
             state.items.splice(index, 1);
             saveStoredCart(state.items);
             renderCart();
-            showToast(`Removed item from your cart`);
+            syncRemoteRemove(targetItem);
+            showToast(`Removed "${itemName}" from your cart`);
+        };
+
+        if (itemRow) {
+            itemRow.classList.add('is-removing');
+            setTimeout(doRemove, 200);
+        } else {
+            doRemove();
         }
     }
 
@@ -622,9 +672,10 @@
     /* ---------- 9. CROSS-TAB STORAGE SYNC ---------- */
     function initStorageSync() {
         window.addEventListener('storage', (e) => {
-            if (e.key === CART_KEY) {
+            if (e.key === CART_KEY || !e.key) {
                 state.items = getStoredCart();
                 renderCart();
+                updateHeaderCartCount();
             } else if (e.key === NOTE_KEY) {
                 const noteInput = qs('#cartNoteInput');
                 if (noteInput && document.activeElement !== noteInput) {
@@ -632,6 +683,92 @@
                 }
             }
         });
+
+        window.addEventListener('shaanwear:cart-updated', () => {
+            state.items = getStoredCart();
+            renderCart();
+            updateHeaderCartCount();
+        });
+    }
+
+    async function reconcileRemoteCart() {
+        const token = getAuthToken();
+        if (!token) return;
+
+        try {
+            const res = await fetch(`${API_BASE}/customer/cart`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                const remoteItems = data.data?.cart?.items;
+                const localCart = getStoredCart();
+
+                if (Array.isArray(remoteItems) && remoteItems.length > 0) {
+                    const localMap = new Map();
+                    localCart.forEach(it => {
+                        const key = `${it.id}_${it.color || 'Standard'}_${it.size || 'M'}`;
+                        localMap.set(key, it);
+                    });
+
+                    remoteItems.forEach(it => {
+                        const key = `${it.productId}_${it.color || 'Standard'}_${it.size || 'M'}`;
+                        if (localMap.has(key)) {
+                            const loc = localMap.get(key);
+                            loc.cartItemId = it.id;
+                            loc.qty = Math.max(Number(loc.qty) || 1, Number(it.quantity) || 1);
+                        } else if (localCart.length > 0) {
+                            localMap.set(key, {
+                                id: it.productId,
+                                cartItemId: it.id,
+                                name: it.name,
+                                price: it.unitPrice,
+                                color: it.color || 'Standard',
+                                size: it.size || 'M',
+                                item: '1 Piece',
+                                qty: Number(it.quantity) || 1,
+                                image: it.image || 'assets/images/products/jackets/jacketcategory-01.jpg'
+                            });
+                        }
+                    });
+
+                    // If local cart was empty, only pull remote items if remote cart is active
+                    if (localCart.length === 0 && remoteItems.length > 0) {
+                        remoteItems.forEach(it => {
+                            const key = `${it.productId}_${it.color || 'Standard'}_${it.size || 'M'}`;
+                            localMap.set(key, {
+                                id: it.productId,
+                                cartItemId: it.id,
+                                name: it.name,
+                                price: it.unitPrice,
+                                color: it.color || 'Standard',
+                                size: it.size || 'M',
+                                item: '1 Piece',
+                                qty: Number(it.quantity) || 1,
+                                image: it.image || 'assets/images/products/jackets/jacketcategory-01.jpg'
+                            });
+                        });
+                    }
+
+                    const merged = Array.from(localMap.values());
+                    saveStoredCart(merged);
+                    state.items = merged;
+                    renderCart();
+                    updateHeaderCartCount();
+                } else if (Array.isArray(remoteItems) && remoteItems.length === 0 && localCart.length === 0) {
+                    state.items = [];
+                    saveStoredCart([]);
+                    renderCart();
+                    updateHeaderCartCount();
+                }
+            }
+        } catch (e) {
+            console.warn('[Cart Remote Reconcile Error]:', e.message);
+        }
     }
 
     /* ---------- 10. CONTINUE SHOPPING HANDLER ---------- */
@@ -695,6 +832,7 @@
             state.items = [];
             saveStoredCart([]);
             renderCart();
+            syncRemoteClear();
         }
     };
 

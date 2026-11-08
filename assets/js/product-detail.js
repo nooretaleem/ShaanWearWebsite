@@ -678,6 +678,30 @@
             updateCartHeaderCount();
             renderMiniCartContent();
 
+            // Sync to backend if authenticated
+            const token = window.ShaanwearAuth && typeof window.ShaanwearAuth.getToken === 'function'
+                ? window.ShaanwearAuth.getToken()
+                : (localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
+            if (token) {
+                const apiBase = (window.SHAANWEAR_CONFIG && window.SHAANWEAR_CONFIG.apiUrl) || 'https://shaan-wear-backend.vercel.app/api';
+                fetch(`${apiBase}/customer/cart/items`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: cartItem.id,
+                        size: cartItem.size,
+                        color: cartItem.color,
+                        quantity: cartItem.qty
+                    })
+                }).catch(() => {});
+            }
+
+            window.dispatchEvent(new Event('storage'));
+            window.dispatchEvent(new CustomEvent('shaanwear:cart-updated'));
+
             // Button visual feedback
             const originalText = addBtn.innerHTML;
             addBtn.classList.add('is-added');

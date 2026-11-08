@@ -118,19 +118,24 @@
         else if (!mobileNav.hidden) closeMobile();
     });
 
-    /* ---------- 6. WISHLIST (visual only) ---------- */
+    /* ---------- 6. WISHLIST NAVIGATION ---------- */
     const wishToggle = qs('#wishToggle');
-    const wishCount = qs('#wishCount');
-    let wishTotal = 0;
 
-    wishToggle?.addEventListener('click', () => {
-        wishTotal = wishTotal === 0 ? 1 : 0;
-        wishToggle.classList.toggle('is-active', wishTotal > 0);
-        wishToggle.classList.add('is-bump');
-        setTimeout(() => wishToggle.classList.remove('is-bump'), 400);
+    wishToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.ShaanwearWishlist && typeof window.ShaanwearWishlist.handleWishlistHeaderClick === 'function') {
+            window.ShaanwearWishlist.handleWishlistHeaderClick(e);
+        } else {
+            const isAuth = window.ShaanwearAuth && typeof window.ShaanwearAuth.isAuthenticated === 'function'
+                ? window.ShaanwearAuth.isAuthenticated()
+                : !!(localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token'));
 
-        wishCount.textContent = wishTotal;
-        wishCount.hidden = wishTotal === 0;
+            if (isAuth) {
+                window.location.href = 'account.html#wishlist';
+            } else {
+                window.location.href = 'login.html?redirect=' + encodeURIComponent('account.html#wishlist');
+            }
+        }
     });
 
     /* ---------- 7. SOURCING DISCLAIMER MODAL ---------- */
@@ -164,4 +169,38 @@
     [searchPanel, minicart, backdrop, mobileNav, disclaimerModal].forEach(el => {
         if (el) el.style.visibility = 'visible';
     });
+
+    /* ---------- 9. CUSTOMER PROFILE (PERSON ICON) ROUTING ---------- */
+    const accountButtons = qsa('#accountBtn, a.icon-btn[aria-label="Account"]');
+    accountButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.ShaanwearAuth && typeof window.ShaanwearAuth.handleAccountClick === 'function') {
+                window.ShaanwearAuth.handleAccountClick(e);
+            } else {
+                const token = localStorage.getItem('shaanwear_access_token') || localStorage.getItem('shaanwear_token');
+                window.location.href = token ? 'account.html' : 'login.html';
+            }
+        });
+    });
+
+    // Visual authentication state update on header icon
+    function syncAuthBadge() {
+        const isAuth = window.ShaanwearAuth ? window.ShaanwearAuth.isAuthenticated() : false;
+        const user = window.ShaanwearAuth ? window.ShaanwearAuth.getUser() : null;
+        accountButtons.forEach(btn => {
+            if (isAuth && user) {
+                btn.setAttribute('title', `Logged in as ${user.name}`);
+                btn.setAttribute('aria-label', `Account (${user.name})`);
+                btn.classList.add('is-authenticated');
+            } else {
+                btn.setAttribute('title', 'Sign In / Register');
+                btn.setAttribute('aria-label', 'Account');
+                btn.classList.remove('is-authenticated');
+            }
+        });
+    }
+
+    syncAuthBadge();
+    window.addEventListener('shaanwear:auth-changed', syncAuthBadge);
 })();
