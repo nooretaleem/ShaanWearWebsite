@@ -52,16 +52,38 @@
     const minicartContinue = qs('#minicartContinue');
     const backdrop = qs('#backdrop');
 
+    /* ---------- 4. MOBILE NAV ---------- */
+    const mobileNav = qs('#mobileNav');
+    const hamburger = qs('#hamburger');
+    const mobileClose = qs('#mobileClose');
+
+    // Move overlays to direct children of body to avoid backdrop-filter and stacking-context traps from <header>
+    [searchPanel, minicart, backdrop, mobileNav].forEach(el => {
+        if (el && el.parentElement && el.parentElement !== document.body) {
+            document.body.appendChild(el);
+        }
+    });
+
     function openCart() {
         if (!minicart) return;
         closeSearch(); closeMobile();
         minicart.hidden = false;
-        if (backdrop) backdrop.hidden = false;
+        minicart.classList.add('is-open');
+        if (backdrop) {
+            backdrop.hidden = false;
+            backdrop.classList.add('is-open');
+        }
         cartToggle?.setAttribute('aria-expanded', 'true');
     }
     function closeCart() {
-        if (minicart) minicart.hidden = true;
-        if (backdrop && (!mobileNav || mobileNav.hidden)) backdrop.hidden = true;
+        if (minicart) {
+            minicart.classList.remove('is-open');
+            minicart.hidden = true;
+        }
+        if (backdrop && (!mobileNav || !mobileNav.classList.contains('is-open'))) {
+            backdrop.classList.remove('is-open');
+            backdrop.hidden = true;
+        }
         cartToggle?.setAttribute('aria-expanded', 'false');
     }
     cartToggle?.addEventListener('click', () => {
@@ -69,7 +91,8 @@
             window.location.href = 'cart.html';
             return;
         }
-        minicart.hidden ? openCart() : closeCart();
+        const isOpen = minicart.classList.contains('is-open') && !minicart.hidden;
+        isOpen ? closeCart() : openCart();
     });
     minicartX?.addEventListener('click', closeCart);
     minicart?.addEventListener('click', (e) => {
@@ -87,32 +110,45 @@
     });
     backdrop?.addEventListener('click', () => { closeCart(); closeSearch(); closeMobile(); });
 
-    /* ---------- 4. MOBILE NAV ---------- */
-    const mobileNav = qs('#mobileNav');
-    const hamburger = qs('#hamburger');
-    const mobileClose = qs('#mobileClose');
-
     function openMobile() {
         closeSearch(); closeCart();
-        if (mobileNav) mobileNav.hidden = false;
-        if (backdrop) backdrop.hidden = false;
+        if (mobileNav) {
+            mobileNav.hidden = false;
+            mobileNav.classList.add('is-open');
+        }
+        if (backdrop) {
+            backdrop.hidden = false;
+            backdrop.classList.add('is-open');
+        }
         hamburger?.classList.add('is-open');
         hamburger?.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
     }
     function closeMobile() {
-        if (!mobileNav) return;
-        mobileNav.hidden = true;
-        if (backdrop && (!minicart || minicart.hidden)) backdrop.hidden = true;
+        if (mobileNav) {
+            mobileNav.classList.remove('is-open');
+            mobileNav.hidden = true;
+        }
+        if (backdrop && (!minicart || !minicart.classList.contains('is-open'))) {
+            backdrop.classList.remove('is-open');
+            backdrop.hidden = true;
+        }
         hamburger?.classList.remove('is-open');
         hamburger?.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
-    hamburger?.addEventListener('click', () => {
+    hamburger?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (!mobileNav) return;
-        mobileNav.hidden ? openMobile() : closeMobile();
+        const isOpen = mobileNav.classList.contains('is-open') && !mobileNav.hidden;
+        isOpen ? closeMobile() : openMobile();
     });
-    mobileClose?.addEventListener('click', closeMobile);
+    mobileClose?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMobile();
+    });
     qsa('.mobile-nav__links a').forEach(a =>
         a.addEventListener('click', closeMobile)
     );
@@ -121,8 +157,8 @@
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         if (searchPanel && !searchPanel.hidden) closeSearch();
-        else if (minicart && !minicart.hidden) closeCart();
-        else if (mobileNav && !mobileNav.hidden) closeMobile();
+        else if (minicart && minicart.classList.contains('is-open')) closeCart();
+        else if (mobileNav && mobileNav.classList.contains('is-open')) closeMobile();
     });
 
     /* ---------- 6. WISHLIST NAVIGATION ---------- */
@@ -174,7 +210,7 @@
 
     /* ---------- 8. Prevent flash of hidden panels ---------- */
     [searchPanel, minicart, backdrop, mobileNav, disclaimerModal].forEach(el => {
-        if (el) el.style.visibility = 'visible';
+        if (el && el.style.visibility) el.style.visibility = '';
     });
 
     /* ---------- 9. CUSTOMER PROFILE (PERSON ICON) ROUTING ---------- */
