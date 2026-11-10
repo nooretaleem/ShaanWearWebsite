@@ -116,10 +116,17 @@
 
         .account-page,
         .account-container,
+        #accountContent,
         .dashboard-layout,
+        .dashboard-sidebar,
+        .dashboard-main,
+        .dashboard-tab,
         .dash-card,
+        .address-grid,
         .address-card,
-        .order-card {
+        .order-card,
+        .wishlist-grid,
+        .wishlist-card {
             box-sizing: border-box;
             max-width: 100%;
             min-width: 0;
@@ -584,25 +591,35 @@
             box-shadow: 0 0 0 1px var(--gold-accent);
         }
 
-        .default-pill {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            background: var(--gold-accent);
-            color: #FFFFFF;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 2px;
+        .address-card__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
         .address-card__name {
             font-size: 15px;
             font-weight: 700;
             color: #111111;
-            margin: 0 0 8px;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .default-pill {
+            position: static;
+            background: var(--gold-accent);
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: inline-block;
         }
 
         .address-card__lines {
@@ -1344,25 +1361,36 @@
            ---------------------------------------------------- */
         @media (max-width: 640px) {
             .account-page {
-                padding: 16px 12px 50px;
+                padding: 16px 12px 100px;
+                overflow-x: hidden;
             }
 
             .account-hero {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
                 gap: 12px;
-                margin-bottom: 16px;
-                padding-bottom: 14px;
+                margin-bottom: 14px;
+                padding-bottom: 12px;
             }
 
             .account-hero__title {
-                font-size: 19px;
+                font-size: 16px;
+                line-height: 1.25;
+            }
+
+            .account-hero__eyebrow {
+                font-size: 9.5px;
+                letter-spacing: 0.14em;
             }
 
             .btn-logout {
-                width: 100%;
+                width: auto;
                 justify-content: center;
-                padding: 10px 16px;
+                padding: 7px 12px;
+                font-size: 10.5px;
+                letter-spacing: 0.06em;
+                flex-shrink: 0;
             }
 
             .dash-card {
@@ -1371,25 +1399,34 @@
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
+                overflow: hidden;
             }
 
             .dash-card__header {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
                 gap: 10px;
                 width: 100%;
                 box-sizing: border-box;
+                flex-wrap: wrap;
+            }
+
+            .dash-card__title {
+                font-size: 14px;
+                margin: 0;
             }
 
             .dash-card__header .btn-dash-primary,
             .dash-card__header .btn-dash-secondary {
-                width: 100%;
+                width: auto;
                 max-width: 100%;
                 justify-content: center;
-                padding: 11px 14px;
+                padding: 8px 14px;
                 font-size: 11px;
-                letter-spacing: 0.08em;
+                letter-spacing: 0.06em;
                 box-sizing: border-box;
+                white-space: nowrap;
             }
 
             /* Overview Profile Rows */
@@ -1750,11 +1787,27 @@
         }
 
         /* ----------------------------------------------------
-           4. Ultra-Compact Mobile Phones (<= 360px)
+           4. Ultra-Compact Mobile Phones (<= 380px)
            ---------------------------------------------------- */
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
             .account-page {
-                padding: 14px 8px 40px;
+                padding: 14px 8px 90px;
+            }
+
+            .dash-card__header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dash-card__header .btn-dash-primary,
+            .dash-card__header .btn-dash-secondary {
+                width: 100%;
+            }
+
+            .address-card__top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
             }
 
             .wishlist-grid {
@@ -2422,6 +2475,17 @@
         // Format PKR currency
         const fmtPKR = (amount) => 'PKR ' + Number(amount || 0).toLocaleString('en-PK');
 
+        // Safe HTML entity escaper
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // Non-intrusive Toast
         function showToast(msg) {
             const toast = document.getElementById('dashToast');
@@ -2489,8 +2553,13 @@
                 tab.classList.toggle('is-active', tab.id === `tab-${tabId}`);
             });
 
-            if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
-                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            // Smoothly scroll the tab pill within its nav container only (NEVER window)
+            if (activeBtn) {
+                const nav = activeBtn.closest('.sidebar-nav');
+                if (nav) {
+                    const left = activeBtn.offsetLeft - (nav.clientWidth / 2) + (activeBtn.clientWidth / 2);
+                    nav.scrollTo({ left, behavior: 'smooth' });
+                }
             }
 
             // Update URL Hash without reload
@@ -2498,10 +2567,16 @@
                 history.replaceState(null, null, `#${tabId}`);
             }
 
-            // Lazy data hydration
-            if (tabId === 'orders' && !state.orders.length) loadOrderHistory();
-            if (tabId === 'addresses' && !state.addresses.length) loadAddresses();
-            if (tabId === 'wishlist') loadWishlist();
+            // Data hydration & render on tab switch
+            if (tabId === 'orders') {
+                if (!state.orders.length) loadOrderHistory();
+            }
+            if (tabId === 'addresses') {
+                loadAddresses();
+            }
+            if (tabId === 'wishlist') {
+                loadWishlist();
+            }
         }
         window.switchDashboardTab = switchDashboardTab;
 
@@ -2739,65 +2814,134 @@
             }
         }
 
-        async function loadAddresses() {
+        function extractAddresses(res) {
+            if (!res) return [];
+            if (Array.isArray(res.data?.addresses)) return res.data.addresses;
+            if (Array.isArray(res.addresses)) return res.addresses;
+            if (Array.isArray(res.data)) return res.data;
+            if (Array.isArray(res)) return res;
+            return [];
+        }
+
+        function renderAddresses() {
             const grid = document.getElementById('addressGrid');
             if (!grid) return;
+
+            const list = state.addresses || [];
+            setText('badgeAddressCount', list.length);
+
+            if (!list.length) {
+                grid.innerHTML = `
+                    <div class="empty-placeholder" style="grid-column: 1 / -1;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <h4>No Saved Addresses</h4>
+                        <p>You haven't added any shipping addresses yet. Save your primary address for faster 1-click checkouts.</p>
+                        <button type="button" class="btn-dash-primary" onclick="toggleAddressForm(true)">+ Add New Address</button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(addr => {
+                const addrId = addr.id || addr._id || '';
+                const name = escapeHtml(addr.name || addr.fullName || 'Recipient');
+                const street = escapeHtml(addr.address || addr.street || '');
+                const city = escapeHtml(addr.city || '');
+                const province = escapeHtml(addr.province || 'Punjab');
+                const postal = escapeHtml(addr.postalCode || addr.postal || '');
+                const phone = escapeHtml(addr.phone || addr.phoneNumber || '');
+                const isDefault = Boolean(addr.isDefault);
+
+                return `
+                    <div class="address-card ${isDefault ? 'is-default' : ''}">
+                        <div>
+                            <div class="address-card__top">
+                                <h4 class="address-card__name">${name}</h4>
+                                ${isDefault ? '<span class="default-pill">Default Shipping</span>' : ''}
+                            </div>
+                            <div class="address-card__lines">
+                                ${street}<br>
+                                ${city}${province ? ', ' + province : ''} ${postal}
+                            </div>
+                            ${phone ? `
+                                <div class="address-card__phone">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                    ${phone}
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="address-card__actions">
+                            ${!isDefault ? `
+                                <button type="button" class="btn-text-action" onclick="handleSetDefaultAddress('${addrId}')">
+                                    Set as Default
+                                </button>
+                                <span>&bull;</span>
+                            ` : ''}
+                            <button type="button" class="btn-text-action btn-text-action--danger" onclick="handleDeleteAddress('${addrId}')">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadAddresses(force = false) {
+            const grid = document.getElementById('addressGrid');
+            if (!grid) return;
+
+            // Immediate render from cache if available and not forced
+            if (state.addresses && state.addresses.length > 0 && !force) {
+                renderAddresses();
+                return;
+            }
 
             grid.innerHTML = '<p style="text-align: center; color: #718096; padding: 40px 0; grid-column: 1 / -1;">Retrieving addresses...</p>';
 
             try {
                 const res = await apiCall('/customer/addresses');
-                state.addresses = res.data?.addresses || [];
-                setText('badgeAddressCount', state.addresses.length);
+                state.addresses = extractAddresses(res);
 
+                // If user has 0 saved addresses in DB, check if they saved info during checkout in localStorage
                 if (!state.addresses.length) {
-                    grid.innerHTML = `
-                        <div class="empty-placeholder" style="grid-column: 1 / -1;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
-                            <h4>No Saved Addresses</h4>
-                            <p>You haven't added any shipping addresses yet. Save your primary address for faster 1-click checkouts.</p>
-                            <button type="button" class="btn-dash-primary" onclick="toggleAddressForm(true)">Add New Address</button>
-                        </div>
-                    `;
-                    return;
+                    try {
+                        const localRaw = localStorage.getItem('shaanwear_saved_checkout_info');
+                        if (localRaw) {
+                            const localInfo = JSON.parse(localRaw);
+                            if (localInfo && (localInfo.address || localInfo.city)) {
+                                // Auto-migrate local checkout address to DB for the customer
+                                const migrated = await apiCall('/customer/addresses', {
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        name: [localInfo.firstName, localInfo.lastName].filter(Boolean).join(' ') || (state.user?.name || 'Customer'),
+                                        phone: localInfo.phone || '03001234567',
+                                        address: localInfo.apartment ? `${localInfo.address}, ${localInfo.apartment}` : (localInfo.address || ''),
+                                        city: localInfo.city || 'Islamabad',
+                                        province: localInfo.province || 'Punjab',
+                                        postalCode: localInfo.postalCode || localInfo.postal || '',
+                                        isDefault: true
+                                    })
+                                }).catch(() => null);
+
+                                if (migrated && migrated.data?.address) {
+                                    state.addresses = [migrated.data.address];
+                                }
+                            }
+                        }
+                    } catch (_) { }
                 }
 
-                grid.innerHTML = state.addresses.map(addr => `
-                    <div class="address-card ${addr.isDefault ? 'is-default' : ''}">
-                        ${addr.isDefault ? '<span class="default-pill">Default Shipping</span>' : ''}
-                        <div>
-                            <h4 class="address-card__name">${addr.name}</h4>
-                            <div class="address-card__lines">
-                                ${addr.address}<br>
-                                ${addr.city}, ${addr.province || 'Punjab'} ${addr.postalCode || ''}
-                            </div>
-                            <div class="address-card__phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                </svg>
-                                ${addr.phone}
-                            </div>
-                        </div>
-
-                        <div class="address-card__actions">
-                            ${!addr.isDefault ? `
-                                <button type="button" class="btn-text-action" onclick="handleSetDefaultAddress('${addr.id}')">
-                                    Set as Default
-                                </button>
-                                <span>&bull;</span>
-                            ` : ''}
-                            <button type="button" class="btn-text-action btn-text-action--danger" onclick="handleDeleteAddress('${addr.id}')">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                renderAddresses();
 
             } catch (err) {
-                grid.innerHTML = `<p style="text-align: center; color: #E53E3E; grid-column: 1 / -1;">Error loading addresses: ${err.message}</p>`;
+                console.error('[loadAddresses Error]:', err);
+                grid.innerHTML = `<p style="text-align: center; color: #E53E3E; padding: 30px 0; grid-column: 1 / -1;">Error loading addresses: ${escapeHtml(err.message || 'Unable to connect')}</p>`;
             }
         }
 
@@ -2826,7 +2970,7 @@
                 showToast('New shipping address saved successfully!');
                 document.getElementById('newAddressForm').reset();
                 toggleAddressForm(false);
-                await loadAddresses();
+                await loadAddresses(true);
             } catch (err) {
                 alert(`Could not save address: ${err.message}`);
             } finally {
@@ -2839,7 +2983,7 @@
             try {
                 await apiCall(`/customer/addresses/${id}/default`, { method: 'PATCH' });
                 showToast('Default shipping address updated.');
-                await loadAddresses();
+                await loadAddresses(true);
             } catch (err) {
                 alert(`Error setting default: ${err.message}`);
             }
@@ -2850,7 +2994,7 @@
             try {
                 await apiCall(`/customer/addresses/${id}`, { method: 'DELETE' });
                 showToast('Address removed from address book.');
-                await loadAddresses();
+                await loadAddresses(true);
             } catch (err) {
                 alert(`Error deleting address: ${err.message}`);
             }
@@ -3089,14 +3233,19 @@
                     }));
                 }
 
-                // Eagerly prefetch counter badges
+                // Eagerly prefetch counter badges and hydrate data
                 apiCall('/customer/orders?limit=1').then(res => {
                     setText('badgeOrdersCount', res.data?.pagination?.total ?? 0);
                 }).catch(() => { });
 
                 apiCall('/customer/addresses').then(res => {
-                    state.addresses = res.data?.addresses || [];
+                    state.addresses = extractAddresses(res);
                     setText('badgeAddressCount', state.addresses.length);
+                    // If addresses tab is active right now, render it immediately
+                    const addressesTab = document.getElementById('tab-addresses');
+                    if (addressesTab && addressesTab.classList.contains('is-active')) {
+                        renderAddresses();
+                    }
                 }).catch(() => { });
 
                 apiCall('/customer/wishlist').then(res => {
