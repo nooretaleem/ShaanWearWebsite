@@ -10,6 +10,8 @@
     padding: 56px 0 72px;
     position: relative;
     overflow-x: clip;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 650px;
 }
 
 /* Reduce gap when sections follow each other (e.g. Jackets Tomy -> Sweats) */
@@ -102,6 +104,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px 10px;
     list-style: none;
+    min-height: 480px;
 }
 
 /* ---------- CARD ---------- */
@@ -478,6 +481,10 @@
 }
 
 @media (max-width: 639px) {
+    .tshirts__grid {
+        min-height: 620px;
+    }
+
     .tshirts-header__title {
         font-size: clamp(13px, 4vw, 16px);
         letter-spacing: 0.16em;

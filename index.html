@@ -8,19 +8,24 @@
         content="SHAANWEAR — Premium Pakistani fashion. Sweatshirts, trousers, casual shirts & belts." />
     <title>SHAANWEAR — Premium Everyday Fashion</title>
 
+    <!-- Preload Critical LCP Hero Image (Mobile & Desktop) -->
+    <link rel="preload" as="image" href="assets/images/hero/hero-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/hero/heroo-desktop.jpg" media="(min-width: 769px)" fetchpriority="high">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap"
+            rel="stylesheet">
+    </noscript>
 
-    <link rel="stylesheet" href="assets/css/sections/base.css" />
-    <link rel="stylesheet" href="assets/css/sections/navbar.css" />
-    <link rel="stylesheet" href="assets/css/sections/hero.css" />
-    <link rel="stylesheet" href="assets/css/sections/shopbycategory.css" />
-    <link rel="stylesheet" href="assets/css/sections/tshirts.css" />
-    <link rel="stylesheet" href="assets/css/sections/campaign-banner.css" />
-    <link rel="stylesheet" href="assets/css/sections/footer.css" />
+    <link rel="stylesheet" href="assets/css/bundle.min.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
@@ -204,7 +209,18 @@
      HERO SECTION
      ============================================================ -->
     <section class="hero" aria-label="FW26 Sweats Drop">
-        <div class="hero__bg"></div>
+        <picture class="hero__picture">
+            <source media="(max-width: 768px)" srcset="assets/images/hero/hero-mobile.jpg">
+            <source media="(min-width: 769px)" srcset="assets/images/hero/heroo-desktop.jpg">
+            <img src="assets/images/hero/heroo-desktop.jpg" 
+                 alt="SHAANWEAR FW26 Sweats Drop" 
+                 class="hero__img" 
+                 width="1400" 
+                 height="750" 
+                 loading="eager" 
+                 fetchpriority="high" 
+                 decoding="async">
+        </picture>
         <div class="hero__overlay"></div>
 
         <div class="hero__content">
@@ -364,7 +380,7 @@
         <div class="campaign-banner__media">
             <!-- Ensure this filename matches your new cinematic image -->
             <img src="assets/images/banners/campaign-banner-final.jpg" alt="SHAANWEAR Premium Tracksuit Collection"
-                loading="lazy" />
+                width="1600" height="800" loading="lazy" decoding="async" />
         </div>
 
         <!-- The link wraps everything to make the whole banner clickable -->
@@ -553,9 +569,9 @@
     <script src="assets/js/config.js"></script>
     <script src="assets/js/utils/auth.js"></script>
     <script src="assets/js/utils/wishlist.js"></script>
-    <script src="assets/js/data/products.js?v=2"></script>
+    <script src="assets/js/data/products.js"></script>
     <script src="assets/js/modules/shopbycategory.js"></script>
-    <script src="assets/js/modules/tshirts.js?v=2"></script>
+    <script src="assets/js/modules/tshirts.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 
