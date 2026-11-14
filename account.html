@@ -2183,7 +2183,8 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="address-form-actions" style="display: flex; gap: 12px; margin-top: 20px;">
+                                        <div class="address-form-actions"
+                                            style="display: flex; gap: 12px; margin-top: 20px;">
                                             <button type="submit" class="btn-dash-primary" id="btnSaveAddress">
                                                 Save Address
                                             </button>
@@ -2248,12 +2249,14 @@
     <!-- ============================================================
      SIGN OUT CONFIRMATION MODAL COMPONENT
      ============================================================ -->
-    <div class="dash-modal" id="logoutModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+    <div class="dash-modal" id="logoutModal" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="logoutModalTitle">
         <div class="dash-modal__backdrop" onclick="closeLogoutModal()"></div>
         <div class="dash-modal__content logout-modal-content">
             <button class="dash-modal__close" onclick="closeLogoutModal()" aria-label="Close modal">&times;</button>
             <div class="logout-modal-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                     <polyline points="16 17 21 12 16 7" />
                     <line x1="21" y1="12" x2="9" y2="12" />
@@ -2262,12 +2265,14 @@
             <span class="logout-modal-eyebrow">SHAANWEAR ACCOUNT</span>
             <h3 class="logout-modal-title" id="logoutModalTitle">Sign Out of Your Account?</h3>
             <p class="logout-modal-desc">
-                You are currently signed in as <strong id="logoutUserEmail">your account</strong>. Are you sure you want to end your session?
+                You are currently signed in as <strong id="logoutUserEmail">your account</strong>. Are you sure you want
+                to end your session?
             </p>
             <div class="logout-modal-actions">
                 <button type="button" class="btn-dash-secondary" onclick="closeLogoutModal()">Stay Signed In</button>
                 <button type="button" class="btn-dash-primary" id="confirmLogoutBtn" onclick="executeLogout()">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                         <polyline points="16 17 21 12 16 7" />
                         <line x1="21" y1="12" x2="9" y2="12" />
@@ -2343,7 +2348,8 @@
                         </a>
                     </div>
                     <p class="footer__support">
-                        How can we help you, Let us know at <a href="mailto:cs@shaanwear.com.pk">cs@shaanwear.com.pk</a>
+                        How can we help you, Let us know at <a
+                            href="mailto:support@shaanwear.com.pk">support@shaanwear.com.pk</a>
                     </p>
                 </div>
 
@@ -3109,7 +3115,7 @@
                     badge.textContent = total;
                     badge.hidden = total === 0;
                 });
-            } catch (_) {}
+            } catch (_) { }
         }
 
         async function handleMoveToCart(productId) {

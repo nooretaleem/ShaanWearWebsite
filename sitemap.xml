@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+       <loc>https://www.shaanwear.com/</loc>
+       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
+       <priority>1.0000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/sweatshirts.html</loc>
+       <lastmod>2026-11-14T05:21:41+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/trousers.html</loc>
+       <lastmod>2026-11-14T05:25:21+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/jackets.html</loc>
+       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/casual-shirts.html</loc>
+       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/belts.html</loc>
+       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/shop.html</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  
+  <!-- Optional: Keep these if you want Google to index your filtered shop pages -->
+  <url>
+       <loc>https://www.shaanwear.com/shop.html?category=sweatshirts</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/shop.html?category=trousers</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/shop.html?category=jackets</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/shop.html?category=casual-shirts</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://www.shaanwear.com/shop.html?category=belts</loc>
+       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+
+</urlset>
