@@ -66,6 +66,19 @@
             backendImage: null
         },
         {
+            key: 'jeans',
+            name: 'Jeans',
+            slugs: ['jeans', 'jean', 'men-jeans', 'jeans-2546', 'denim'],
+            sectionId: 'jeans',
+            gridId: 'jeansGrid',
+            defaultPdpId: 501,
+            defaultImage: 'https://res.cloudinary.com/iktbx2jg/image/upload/v1794803718/shaanwear/products/yzo7cpegt3mbqkumdk0i.jpg',
+            alt: 'Model wearing premium export-quality straight-leg denim jeans',
+            backendId: null,
+            backendSlug: null,
+            backendImage: null
+        },
+        {
             key: 'belts',
             name: 'Belts',
             slugs: ['belts', 'belt', 'leather-belts'],

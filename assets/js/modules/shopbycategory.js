@@ -47,6 +47,14 @@
             alt:          'Model wearing modern tailored trousers'
         },
         {
+            key:          'jeans',
+            href:         'jeans.html',
+            label:        'Shop Jeans',
+            name:         'Jeans',
+            defaultImage: 'https://res.cloudinary.com/iktbx2jg/image/upload/v1794803718/shaanwear/products/yzo7cpegt3mbqkumdk0i.jpg',
+            alt:          'Model wearing premium export-quality straight-leg denim jeans'
+        },
+        {
             key:          'belts',
             href:         'belts.html',
             label:        'Shop Belts',
