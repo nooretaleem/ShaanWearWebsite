@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Size Guide & Fit Chart — SHAANWEAR</title>
+    <meta name="description" content="SHAANWEAR Size Guide. Measurements in inches and centimeters for sweatshirts, jackets, trousers, and shirts." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bundle.min.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        .info-page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 56px 20px 88px;
+            min-height: 60vh;
+        }
+        .info-page__header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border, #E5E3DE);
+            padding-bottom: 28px;
+        }
+        .info-page__eyebrow {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent, #B79A68);
+            margin-bottom: 10px;
+        }
+        .info-page__title {
+            font-size: clamp(26px, 4.5vw, 38px);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--black, #111111);
+            margin: 0 0 12px;
+            line-height: 1.2;
+        }
+        .info-page__subtitle {
+            font-size: 15px;
+            color: var(--text-gray, #6E6E6E);
+            line-height: 1.6;
+            max-width: 720px;
+            margin: 0;
+        }
+        .size-section {
+            margin-bottom: 44px;
+        }
+        .size-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--black, #111111);
+            margin: 0 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .size-section h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--accent, #B79A68);
+            border-radius: 2px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border, #E5E3DE);
+            border-radius: 4px;
+            background: #FFFFFF;
+            margin-bottom: 14px;
+        }
+        table.size-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13.5px;
+        }
+        table.size-table th {
+            background: var(--off-white, #F8F7F4);
+            padding: 14px 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--black, #111111);
+            border-bottom: 1px solid var(--border, #E5E3DE);
+            white-space: nowrap;
+        }
+        table.size-table td {
+            padding: 14px 18px;
+            color: #444444;
+            border-bottom: 1px solid #F0EFEA;
+            white-space: nowrap;
+        }
+        table.size-table tr:last-child td {
+            border-bottom: none;
+        }
+        table.size-table tr:hover td {
+            background: #FAF9F6;
+        }
+    </style>
+</head>
+
+<body data-page="size-guide">
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header__top">
+            <div class="header__left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="index.html" class="header__logo-link" aria-label="SHAANWEAR Home">
+                    <img src="assets/images/logo/logo.png" alt="SHAANWEAR Logo" class="header__logo-img" />
+                </a>
+            </div>
+
+            <a href="index.html" class="logo" aria-label="SHAANWEAR — Home">
+                SHAANWEAR
+            </a>
+
+            <div class="header__actions">
+                <button class="icon-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                    </svg>
+                </button>
+                <a href="account.html" class="icon-btn" aria-label="Account">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21a8 8 0 0 1 16 0" />
+                    </svg>
+                </a>
+                <button class="icon-btn" id="wishToggle" aria-label="Wishlist">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6l8.8 8.8 8.8-8.8a5.4 5.4 0 0 0 0-7.6z" />
+                    </svg>
+                    <span class="badge" id="wishCount" hidden>0</span>
+                </button>
+                <button class="icon-btn" id="cartToggle" aria-label="Shopping bag" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <path d="M3 6h18" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span class="badge" id="cartCount" hidden>0</span>
+                </button>
+            </div>
+        </div>
+
+        <nav class="header__nav-secondary" aria-label="Categories">
+            <a href="sweatshirts.html">Sweatshirts</a>
+            <a href="trousers.html">Trousers</a>
+            <a href="jackets.html">Jackets</a>
+            <a href="casual-shirts.html">Casual Shirts</a>
+            <a href="jeans.html">Jeans</a>
+            <a href="belts.html">Belts</a>
+            <a href="shop.html">Shop</a>
+        </nav>
+
+        <div class="search-panel" id="searchPanel" hidden>
+            <div class="search-panel__inner">
+                <label class="search-panel__label" for="searchInput">Search our collection</label>
+                <div class="search-panel__field">
+                    <input type="search" id="searchInput" placeholder="Search products..." autocomplete="off" />
+                    <button type="button" aria-label="Search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="m20 20-3.5-3.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="search-panel__popular">
+                    <span class="search-panel__eyebrow">Popular Searches</span>
+                    <ul>
+                        <li><a href="sweatshirts.html">Sweatshirts</a></li>
+                        <li><a href="trousers.html">Trousers</a></li>
+                        <li><a href="jackets.html">Jackets</a></li>
+                        <li><a href="casual-shirts.html">Casual Shirts</a></li>
+                        <li><a href="jeans.html">Jeans</a></li>
+                        <li><a href="belts.html">Belts</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <aside class="minicart" id="minicart" hidden aria-label="Shopping bag">
+            <div class="minicart__inner">
+                <div class="minicart__head">
+                    <h3>Your Bag</h3>
+                    <button class="minicart__close" id="minicartClose" aria-label="Close bag">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="minicart__body">
+                    <p class="minicart__empty">Your bag is currently empty.</p>
+                </div>
+                <div class="minicart__foot" id="minicartFoot">
+                    <div class="minicart__subtotal" id="minicartSubtotalRow">
+                        <span>Subtotal:</span>
+                        <strong id="minicartSubtotal">PKR 0</strong>
+                    </div>
+                    <div class="minicart__actions">
+                        <a href="checkout.html" class="btn btn--dark btn--full" id="minicartCheckout">CHECKOUT</a>
+                        <a href="cart.html" class="btn btn--outline btn--full" id="minicartViewCart">VIEW CART</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="backdrop" id="backdrop" hidden></div>
+
+        <div class="mobile-nav" id="mobileNav" hidden aria-label="Mobile navigation">
+            <div class="mobile-nav__inner">
+                <div class="mobile-nav__head">
+                    <span class="mobile-nav__brand">SHAANWEAR</span>
+                    <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mobile-nav__links">
+                    <a href="index.html">Home</a>
+                    <a href="sweatshirts.html">Sweatshirts</a>
+                    <a href="trousers.html">Trousers</a>
+                    <a href="jackets.html">Jackets</a>
+                    <a href="casual-shirts.html">Casual Shirts</a>
+                    <a href="jeans.html">Jeans</a>
+                    <a href="belts.html">Belts</a>
+                    <span class="mobile-nav__divider"></span>
+                    <a href="jackets.html">Export Surplus</a>
+                    <a href="sweatshirts.html">Sweats Drop</a>
+                    <a href="cart.html" style="font-weight: 700; color: var(--accent, #B79A68);">Shopping Cart</a>
+                </nav>
+                <div class="mobile-nav__foot">
+                    <span>Pakistan / PKR</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="info-page">
+        <div class="info-page__header">
+            <span class="info-page__eyebrow">FIT & MEASUREMENTS</span>
+            <h1 class="info-page__title">Size Guide</h1>
+            <p class="info-page__subtitle">Ensure the perfect tailored fit. All dimensions are listed in inches (exact) for easy measuring at home.</p>
+        </div>
+
+        <section class="size-section">
+            <h2>Sweatshirts, Hoodies & Jackets</h2>
+            <div class="table-wrap">
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Chest (Inches)</th>
+                            <th>Length (Inches)</th>
+                            <th>Sleeve (Inches)</th>
+                            <th>Recommended Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Small (S)</strong></td><td>38 – 40</td><td>27</td><td>24.5</td><td>55 – 65 kg</td></tr>
+                        <tr><td><strong>Medium (M)</strong></td><td>40 – 42</td><td>28</td><td>25.0</td><td>65 – 75 kg</td></tr>
+                        <tr><td><strong>Large (L)</strong></td><td>42 – 44</td><td>29</td><td>25.5</td><td>75 – 85 kg</td></tr>
+                        <tr><td><strong>X-Large (XL)</strong></td><td>44 – 46</td><td>30</td><td>26.0</td><td>85 – 98 kg</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="size-section">
+            <h2>Trousers & Jeans (Waist Sizing)</h2>
+            <div class="table-wrap">
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Waist (Inches)</th>
+                            <th>Hip (Inches)</th>
+                            <th>Length (Inches)</th>
+                            <th>Thigh (Inches)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>30</strong></td><td>30 – 31</td><td>38</td><td>40</td><td>23</td></tr>
+                        <tr><td><strong>32</strong></td><td>32 – 33</td><td>40</td><td>41</td><td>24</td></tr>
+                        <tr><td><strong>34</strong></td><td>34 – 35</td><td>42</td><td>41.5</td><td>25</td></tr>
+                        <tr><td><strong>36</strong></td><td>36 – 37</td><td>44</td><td>42</td><td>26</td></tr>
+                        <tr><td><strong>38</strong></td><td>38 – 39</td><td>46</td><td>42</td><td>27</td></tr>
+                        <tr><td><strong>40</strong></td><td>40 – 41</td><td>48</td><td>42.5</td><td>28</td></tr>
+                        <tr><td><strong>42</strong></td><td>42 – 43</td><td>50</td><td>43</td><td>29</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="size-section">
+            <h2>Leather Belts Sizing</h2>
+            <div class="table-wrap">
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Belt Size</th>
+                            <th>Fits Trouser Waist</th>
+                            <th>Total Length</th>
+                            <th>Width</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Medium (M)</strong></td><td>30 – 34 inches</td><td>40 inches</td><td>1.4 inches (35mm)</td></tr>
+                        <tr><td><strong>Large (L)</strong></td><td>34 – 38 inches</td><td>44 inches</td><td>1.4 inches (35mm)</td></tr>
+                        <tr><td><strong>X-Large (XL)</strong></td><td>38 – 42 inches</td><td>48 inches</td><td>1.4 inches (35mm)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div style="background: var(--off-white, #F8F7F4); border: 1px solid var(--border, #E5E3DE); padding: 24px; border-radius: 4px; margin-top: 24px;">
+            <p style="font-size: 13.5px; color: #555; line-height: 1.6; margin: 0;">Unsure between two sizes? Our customer care specialists can assist with personalized fit recommendations via WhatsApp or email at <a href="mailto:support@shaanwear.com">support@shaanwear.com</a>.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer__container">
+            <div class="footer__main">
+                <div class="footer__brand">
+                    <a href="index.html" class="footer__logo">SHAANWEAR</a>
+                    <p class="footer__brand-desc">
+                        SHAANWEAR is a registered trademark of SHAAN APPAREL and has been in the fashion industry since 2026. We believe in satisfying customers through our quality and brilliant customer service.
+                    </p>
+                    <p class="footer__support">
+                        How can we help you? Let us know at <a href="mailto:support@shaanwear.com">support@shaanwear.com</a>
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">Help</h4>
+                    <ul class="footer__links">
+                        <li><a href="exchange-return.html">Exchange & Return</a></li>
+                        <li><a href="shipping.html">Shipping & Handling</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="sourcing-disclaimer.html">Sourcing Disclaimer</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">About</h4>
+                    <ul class="footer__links">
+                        <li><a href="corporate-orders.html">Corporate Orders</a></li>
+                        <li><a href="store-locator.html">Store Locator</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="career.html">Career</a></li>
+                        <li><a href="size-guide.html">Size Guide</a></li>
+                        <li><a href="about.html">About Our Stock</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">My Account</h4>
+                    <ul class="footer__links">
+                        <li><a href="login.html">Login / Register</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="faqs.html">FAQS</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__divider"></div>
+
+            <div class="footer__bottom">
+                <div class="footer__copyright">
+                    Copyright © 2026 (Shaanwear) Shaan Apparel. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils/auth.js"></script>
+    <script src="assets/js/utils/wishlist.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
