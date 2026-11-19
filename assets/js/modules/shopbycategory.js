@@ -20,7 +20,7 @@
             label:        'Shop Sweatshirts',
             name:         'Sweatshirts',
             defaultImage: 'assets/images/products/sweatshirts/premium-sweatshirt=03.jpg',
-            alt:          'Model wearing a premium contemporary sweatshirt'
+            alt:          'SHAANWEAR Men\'s Heavyweight Fleece Sweatshirts Collection'
         },
         {
             key:          'jackets',
@@ -28,7 +28,7 @@
             label:        'Shop Jackets',
             name:         'Jackets',
             defaultImage: 'assets/images/products/jackets/jacketcategory-01.jpg',
-            alt:          'Model wearing a premium jacket'
+            alt:          'SHAANWEAR Men\'s Export Surplus Winter Jackets & Coats'
         },
         {
             key:          'casual-shirts',
@@ -36,7 +36,7 @@
             label:        'Shop Casual Shirts',
             name:         'Casual Shirts',
             defaultImage: 'assets/images/products/casual-shirts/classic-casual-shirt-01.jpg',
-            alt:          'Model wearing a tailored casual shirt'
+            alt:          'SHAANWEAR Men\'s Tailored Cotton Casual Shirts'
         },
         {
             key:          'trousers',
@@ -44,7 +44,7 @@
             label:        'Shop Trousers',
             name:         'Trousers',
             defaultImage: 'assets/images/products/trousers/slim-fit-trousers-01.jpg',
-            alt:          'Model wearing modern tailored trousers'
+            alt:          'SHAANWEAR Men\'s Smart Tailored Trousers & Chinos'
         },
         {
             key:          'jeans',
@@ -52,7 +52,7 @@
             label:        'Shop Jeans',
             name:         'Jeans',
             defaultImage: 'https://res.cloudinary.com/iktbx2jg/image/upload/v1794803718/shaanwear/products/yzo7cpegt3mbqkumdk0i.jpg',
-            alt:          'Model wearing premium export-quality straight-leg denim jeans'
+            alt:          'SHAANWEAR Men\'s Premium Export Quality Denim Jeans'
         },
         {
             key:          'belts',
@@ -60,7 +60,7 @@
             label:        'Shop Belts',
             name:         'Belts',
             defaultImage: 'assets/images/products/belts/belts.jpeg',
-            alt:          'Close-up of a premium handcrafted leather belt'
+            alt:          'SHAANWEAR Men\'s Handcrafted Genuine Leather Belts'
         }
     ];
 

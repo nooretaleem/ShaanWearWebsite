@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /account.html
+Disallow: /login.html
+Allow: /
+
+Sitemap: https://www.shaanwear.com/sitemap.xml

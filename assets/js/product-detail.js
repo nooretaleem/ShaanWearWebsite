@@ -138,6 +138,9 @@
         // Document Title
         document.title = p.name + ' — SHAANWEAR';
 
+        // Update Dynamic Product Schema
+        updateProductJsonLd(p);
+
         // Breadcrumbs
         const breadcrumbCat = qs('#breadcrumbCat');
         const breadcrumbTitle = qs('#breadcrumbTitle');
@@ -214,6 +217,49 @@
 
         // Update Cart Header Count
         updateCartHeaderCount();
+    }
+
+    function updateProductJsonLd(p) {
+        if (!p) return;
+        try {
+            let script = document.getElementById('productSchema');
+            if (!script) {
+                script = document.createElement('script');
+                script.id = 'productSchema';
+                script.type = 'application/ld+json';
+                document.head.appendChild(script);
+            }
+            const activeImages = getActiveImages();
+            const schemaData = {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": p.name,
+                "image": activeImages.length ? activeImages.map(img => img.startsWith('http') ? img : 'https://www.shaanwear.com/' + img.replace(/^\/+/, '')) : ["https://www.shaanwear.com/assets/images/hero/heroo-desktop.jpg"],
+                "description": p.description || ("Buy authentic " + p.name + " at SHAANWEAR. Premium export surplus men's fashion with nationwide delivery."),
+                "sku": p.sku || ("SW-" + (p.id || '001')),
+                "mpn": "SW-" + (p.id || '001'),
+                "brand": {
+                    "@type": "Brand",
+                    "name": "SHAANWEAR"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "PKR",
+                    "price": p.price,
+                    "priceValidUntil": "2027-12-31",
+                    "itemCondition": "https://schema.org/NewCondition",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "SHAANWEAR"
+                    }
+                }
+            };
+            script.textContent = JSON.stringify(schemaData, null, 2);
+        } catch (e) {
+            console.error('[SEO] Error updating JSON-LD schema:', e);
+        }
     }
 
     /* ---------- 3. ITEM SELECTION (Hidden) ---------- */
@@ -353,7 +399,7 @@
             mainImage.classList.add('fade-out');
             setTimeout(() => {
                 mainImage.src = currentSrc;
-                mainImage.alt = state.product.name + ' - Photo ' + (state.activeImageIdx + 1);
+                mainImage.alt = 'SHAANWEAR ' + state.product.name + ' - View ' + (state.activeImageIdx + 1);
                 mainImage.classList.remove('fade-out');
             }, 120);
         }
@@ -382,7 +428,7 @@
             const img = document.createElement('img');
             img.className = 'gallery__thumb-img';
             img.src = src;
-            img.alt = 'Thumbnail ' + (idx + 1);
+            img.alt = 'SHAANWEAR ' + (state.product ? state.product.name : 'Product') + ' thumbnail ' + (idx + 1);
             img.loading = 'lazy';
 
             btn.appendChild(img);

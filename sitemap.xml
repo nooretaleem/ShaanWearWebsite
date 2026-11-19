@@ -1,67 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-       <loc>https://www.shaanwear.com/</loc>
-       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
-       <priority>1.0000</priority>
+    <loc>https://www.shaanwear.com/</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/sweatshirts.html</loc>
-       <lastmod>2026-11-14T05:21:41+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://www.shaanwear.com/shop.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/trousers.html</loc>
-       <lastmod>2026-11-14T05:25:21+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://www.shaanwear.com/sweatshirts.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/jackets.html</loc>
-       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://www.shaanwear.com/trousers.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/casual-shirts.html</loc>
-       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://www.shaanwear.com/jackets.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/belts.html</loc>
-       <lastmod>2026-11-14T05:21:40+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://www.shaanwear.com/casual-shirts.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/shop.html</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.8000</priority>
-  </url>
-  
-  <!-- Optional: Keep these if you want Google to index your filtered shop pages -->
-  <url>
-       <loc>https://www.shaanwear.com/shop.html?category=sweatshirts</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://www.shaanwear.com/jeans.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/shop.html?category=trousers</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://www.shaanwear.com/belts.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/shop.html?category=jackets</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://www.shaanwear.com/about.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/shop.html?category=casual-shirts</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://www.shaanwear.com/contact.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
-       <loc>https://www.shaanwear.com/shop.html?category=belts</loc>
-       <lastmod>2026-11-14T05:34:13+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://www.shaanwear.com/faqs.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-
+  <url>
+    <loc>https://www.shaanwear.com/size-guide.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/store-locator.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/corporate-orders.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/sourcing-disclaimer.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/shipping.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/exchange-return.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/career.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/terms.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.shaanwear.com/privacy.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

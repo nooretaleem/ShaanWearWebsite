@@ -4,10 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Secure Checkout — SHAANWEAR. Complete your order of premium export surplus apparel with nationwide express delivery." />
-    <title>Checkout — SHAANWEAR</title>
+    <title>Secure Checkout — SHAANWEAR</title>
+    <meta name="description" content="Complete your order securely at SHAANWEAR. Cash on Delivery (COD), Direct Bank Transfer, EasyPaisa, and JazzCash accepted nationwide." />
+    <link rel="canonical" href="https://www.shaanwear.com/checkout.html" />
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SHAANWEAR" />
+    <meta property="og:title" content="Secure Checkout — SHAANWEAR" />
+    <meta property="og:description" content="Complete your order securely at SHAANWEAR. Cash on Delivery (COD), Direct Bank Transfer, EasyPaisa, and JazzCash accepted nationwide." />
+    <meta property="og:url" content="https://www.shaanwear.com/checkout.html" />
+    <meta property="og:image" content="https://www.shaanwear.com/assets/images/hero/heroo-desktop.jpg" />
+    <meta property="og:locale" content="en_US" />
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@shaanwear" />
+    <meta name="twitter:title" content="Secure Checkout — SHAANWEAR" />
+    <meta name="twitter:description" content="Complete your order securely at SHAANWEAR. Cash on Delivery (COD), Direct Bank Transfer, EasyPaisa, and JazzCash accepted nationwide." />
+    <meta name="twitter:image" content="https://www.shaanwear.com/assets/images/hero/heroo-desktop.jpg" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -366,6 +381,51 @@
                                 </div>
                             </div>
 
+                            <!-- Option 2: Direct Bank Transfer & Mobile Wallets -->
+                            <div class="payment-option" id="optionBankTransfer">
+                                <label class="payment-option__header">
+                                    <div class="payment-option__left">
+                                        <input type="radio" name="paymentMethod" id="paymentBankTransfer"
+                                            value="Direct Bank Transfer & Mobile Wallets: EasyPaisa, JazzCash, and direct online banking" />
+                                        <span class="payment-option__title">Direct Bank Transfer &amp; Mobile Wallets:
+                                            EasyPaisa, JazzCash, and direct online banking</span>
+                                    </div>
+                                    <!-- <div class="payment-option__icons" style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                        <span style="display: inline-flex; align-items: center; justify-content: center; background: #00A34E; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.2px;">EasyPaisa</span>
+                                        <span style="display: inline-flex; align-items: center; justify-content: center; background: #D61A21; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.2px;">JazzCash</span>
+                                        <span style="display: inline-flex; align-items: center; justify-content: center; background: #0E2F56; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.2px;">Banking</span>
+                                    </div> -->
+                                </label>
+                                <div class="payment-option__body" id="bankTransferDetailsBlock" style="display: none;">
+                                    <p style="margin: 0 0 10px; line-height: 1.5; color: #333;">
+                                        Make your payment directly into our bank account or via EasyPaisa / JazzCash.
+                                        Please transfer the total order amount to one of the accounts below:
+                                    </p>
+                                    <div
+                                        style="background: #FFFFFF; border: 1px solid #E5E3DE; padding: 12px 14px; border-radius: 4px; font-size: 13px; line-height: 1.6; color: #222; margin-bottom: 10px;">
+                                        <div style="margin-bottom: 8px;">
+                                            <strong style="color: #0E2F56;">Direct Online Banking (IBFT):</strong><br />
+                                            <span>Bank: Meezan Bank Ltd</span><br />
+                                            <span>Account Title: Nadeem Habib</span><br />
+                                            <span>Account / IBAN: PK00MEZN0000000000000000</span>
+                                        </div>
+                                        <div style="border-top: 1px dashed #E5E3DE; padding-top: 8px;">
+                                            <strong style="color: #00A34E;">EasyPaisa</strong> / <strong
+                                                style="color: #D61A21;">JazzCash:</strong><br />
+                                            <span>Account Title: Nadeem Habib</span><br />
+                                            <span>Mobile Account: 0300-0000000</span>
+                                        </div>
+                                    </div>
+                                    <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #666;">
+                                        After making the payment, please share your payment receipt / transaction ID
+                                        screenshot along with your Order Reference on WhatsApp or email at <a
+                                            href="mailto:support@shaanwear.com"
+                                            style="color: #111; text-decoration: underline;">support@shaanwear.com</a>.
+                                        Your order will be dispatched as soon as the transfer is verified.
+                                    </p>
+                                </div>
+                            </div>
+
                             <!-- Option 2: Credit / Debit Card -->
                             <!-- <div class="payment-option" id="optionCard">
                                 <label class="payment-option__header">
@@ -527,8 +587,9 @@
                 <p><strong>Recipient:</strong> <span id="orderSuccessCustomer">Customer</span></p>
                 <p><strong>Delivery Address:</strong> <span id="orderSuccessAddress">Address</span></p>
                 <p><strong>Order Total:</strong> <span id="orderSuccessTotal">Rs. 0.00</span></p>
+                <p><strong>Payment Method:</strong> <span id="orderSuccessPayment">Cash on Delivery</span></p>
                 <p><strong>Estimated Delivery:</strong> 2–3 working days nationwide</p>
-                <p style="margin-top: 8px; font-size: 12px; color: #6E6E6E;">
+                <p style="margin-top: 8px; font-size: 12px; color: #6E6E6E;" id="orderSuccessPaymentNote">
                     We have sent an order confirmation email and our dispatch team will coordinate delivery via SMS.
                 </p>
             </div>

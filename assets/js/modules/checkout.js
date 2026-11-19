@@ -430,59 +430,54 @@
 
     /* ---------- 7. PAYMENT METHOD SWITCHER ---------- */
     function initPaymentMethodSwitcher() {
-        const codRadio = qs('#paymentCOD');
-        const cardRadio = qs('#paymentCard');
-        const codOption = qs('#optionCOD');
-        const cardOption = qs('#optionCard');
-        const cardDetails = qs('#cardDetailsBlock');
+        const paymentRadios = qsa('input[name="paymentMethod"]');
+        const paymentOptions = qsa('.payment-option');
 
-        if (!codRadio || !cardRadio) return;
+        if (!paymentRadios || !paymentRadios.length) return;
 
         function updatePaymentUI() {
-            const isCard = cardRadio.checked;
+            paymentOptions.forEach(opt => {
+                const radio = opt.querySelector('input[name="paymentMethod"]');
+                const body = opt.querySelector('.payment-option__body');
+                const isChecked = radio && radio.checked;
 
-            if (isCard) {
-                cardOption?.classList.add('is-selected');
-                codOption?.classList.remove('is-selected');
-                if (cardDetails) cardDetails.style.display = 'block';
-                state.selectedPaymentMethod = 'Credit/Debit Card';
+                if (isChecked) {
+                    opt.classList.add('is-selected');
+                    state.selectedPaymentMethod = radio.value;
+                    if (body) body.style.display = 'block';
 
-                // Mark card detail fields required
-                const cardInputs = cardDetails ? qsa('input', cardDetails) : [];
-                cardInputs.forEach(inp => {
-                    inp.required = true;
-                });
-            } else {
-                codOption?.classList.add('is-selected');
-                cardOption?.classList.remove('is-selected');
-                if (cardDetails) cardDetails.style.display = 'none';
-                state.selectedPaymentMethod = 'Cash on Delivery';
+                    // If card fields exist
+                    const cardInputs = opt.id === 'optionCard' && body ? qsa('input', body) : [];
+                    cardInputs.forEach(inp => {
+                        inp.required = true;
+                    });
+                } else {
+                    opt.classList.remove('is-selected');
+                    if (body) body.style.display = 'none';
 
-                // Remove required rule and clear errors on card detail fields
-                const cardInputs = cardDetails ? qsa('input', cardDetails) : [];
-                cardInputs.forEach(inp => {
-                    inp.required = false;
-                    clearFieldError(inp);
-                });
-            }
+                    const cardInputs = opt.id === 'optionCard' && body ? qsa('input', body) : [];
+                    cardInputs.forEach(inp => {
+                        inp.required = false;
+                        clearFieldError(inp);
+                    });
+                }
+            });
         }
 
-        codRadio.addEventListener('change', updatePaymentUI);
-        cardRadio.addEventListener('change', updatePaymentUI);
-
-        // Header click delegates
-        codOption?.querySelector('.payment-option__header')?.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'INPUT') {
-                codRadio.checked = true;
-                updatePaymentUI();
-            }
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', updatePaymentUI);
         });
 
-        cardOption?.querySelector('.payment-option__header')?.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'INPUT') {
-                cardRadio.checked = true;
-                updatePaymentUI();
-            }
+        // Header click delegates
+        paymentOptions.forEach(opt => {
+            const header = opt.querySelector('.payment-option__header');
+            const radio = opt.querySelector('input[name="paymentMethod"]');
+            header?.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT' && radio) {
+                    radio.checked = true;
+                    updatePaymentUI();
+                }
+            });
         });
 
         updatePaymentUI();
@@ -664,6 +659,8 @@
         const modalCustomer = qs('#orderSuccessCustomer');
         const modalAddress = qs('#orderSuccessAddress');
         const modalTotal = qs('#orderSuccessTotal');
+        const modalPayment = qs('#orderSuccessPayment');
+        const modalPaymentNote = qs('#orderSuccessPaymentNote');
         const errorBanner = qs('#checkoutOrderError');
 
         if (!form || !completeBtn) return;
@@ -802,6 +799,14 @@
                     if (modalCustomer) modalCustomer.textContent = fullName;
                     if (modalAddress) modalAddress.textContent = fullDeliveryAddress;
                     if (modalTotal) modalTotal.textContent = liveTotal;
+                    if (modalPayment) modalPayment.textContent = state.selectedPaymentMethod;
+                    if (modalPaymentNote) {
+                        if (state.selectedPaymentMethod && state.selectedPaymentMethod.toLowerCase().includes('bank')) {
+                            modalPaymentNote.innerHTML = 'Please share your payment transfer screenshot and order reference on WhatsApp or email (<a href="mailto:support@shaanwear.com" style="color: #111; text-decoration: underline;">support@shaanwear.com</a>) for swift dispatch.';
+                        } else {
+                            modalPaymentNote.textContent = 'We have sent an order confirmation email and our dispatch team will coordinate delivery via SMS.';
+                        }
+                    }
 
                     // Save completed order record to localStorage
                     const orderRecord = {

@@ -21,7 +21,7 @@
             gridId: 'sweatsGrid',
             defaultPdpId: 101,
             defaultImage: 'assets/images/products/sweatshirts/premium-sweatshirt=03.jpg',
-            alt: 'Model wearing a premium contemporary sweatshirt',
+            alt: 'SHAANWEAR Men\'s Heavyweight Fleece Sweatshirts Collection',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -34,7 +34,7 @@
             gridId: 'tshirtsGrid',
             defaultPdpId: 1,
             defaultImage: 'assets/images/products/jackets/jacketcategory-01.jpg',
-            alt: 'Model wearing a premium jacket',
+            alt: 'SHAANWEAR Men\'s Export Surplus Winter Jackets & Coats',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -47,7 +47,7 @@
             gridId: 'casualShirtsGrid',
             defaultPdpId: 301,
             defaultImage: 'assets/images/products/casual-shirts/classic-casual-shirt-01.jpg',
-            alt: 'Model wearing a modern casual shirt',
+            alt: 'SHAANWEAR Men\'s Tailored Cotton Casual Shirts',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -60,7 +60,7 @@
             gridId: 'trousersGrid',
             defaultPdpId: 201,
             defaultImage: 'assets/images/products/trousers/slim-fit-trousers-01.jpg',
-            alt: 'Model wearing modern tailored trousers',
+            alt: 'SHAANWEAR Men\'s Smart Tailored Trousers & Chinos',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -73,7 +73,7 @@
             gridId: 'jeansGrid',
             defaultPdpId: 501,
             defaultImage: 'https://res.cloudinary.com/iktbx2jg/image/upload/v1794803718/shaanwear/products/yzo7cpegt3mbqkumdk0i.jpg',
-            alt: 'Model wearing premium export-quality straight-leg denim jeans',
+            alt: 'SHAANWEAR Men\'s Premium Export Quality Denim Jeans',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -86,7 +86,7 @@
             gridId: 'beltsGrid',
             defaultPdpId: 401,
             defaultImage: 'assets/images/products/belts/belts.jpeg',
-            alt: 'Close-up of a premium handcrafted leather belt',
+            alt: 'SHAANWEAR Men\'s Handcrafted Genuine Leather Belts',
             backendId: null,
             backendSlug: null,
             backendImage: null
@@ -250,7 +250,7 @@
 
         const front = el('img', 'tshirt-card__img tshirt-card__img--front', {
             src: frontSrc,
-            alt: p.name + ' in ' + (first.name || 'standard') + ', front view',
+            alt: 'SHAANWEAR ' + p.name + ' in ' + (first.name || 'standard') + ', front view',
             loading: 'lazy',
             width: '800',
             height: '1000'
@@ -262,7 +262,7 @@
 
         const back = el('img', 'tshirt-card__img tshirt-card__img--back', {
             src: backSrc,
-            alt: p.name + ' in ' + (first.name || 'standard') + ', alternate view',
+            alt: 'SHAANWEAR ' + p.name + ' in ' + (first.name || 'standard') + ', alternate view',
             loading: 'lazy',
             width: '800',
             height: '1000'
